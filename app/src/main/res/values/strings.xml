@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RecipesApp</string>
+    <string name="app_name" translatable="false">RecipesApp</string>
     <string name="categories">categories</string>
     <string name="favorites">favorites</string>
 </resources>
