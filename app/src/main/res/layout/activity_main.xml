@@ -36,7 +36,7 @@
         <Button
             android:id="@+id/btn_categories"
             style="@style/StyleNavButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/halfDimensionBetweenButtons"
             android:layout_weight="1"
@@ -47,7 +47,7 @@
         <Button
             android:id="@+id/btn_favorites"
             style="@style/StyleNavButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/halfDimensionBetweenButtons"
             android:layout_weight="1"
