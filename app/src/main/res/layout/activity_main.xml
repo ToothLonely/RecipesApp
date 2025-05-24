@@ -5,7 +5,22 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundColor">
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/mainContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/mainDimen"
+        android:layout_marginTop="@dimen/mainDimen"
+        android:layout_marginBottom="@dimen/halfMainDimen"
+        app:layout_constraintBottom_toTopOf="@id/layout_nav_buttons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.fragment.app.FragmentContainerView>
+
     <LinearLayout
+        android:id="@+id/layout_nav_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/mainDimen"
@@ -21,9 +36,9 @@
         <Button
             android:id="@+id/btn_categories"
             style="@style/StyleNavButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="2dp"
+            android:layout_marginEnd="@dimen/halfDimensionBetweenButtons"
             android:layout_weight="1"
             android:backgroundTint="@color/categoryColor"
             android:text="@string/categories"
@@ -32,9 +47,9 @@
         <Button
             android:id="@+id/btn_favorites"
             style="@style/StyleNavButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
+            android:layout_marginStart="@dimen/halfDimensionBetweenButtons"
             android:layout_weight="1"
             android:backgroundTint="@color/favoritesColor"
             android:text="@string/favorites"
