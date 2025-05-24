@@ -2,6 +2,8 @@ package com.example.recipesapp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.example.recipesapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -22,5 +24,19 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.add(R.id.mainContainer, CategoriesListFragment())
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
+
+        mainActivityBinding.btnFavorites.setOnClickListener {
+            supportFragmentManager.commit {
+                replace(R.id.mainContainer, FavoritesFragment())
+                setReorderingAllowed(true)
+            }
+        }
+
+        mainActivityBinding.btnCategories.setOnClickListener {
+            supportFragmentManager.commit {
+                replace(R.id.mainContainer, CategoriesListFragment())
+                setReorderingAllowed(true)
+            }
+        }
     }
 }
