@@ -3,4 +3,5 @@
     <string name="categories">categories</string>
     <string name="favorites">favorites</string>
     <string name="fragment_list_categories_name" translatable="false">Fragment List Categories</string>
+    <string name="favorites_fragment_name" translatable="false">Favorites Fragment Name</string>
 </resources>
