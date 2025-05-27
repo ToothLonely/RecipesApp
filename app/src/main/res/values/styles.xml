@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <style name="StyleTitle4" parent="TextAppearance.AppCompat">
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/montserrat_alternates_regular</item>
         <item name="textAllCaps">true</item>
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="StyleTitle5" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/montserrat_alternates_regular</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:textColor">@color/purple</item>
+    </style>
+
+    <style name="StyleCategoriesTitle" parent="Widget.AppCompat.TextView">
+        <item name="android:background">@drawable/shape_rounded_categories</item>
+        <item name="android:textAppearance">@style/StyleTitle5</item>
     </style>
 
     <style name="StyleNavButton" parent="Widget.Material3.Button">
