@@ -10,27 +10,27 @@
     android:background="?attr/selectableItemBackgroundBorderless"
     android:clickable="true"
     app:cardCornerRadius="@dimen/halfMainDimen">
+
     <LinearLayout
         android:id="@+id/layout_cardView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/iv_categories_had"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:src="@drawable/bcg_rectangle">
-        </ImageView>
+            android:layout_gravity="center"
+            android:background="@drawable/bcg_rectangle" />
 
         <TextView
             android:id="@+id/tv_category_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/halfMainDimen"
             android:layout_marginTop="@dimen/halfMainDimen"
-            tools:text="blabla">
-        </TextView>
+            tools:text="blabla" />
 
         <TextView
             android:id="@+id/tv_categories_description"
@@ -40,8 +40,7 @@
             android:layout_marginTop="@dimen/halfMainDimen"
             android:layout_marginEnd="@dimen/halfMainDimen"
             android:layout_marginBottom="@dimen/halfMainDimen"
-            tools:text="dasfasdfsaasasdd">
-        </TextView>
+            tools:text="dasfasdfsaasasdd" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
