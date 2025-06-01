@@ -21,9 +21,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </ImageView>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_categories"
@@ -32,13 +30,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/mainDimen"
             android:layout_marginBottom="@dimen/mainDimen"
-            android:padding="10dp"
+            android:padding="@dimen/categoriesHatPadding"
             android:text="@string/categories"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-        </TextView>
-
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -51,9 +46,5 @@
         tools:itemCount="6"
         tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         tools:listitem="@layout/item_category"
-        tools:spanCount="2">
-
-    </androidx.recyclerview.widget.RecyclerView>
-
-
+        tools:spanCount="2" />
 </LinearLayout>

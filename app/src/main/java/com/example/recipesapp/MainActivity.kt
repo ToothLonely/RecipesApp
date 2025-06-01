@@ -22,18 +22,19 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_main)){v, insets ->
+        _mainActivityBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(mainActivityBinding.root)
+        ViewCompat.setOnApplyWindowInsetsListener(mainActivityBinding.layoutMain){v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        _mainActivityBinding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(mainActivityBinding.root)
 
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.mainContainer, CategoriesListFragment())
-        fragmentTransaction.addToBackStack(null)
-        fragmentTransaction.commit()
+        supportFragmentManager.commit {
+            add(R.id.mainContainer, CategoriesListFragment())
+            setReorderingAllowed(true)
+            addToBackStack(null)
+        }
 
         mainActivityBinding.btnFavorites.setOnClickListener {
             supportFragmentManager.commit {

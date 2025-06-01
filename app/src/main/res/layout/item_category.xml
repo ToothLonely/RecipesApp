@@ -10,8 +10,6 @@
     android:background="?attr/selectableItemBackgroundBorderless"
     android:clickable="true"
     app:cardCornerRadius="@dimen/halfMainDimen">
-
-
     <LinearLayout
         android:id="@+id/layout_cardView"
         android:layout_width="wrap_content"
@@ -23,7 +21,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:src="@drawable/bcg_rectangle">
-
         </ImageView>
 
         <TextView
@@ -33,7 +30,6 @@
             android:layout_marginStart="@dimen/halfMainDimen"
             android:layout_marginTop="@dimen/halfMainDimen"
             tools:text="blabla">
-
         </TextView>
 
         <TextView
@@ -45,7 +41,6 @@
             android:layout_marginEnd="@dimen/halfMainDimen"
             android:layout_marginBottom="@dimen/halfMainDimen"
             tools:text="dasfasdfsaasasdd">
-
         </TextView>
     </LinearLayout>
 
