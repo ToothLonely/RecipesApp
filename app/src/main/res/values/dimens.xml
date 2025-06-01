@@ -3,4 +3,5 @@
     <dimen name="mainDimen">16dp</dimen>
     <dimen name="halfMainDimen">8dp</dimen>
     <dimen name="halfDimensionBetweenButtons">2dp</dimen>
+    <dimen name="categoriesHatPadding">10dp</dimen>
 </resources>
