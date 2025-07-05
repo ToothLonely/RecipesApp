@@ -17,7 +17,6 @@ class MainActivity : AppCompatActivity() {
         get() = _mainActivityBinding ?: throw IllegalStateException(
             "Binding for MainActivityBinding mustn't be null"
         )
-    private val fragmentManager = supportFragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
