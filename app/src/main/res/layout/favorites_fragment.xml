@@ -6,7 +6,7 @@
     android:backgroundTint="@color/white">
 
     <TextView
-        android:id="@+id/tv_favorites_fragment"
+        android:id="@+id/tvFavoritesFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"

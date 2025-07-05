@@ -13,7 +13,7 @@
         <item name="android:textSize">20sp</item>
         <item name="fontFamily">@font/montserrat_alternates_semi_bold</item>
         <item name="textAllCaps">true</item>
-        <item name="android:textColor">@color/purple</item>
+        <item name="android:textColor">@color/purpleColor</item>
         <item name="height">24dp</item>
     </style>
 

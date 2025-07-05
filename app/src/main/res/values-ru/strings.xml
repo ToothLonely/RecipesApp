@@ -2,4 +2,6 @@
     <string name="app_name">RecipesApp</string>
     <string name="categories">категории</string>
     <string name="favorites">избранное</string>
+    <string name="cd_categories_background">вкладка с категорями</string>
+    <string name="cd_category_item">избражение категории</string>
 </resources>
