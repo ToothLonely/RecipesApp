@@ -30,21 +30,21 @@ class MainActivity : AppCompatActivity() {
         }
 
         supportFragmentManager.commit {
-            add(R.id.mainContainer, CategoriesListFragment())
+            add(mainActivityBinding.mainContainer.id, CategoriesListFragment())
             setReorderingAllowed(true)
             addToBackStack(null)
         }
 
         mainActivityBinding.btnFavorites.setOnClickListener {
             supportFragmentManager.commit {
-                replace(R.id.mainContainer, FavoritesFragment())
+                replace(mainActivityBinding.mainContainer.id, FavoritesFragment())
                 setReorderingAllowed(true)
             }
         }
 
         mainActivityBinding.btnCategories.setOnClickListener {
             supportFragmentManager.commit {
-                replace(R.id.mainContainer, CategoriesListFragment())
+                replace(mainActivityBinding.mainContainer.id, CategoriesListFragment())
                 setReorderingAllowed(true)
             }
         }

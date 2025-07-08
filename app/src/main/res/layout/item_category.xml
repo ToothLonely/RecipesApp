@@ -18,7 +18,7 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/ivCategoriesHead"
+            android:id="@+id/ivCategoryHead"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -34,7 +34,7 @@
             tools:text="blabla" />
 
         <TextView
-            android:id="@+id/tvCategoriesDescription"
+            android:id="@+id/tvCategoryDescription"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/halfMainDimen"
