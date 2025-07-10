@@ -22,26 +22,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/bcg_rectangle"
-            android:contentDescription="@string/cd_category_item" />
+            android:contentDescription="@string/cd_category_item"
+            tools:background="@drawable/bcg_rectangle" />
 
         <TextView
             android:id="@+id/tvCategoryName"
+            style="@style/StyleCategoryName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/halfMainDimen"
             android:layout_marginTop="@dimen/halfMainDimen"
-            tools:text="blabla" />
+            tools:text="test name of category" />
 
         <TextView
             android:id="@+id/tvCategoryDescription"
-            android:layout_width="140dp"
+            style="@style/StyleCategoryDescription"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/halfMainDimen"
-            android:layout_marginTop="@dimen/halfMainDimen"
-            android:layout_marginEnd="@dimen/halfMainDimen"
-            android:layout_marginBottom="@dimen/halfMainDimen"
-            tools:text="dasfasdfsaasasdd" />
+            android:layout_margin="@dimen/halfMainDimen"
+            tools:text="test description of category" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

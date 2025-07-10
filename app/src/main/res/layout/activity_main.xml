@@ -14,7 +14,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
     </androidx.fragment.app.FragmentContainerView>
 
     <LinearLayout
@@ -39,8 +38,7 @@
             android:layout_marginEnd="@dimen/halfDimensionBetweenButtons"
             android:layout_weight="1"
             android:backgroundTint="@color/categoryColor"
-            android:text="@string/categories"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:text="@string/categories" />
 
         <Button
             android:id="@+id/btnFavorites"
@@ -52,9 +50,7 @@
             android:backgroundTint="@color/favoritesColor"
             android:text="@string/favorites"
             app:icon="@drawable/ic_empty_heart"
-            app:iconGravity="textEnd"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btnCategories" />
+            app:iconGravity="textEnd" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
