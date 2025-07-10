@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         _mainActivityBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainActivityBinding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(mainActivityBinding.layoutMain){v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(mainActivityBinding.layoutMain) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets

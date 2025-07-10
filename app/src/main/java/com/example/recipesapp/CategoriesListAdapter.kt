@@ -37,7 +37,7 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
             Log.e("OnBindViewHolder", stackTrace)
             null
         }
-        with(viewHolder){
+        with(viewHolder) {
             tvCategoryName.text = category.title
             tvCategoryDescription.text = category.description
             ivCategoryHead.setImageDrawable(drawable)

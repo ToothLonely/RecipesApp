@@ -9,6 +9,7 @@
     android:layout_marginVertical="@dimen/halfMainDimen"
     android:background="?attr/selectableItemBackgroundBorderless"
     android:clickable="true"
+    android:focusable="true"
     app:cardCornerRadius="@dimen/halfMainDimen">
 
     <LinearLayout
@@ -20,7 +21,7 @@
         <ImageView
             android:id="@+id/ivCategoryHead"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="130dp"
             android:layout_gravity="center"
             android:contentDescription="@string/cd_category_item"
             tools:background="@drawable/bcg_rectangle" />

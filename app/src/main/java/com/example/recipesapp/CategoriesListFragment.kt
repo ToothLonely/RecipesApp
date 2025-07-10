@@ -32,7 +32,7 @@ class CategoriesListFragment : Fragment() {
 
     private fun initRecycler() {
         val categoriesAdapter = CategoriesListAdapter(STUB.getCategories())
-        categoriesListFragmentBinding.rvCategories.apply{
+        categoriesListFragmentBinding.rvCategories.apply {
             layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = categoriesAdapter
         }
