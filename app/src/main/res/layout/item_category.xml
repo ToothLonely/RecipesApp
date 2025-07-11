@@ -5,8 +5,7 @@
     android:id="@+id/cvCategory"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/halfMainDimen"
-    android:layout_marginVertical="@dimen/halfMainDimen"
+    android:layout_margin="@dimen/halfMainDimen"
     android:background="?attr/selectableItemBackgroundBorderless"
     android:clickable="true"
     android:focusable="true"
@@ -21,8 +20,8 @@
         <ImageView
             android:id="@+id/ivCategoryHead"
             android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:layout_gravity="center"
+            android:layout_height="@dimen/categoryImageSize"
+            android:scaleType="centerCrop"
             android:contentDescription="@string/cd_category_item"
             tools:background="@drawable/bcg_rectangle" />
 
