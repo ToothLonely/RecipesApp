@@ -4,4 +4,5 @@
     <dimen name="halfMainDimen">8dp</dimen>
     <dimen name="halfDimensionBetweenButtons">2dp</dimen>
     <dimen name="categoriesHatPadding">10dp</dimen>
+    <dimen name="categoryImageSize">130dp</dimen>
 </resources>

@@ -17,14 +17,13 @@ class MainActivity : AppCompatActivity() {
         get() = _mainActivityBinding ?: throw IllegalStateException(
             "Binding for MainActivityBinding mustn't be null"
         )
-    private val fragmentManager = supportFragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         _mainActivityBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainActivityBinding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(mainActivityBinding.layoutMain){v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(mainActivityBinding.layoutMain) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets

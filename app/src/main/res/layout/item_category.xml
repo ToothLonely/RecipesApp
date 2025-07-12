@@ -2,45 +2,45 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cv_category"
+    android:id="@+id/cvCategory"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/halfMainDimen"
-    android:layout_marginVertical="@dimen/halfMainDimen"
+    android:layout_margin="@dimen/halfMainDimen"
     android:background="?attr/selectableItemBackgroundBorderless"
     android:clickable="true"
+    android:focusable="true"
     app:cardCornerRadius="@dimen/halfMainDimen">
 
     <LinearLayout
-        android:id="@+id/layout_cardView"
+        android:id="@+id/layoutCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/iv_categories_had"
+            android:id="@+id/ivCategoryHead"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/bcg_rectangle" />
+            android:layout_height="@dimen/categoryImageSize"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/cd_category_item"
+            tools:background="@drawable/bcg_rectangle" />
 
         <TextView
-            android:id="@+id/tv_category_name"
+            android:id="@+id/tvCategoryName"
+            style="@style/StyleCategoryName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/halfMainDimen"
             android:layout_marginTop="@dimen/halfMainDimen"
-            tools:text="blabla" />
+            tools:text="test name of category" />
 
         <TextView
-            android:id="@+id/tv_categories_description"
-            android:layout_width="140dp"
+            android:id="@+id/tvCategoryDescription"
+            style="@style/StyleCategoryDescription"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/halfMainDimen"
-            android:layout_marginTop="@dimen/halfMainDimen"
-            android:layout_marginEnd="@dimen/halfMainDimen"
-            android:layout_marginBottom="@dimen/halfMainDimen"
-            tools:text="dasfasdfsaasasdd" />
+            android:layout_margin="@dimen/halfMainDimen"
+            tools:text="test description of category" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
