@@ -4,7 +4,7 @@
     android:id="@+id/layoutMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor">
+    android:background="@color/almostWhiteColor">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/mainContainer"
@@ -20,10 +20,8 @@
         android:id="@+id/layoutNavButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/mainDimen"
-        android:layout_marginTop="@dimen/halfMainDimen"
-        android:layout_marginEnd="@dimen/mainDimen"
-        android:layout_marginBottom="@dimen/halfMainDimen"
+        android:layout_marginHorizontal="@dimen/mainDimen"
+        android:layout_marginVertical="@dimen/halfMainDimen"
         android:orientation="horizontal"
         android:weightSum="2"
         app:layout_constraintBottom_toBottomOf="parent"
