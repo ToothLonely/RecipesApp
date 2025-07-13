@@ -4,11 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.recipesapp.databinding.FragmentListCategoriesBinding
+
+const val ARG_CATEGORY_ID = "categoryId"
+const val ARG_CATEGORY_NAME = "categoryName"
+const val ARG_CATEGORY_IMAGE_URL = "categoryImageUrl"
 
 class CategoriesListFragment : Fragment() {
     private var _categoriesListFragmentBinding: FragmentListCategoriesBinding? = null
@@ -34,6 +39,7 @@ class CategoriesListFragment : Fragment() {
 
     private fun initRecycler() {
         val categoriesAdapter = CategoriesListAdapter(STUB.getCategories())
+
         categoriesListFragmentBinding.rvCategories.apply {
             layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = categoriesAdapter
@@ -41,15 +47,27 @@ class CategoriesListFragment : Fragment() {
 
         categoriesAdapter.setOnItemClickListener(object :
             CategoriesListAdapter.OnItemClickListener {
-            override fun onItemClick() {
-                openRecipesByCategoryId()
+            override fun onItemClick(categoryId: Int) {
+                openRecipesByCategoryId(categoryId)
             }
         })
     }
 
-    private fun openRecipesByCategoryId() {
+    private fun openRecipesByCategoryId(categoryId: Int) {
+        val currentCategory: Category =
+            STUB.getCategories().find { it.id == categoryId }!! // знаю, что нельзя,
+        // но не придумал ничего лучше... Но с другой стороны, categoryId колбэка мы берем из STUB.getCategories(),
+        // т.к. передаем этот список в адаптер, значит полученная categoryId полюбому должна найтись в STUB.getCategories()
+        val (_, categoryName, _, categoryImageUrl) = currentCategory
+
+        val bundle: Bundle = bundleOf(
+            ARG_CATEGORY_ID to categoryId,
+            ARG_CATEGORY_NAME to categoryName,
+            ARG_CATEGORY_IMAGE_URL to categoryImageUrl
+        )
+
         parentFragmentManager.commit {
-            replace<RecipesListFragment>(R.id.mainContainer)
+            replace<RecipesListFragment>(R.id.mainContainer, args = bundle)
             setReorderingAllowed(true)
             addToBackStack(null)
         }
