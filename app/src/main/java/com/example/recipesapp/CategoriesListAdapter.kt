@@ -12,11 +12,22 @@ import java.io.InputStream
 class CategoriesListAdapter(private val dataSet: List<Category>) :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
 
+    private var itemClickListener: OnItemClickListener? = null
+
+    interface OnItemClickListener {
+        fun onItemClick()
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        itemClickListener = listener
+    }
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val itemCategoryBinding = ItemCategoryBinding.bind(view)
         val tvCategoryName = itemCategoryBinding.tvCategoryName
         val ivCategoryHead = itemCategoryBinding.ivCategoryHead
         val tvCategoryDescription = itemCategoryBinding.tvCategoryDescription
+        val cvCategory = itemCategoryBinding.cvCategory
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -41,7 +52,11 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
             tvCategoryName.text = category.title
             tvCategoryDescription.text = category.description
             ivCategoryHead.setImageDrawable(drawable)
+            cvCategory.setOnClickListener {
+                itemClickListener?.onItemClick()
+            }
         }
+
     }
 
     override fun getItemCount() = dataSet.size
