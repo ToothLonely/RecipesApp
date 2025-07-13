@@ -11,10 +11,10 @@ class RecipesListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initCategory(savedInstanceState)
+        initCategory()
     }
 
-    private fun initCategory(savedInstanceState: Bundle?) {
+    private fun initCategory() {
         categoryId = requireArguments().getInt(ARG_CATEGORY_ID)
         categoryName = requireArguments().getString(ARG_CATEGORY_NAME)
         categoryImageUrl = requireArguments().getString(ARG_CATEGORY_IMAGE_URL)
