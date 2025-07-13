@@ -37,14 +37,14 @@ class MainActivity : AppCompatActivity() {
 
         mainActivityBinding.btnFavorites.setOnClickListener {
             supportFragmentManager.commit {
-                replace(R.id.mainContainer, FavoritesFragment())
+                replace<FavoritesFragment>(R.id.mainContainer)
                 setReorderingAllowed(true)
             }
         }
 
         mainActivityBinding.btnCategories.setOnClickListener {
             supportFragmentManager.commit {
-                replace(R.id.mainContainer, CategoriesListFragment())
+                replace<CategoriesListFragment>(R.id.mainContainer)
                 setReorderingAllowed(true)
             }
         }

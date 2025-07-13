@@ -49,7 +49,7 @@ class CategoriesListFragment : Fragment() {
 
     private fun openRecipesByCategoryId() {
         parentFragmentManager.commit {
-            replace(R.id.mainContainer, RecipesListFragment())
+            replace<RecipesListFragment>(R.id.mainContainer)
             setReorderingAllowed(true)
             addToBackStack(null)
         }
