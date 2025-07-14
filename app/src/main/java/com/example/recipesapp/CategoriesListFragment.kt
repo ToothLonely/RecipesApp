@@ -54,10 +54,8 @@ class CategoriesListFragment : Fragment() {
     }
 
     private fun openRecipesByCategoryId(categoryId: Int) {
-        val currentCategory: Category =
-            STUB.getCategories().find { it.id == categoryId }!! // знаю, что нельзя,
-        // но не придумал ничего лучше... Но с другой стороны, categoryId колбэка мы берем из STUB.getCategories(),
-        // т.к. передаем этот список в адаптер, значит полученная categoryId полюбому должна найтись в STUB.getCategories()
+        val currentCategory: Category = STUB.getCategories().find { it.id == categoryId }
+            ?: throw IllegalArgumentException("Категория с ID $categoryId не найдена!")
         val (_, categoryName, _, categoryImageUrl) = currentCategory
 
         val bundle: Bundle = bundleOf(
