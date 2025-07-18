@@ -5,7 +5,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.setPadding
+import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.example.recipesapp.databinding.ActivityMainBinding
@@ -29,16 +29,19 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        supportFragmentManager.commit {
-            add(R.id.mainContainer, CategoriesListFragment())
-            setReorderingAllowed(true)
-            addToBackStack(null)
+        if (savedInstanceState == null) {
+            supportFragmentManager.commit {
+                add<CategoriesListFragment>(R.id.mainContainer)
+                setReorderingAllowed(true)
+                addToBackStack(null)
+            }
         }
 
         mainActivityBinding.btnFavorites.setOnClickListener {
             supportFragmentManager.commit {
                 replace<FavoritesFragment>(R.id.mainContainer)
                 setReorderingAllowed(true)
+                addToBackStack(null)
             }
         }
 
@@ -46,6 +49,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.commit {
                 replace<CategoriesListFragment>(R.id.mainContainer)
                 setReorderingAllowed(true)
+                addToBackStack(null)
             }
         }
     }

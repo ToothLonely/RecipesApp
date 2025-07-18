@@ -2,7 +2,7 @@
 <resources>
     <color name="blackColor">#FF000000</color>
     <color name="whiteColor">#FFFFFFFF</color>
-    <color name="almostWhiteColor">#F4FAFF</color>
+    <color name="backgroundColor">#F4FAFF</color>
     <color name="categoryColor">#525DC0</color>
     <color name="favoritesColor">#E13E3E</color>
     <color name="purpleColor">#5F3678</color>
