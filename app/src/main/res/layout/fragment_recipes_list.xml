@@ -7,8 +7,9 @@
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutCategoryHead"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="256dp">
 
         <ImageView
             android:id="@+id/ivCategoryBck"
@@ -37,8 +38,13 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvRecipes"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="@dimen/mainDimen"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_recipe">
 
     </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>

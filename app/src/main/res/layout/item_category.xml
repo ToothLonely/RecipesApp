@@ -12,7 +12,7 @@
     app:cardCornerRadius="@dimen/halfMainDimen">
 
     <LinearLayout
-        android:id="@+id/layoutCardView"
+        android:id="@+id/layoutCategoryCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">

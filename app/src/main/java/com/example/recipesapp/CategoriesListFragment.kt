@@ -11,10 +11,6 @@ import androidx.fragment.app.replace
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.recipesapp.databinding.FragmentListCategoriesBinding
 
-const val ARG_CATEGORY_ID = "categoryId"
-const val ARG_CATEGORY_NAME = "categoryName"
-const val ARG_CATEGORY_IMAGE_URL = "categoryImageUrl"
-
 class CategoriesListFragment : Fragment() {
     private var _categoriesListFragmentBinding: FragmentListCategoriesBinding? = null
     private val categoriesListFragmentBinding
