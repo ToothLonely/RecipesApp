@@ -5,4 +5,6 @@
     <dimen name="halfDimensionBetweenButtons">2dp</dimen>
     <dimen name="categoriesHatPadding">10dp</dimen>
     <dimen name="categoryImageSize">130dp</dimen>
+    <dimen name="categoryHeadSize">256dp</dimen>
+    <dimen name="itemRecipeImageSize">100dp</dimen>
 </resources>

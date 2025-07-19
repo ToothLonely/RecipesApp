@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutCategoryHead"
         android:layout_width="match_parent"
-        android:layout_height="256dp">
+        android:layout_height="@dimen/categoryHeadSize">
 
         <ImageView
             android:id="@+id/ivCategoryBck"
