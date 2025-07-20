@@ -49,7 +49,7 @@ class RecipesListAdapter(private val dataSet: List<Recipe>) :
 
         with(holder) {
             tvRecipeName.text = recipe.title
-            ivBcgRecipe.background = drawable
+            ivBcgRecipe.setImageDrawable(drawable)
             cvRecipe.setOnClickListener {
                 val recipeId = recipe.id
                 itemClickListener?.onItemClick(recipeId)
