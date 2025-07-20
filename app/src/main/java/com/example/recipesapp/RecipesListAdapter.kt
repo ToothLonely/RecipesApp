@@ -11,10 +11,21 @@ import com.example.recipesapp.databinding.ItemRecipeBinding
 class RecipesListAdapter(private val dataSet: List<Recipe>) :
     RecyclerView.Adapter<RecipesListAdapter.ViewHolder>() {
 
+    private var itemClickListener: OnItemClickListener? = null
+
+    interface OnItemClickListener {
+        fun onItemClick(recipeId: Int)
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        itemClickListener = listener
+    }
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val itemRecipeBinding = ItemRecipeBinding.bind(view)
         val tvRecipeName = itemRecipeBinding.tvRecipeName
         val ivBcgRecipe = itemRecipeBinding.ivBcgRecipe
+        val cvRecipe = itemRecipeBinding.cvRecipe
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -39,6 +50,10 @@ class RecipesListAdapter(private val dataSet: List<Recipe>) :
         with(holder) {
             tvRecipeName.text = recipe.title
             ivBcgRecipe.background = drawable
+            cvRecipe.setOnClickListener {
+                val recipeId = recipe.id
+                itemClickListener?.onItemClick(recipeId)
+            }
         }
     }
 

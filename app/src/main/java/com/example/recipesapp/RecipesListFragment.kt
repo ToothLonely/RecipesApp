@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipesapp.databinding.FragmentRecipesListBinding
 import java.lang.IllegalStateException
@@ -37,7 +40,7 @@ class RecipesListFragment : Fragment() {
         initRecipesRecycler()
     }
 
-    private fun initCategory(): Int? {
+    private fun initCategory() {
 
         categoryId = requireArguments().getInt(ARG_CATEGORY_ID)
         categoryName = requireArguments().getString(ARG_CATEGORY_NAME)
@@ -53,8 +56,6 @@ class RecipesListFragment : Fragment() {
         }
         recipesListFragmentBinding.tvCategoryName.text = categoryName
         recipesListFragmentBinding.ivCategoryBck.background = drawable
-
-        return categoryId
     }
 
     private fun initRecipesRecycler() {
@@ -63,6 +64,21 @@ class RecipesListFragment : Fragment() {
         recipesListFragmentBinding.rvRecipes.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = recipesListAdapter
+        }
+
+        recipesListAdapter.setOnItemClickListener(object :
+            RecipesListAdapter.OnItemClickListener {
+            override fun onItemClick(recipeId: Int) {
+                openRecipeByRecipeId(recipeId)
+            }
+        })
+    }
+
+    private fun openRecipeByRecipeId(recipeId: Int) {
+        parentFragmentManager.commit {
+            replace<RecipeFragment>(R.id.mainContainer)
+            setReorderingAllowed(true)
+            addToBackStack(null)
         }
     }
 }
