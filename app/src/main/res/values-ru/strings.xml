@@ -4,4 +4,5 @@
     <string name="favorites">избранное</string>
     <string name="cd_categories_background">вкладка с категорями</string>
     <string name="cd_category_item">избражение категории</string>
+    <string name="cd_recipe_image">изображение рецепта</string>
 </resources>
