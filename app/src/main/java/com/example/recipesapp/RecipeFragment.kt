@@ -26,17 +26,19 @@ class RecipeFragment : Fragment() {
         return recipeFragmentBinding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecipe()
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun initRecipe() {
-        val recipe = requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java)
-
-        recipeFragmentBinding.tvRecipeName.text = recipe?.title
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val recipe = requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java)
+            recipeFragmentBinding.tvRecipeName.text = recipe?.title
+        } else {
+            val recipe = requireArguments().getParcelable<Recipe>(ARG_RECIPE)
+            recipeFragmentBinding.tvRecipeName.text = recipe?.title
+        }
     }
 
 }
