@@ -1,5 +1,11 @@
 package com.example.recipesapp
 
+import android.os.Build
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -7,11 +13,42 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.recipesapp.databinding.FragmentRecipeBinding
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipesapp.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
 
 class RecipeFragment : Fragment() {
+
+    private var _recipeFragmentBinding: FragmentRecipeBinding? = null
+    private val recipeFragmentBinding: FragmentRecipeBinding
+        get() = _recipeFragmentBinding ?: throw IllegalStateException(
+            "Binding for recipeFragmentBinding mustn't be null"
+        )
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _recipeFragmentBinding = FragmentRecipeBinding.inflate(inflater, container, false)
+        return recipeFragmentBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initRecipe()
+    }
+
+    private fun initRecipe() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val recipe = requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java)
+            recipeFragmentBinding.tvRecipeName.text = recipe?.title
+        } else {
+            val recipe = requireArguments().getParcelable<Recipe>(ARG_RECIPE)
+            recipeFragmentBinding.tvRecipeName.text = recipe?.title
+        }
+    }
 
     private var _recipeFragmentBinding: FragmentRecipeBinding? = null
     private val recipeFragmentBinding: FragmentRecipeBinding
