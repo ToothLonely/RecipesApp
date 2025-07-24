@@ -17,10 +17,6 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/cd_category_item"
             android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:background="@drawable/bcg_recipes_list" />
 
         <TextView
@@ -42,8 +38,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/mainDimen"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="3"
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_recipe">
 
     </androidx.recyclerview.widget.RecyclerView>

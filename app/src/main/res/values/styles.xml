@@ -21,10 +21,25 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@color/purpleColor</item>
     </style>
-    
+
     <style name="StyleTitle7" parent="TextAppearance.AppCompat">
         <item name="android:textSize">12sp</item>
         <item name="fontFamily">@font/montserrat_medium</item>
+        <item name="android:textColor">@color/greyColor</item>
+    </style>
+
+    <style name="StyleIngredient" parent="TextAppearance.AppCompat">
+        <item name="android:paddingHorizontal">12dp</item>
+        <item name="android:paddingVertical">@dimen/halfMainDimen</item>
+        <item name="fontFamily">@font/montserrat_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/greyColor</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="StyleMethod" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/montserrat_regular</item>
         <item name="android:textColor">@color/greyColor</item>
     </style>
 
