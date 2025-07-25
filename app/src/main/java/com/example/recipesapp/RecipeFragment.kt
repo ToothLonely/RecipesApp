@@ -45,10 +45,15 @@ class RecipeFragment : Fragment() {
             )
         }
 
-        val drawable = Drawable.createFromStream(
-            view?.context?.assets?.open(recipe.imageUrl),
-            null
-        )
+        val drawable = try {
+            Drawable.createFromStream(
+                view?.context?.assets?.open(recipe.imageUrl),
+                null
+            )
+        } catch (e: Exception) {
+            throw java.lang.IllegalStateException("Cannot create drawable")
+        }
+
         with(recipeFragmentBinding) {
             tvRecipeTitle.text = recipe.title
             ivRecipeBcg.setImageDrawable(drawable)
@@ -64,6 +69,8 @@ class RecipeFragment : Fragment() {
         ).apply {
             setDividerColorResource(requireContext(), R.color.dividerColor)
             isLastItemDecorated = false
+            dividerInsetStart = resources.getDimension(R.dimen.halfMainDimen).toInt()
+            dividerInsetEnd = resources.getDimension(R.dimen.halfMainDimen).toInt()
         }
 
         recipeFragmentBinding.rvIngredients.apply {

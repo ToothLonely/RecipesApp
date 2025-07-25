@@ -10,7 +10,7 @@ class MethodAdapter(private val dataSet: List<String>) :
     RecyclerView.Adapter<MethodAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var tvMethodDescription = ItemMethodBinding.bind(view).tvMethodDescription
+        val tvMethodDescription = ItemMethodBinding.bind(view).tvMethodDescription
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

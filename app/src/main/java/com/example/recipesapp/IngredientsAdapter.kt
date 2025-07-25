@@ -11,9 +11,8 @@ class IngredientsAdapter(private val dataSet: List<Ingredient>) :
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val itemIngredientBinding = ItemIngredientBinding.bind(view)
-        var tvIngredientName = itemIngredientBinding.tvIngredientName
-        var tvQuantityIngredients = itemIngredientBinding.tvIngredientQuantity
-
+        val tvIngredientName = itemIngredientBinding.tvIngredientName
+        val tvQuantityIngredients = itemIngredientBinding.tvIngredientQuantity
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

@@ -29,8 +29,7 @@
     </style>
 
     <style name="StyleIngredient" parent="TextAppearance.AppCompat">
-        <item name="android:paddingHorizontal">12dp</item>
-        <item name="android:paddingVertical">@dimen/halfMainDimen</item>
+        <item name="android:padding">@dimen/halfMainDimen</item>
         <item name="fontFamily">@font/montserrat_regular</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/greyColor</item>
@@ -38,6 +37,7 @@
     </style>
 
     <style name="StyleMethod" parent="TextAppearance.AppCompat">
+        <item name="android:padding">@dimen/halfMainDimen</item>
         <item name="android:textSize">14sp</item>
         <item name="fontFamily">@font/montserrat_regular</item>
         <item name="android:textColor">@color/greyColor</item>

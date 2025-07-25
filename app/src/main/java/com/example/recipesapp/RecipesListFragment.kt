@@ -53,7 +53,7 @@ class RecipesListFragment : Fragment() {
                 null
             )
         } catch (e: Exception) {
-            throw IllegalStateException("cannot create drawable")
+            throw IllegalStateException("Cannot create drawable")
         }
 
         with(recipesListFragmentBinding) {

@@ -3,17 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_weight="2"
     android:orientation="horizontal">
 
     <TextView
         android:id="@+id/tvMethodDescription"
+        style="@style/StyleMethod"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="@string/tv_test_method" />
-
-    <com.google.android.material.divider.MaterialDivider
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>
