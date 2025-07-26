@@ -7,4 +7,5 @@
     <string name="cd_recipe_image">изображение рецепта</string>
     <string name="tv_ingredients">ингредиенты</string>
     <string name="tv_method">способ приготовления</string>
+    <string name="tv_portion">Порции:</string>
 </resources>

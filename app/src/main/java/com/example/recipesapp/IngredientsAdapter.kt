@@ -1,5 +1,6 @@
 package com.example.recipesapp
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,8 @@ import com.example.recipesapp.databinding.ItemIngredientBinding
 
 class IngredientsAdapter(private val dataSet: List<Ingredient>) :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
+
+    private var quantity: Int = 1
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val itemIngredientBinding = ItemIngredientBinding.bind(view)
@@ -23,7 +26,7 @@ class IngredientsAdapter(private val dataSet: List<Ingredient>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val ingredient = dataSet[position]
-        val quantityIngredients = "${ingredient.quantity} ${ingredient.unitOfMeasure}"
+        val quantityIngredients = "${ingredient.quantity.toDouble() * quantity} ${ingredient.unitOfMeasure}"
         with(holder) {
             tvIngredientName.text = ingredient.description
             tvQuantityIngredients.text = quantityIngredients
@@ -31,4 +34,10 @@ class IngredientsAdapter(private val dataSet: List<Ingredient>) :
     }
 
     override fun getItemCount(): Int = dataSet.size
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateIngredients(progress: Int) {
+        quantity = progress
+        notifyDataSetChanged()
+    }
 }

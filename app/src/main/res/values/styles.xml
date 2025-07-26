@@ -61,4 +61,10 @@
         <item name="cornerRadius">8dp</item>
     </style>
 
+    <style name="StylePortions" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/greyColor</item>
+        <item name="fontFamily">@font/montserrat_semi_bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>
