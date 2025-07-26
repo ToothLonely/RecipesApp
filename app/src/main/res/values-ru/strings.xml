@@ -5,4 +5,6 @@
     <string name="cd_categories_background">вкладка с категорями</string>
     <string name="cd_category_item">избражение категории</string>
     <string name="cd_recipe_image">изображение рецепта</string>
+    <string name="tv_ingredients">ингредиенты</string>
+    <string name="tv_method">способ приготовления</string>
 </resources>

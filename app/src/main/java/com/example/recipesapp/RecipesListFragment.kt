@@ -53,10 +53,13 @@ class RecipesListFragment : Fragment() {
                 null
             )
         } catch (e: Exception) {
-            throw IllegalStateException("cannot create drawable")
+            throw IllegalStateException("Cannot create drawable")
         }
-        recipesListFragmentBinding.tvCategoryName.text = categoryName
-        recipesListFragmentBinding.ivCategoryBck.background = drawable
+
+        with(recipesListFragmentBinding) {
+            tvCategoryName.text = categoryName
+            ivCategoryBck.background = drawable
+        }
     }
 
     private fun initRecipesRecycler() {

@@ -6,4 +6,7 @@
     <string name="cd_categories_background">Categories background</string>
     <string name="cd_category_item">Category image</string>
     <string name="cd_recipe_image">recipe image</string>
+    <string name="tv_ingredients">ingredients</string>
+    <string name="tv_method">method</string>
+    <string name="tv_test_method" translatable="false">1. В глубокой миске смешайте говяжий фарш, лук, чеснок, соль и перец. Разделите фарш на 4 равные части и сформируйте котлеты.</string>
 </resources>

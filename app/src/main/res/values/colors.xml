@@ -7,4 +7,5 @@
     <color name="favoritesColor">#E13E3E</color>
     <color name="purpleColor">#5F3678</color>
     <color name="greyColor">#666666</color>
+    <color name="dividerColor">#F5F5F5</color>
 </resources>
