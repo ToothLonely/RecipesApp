@@ -19,8 +19,8 @@ class RecipeFragment : Fragment() {
         get() = _recipeFragmentBinding ?: throw IllegalStateException(
             "Binding for recipeFragmentBinding mustn't be null"
         )
-    private var portionString = ""
-    private val defaultNumberOfPortions = 1
+    private val portionString
+        get() = requireContext().getString(R.string.tv_portion)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,8 +37,6 @@ class RecipeFragment : Fragment() {
     }
 
     private fun initUI() {
-        portionString = requireContext().getString(R.string.tv_portion)
-
         val recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java)
                 ?: throw IllegalArgumentException(
@@ -59,10 +57,11 @@ class RecipeFragment : Fragment() {
             throw java.lang.IllegalStateException("Cannot create drawable")
         }
 
+        val defaultPortionString = "$portionString 1"
         with(recipeFragmentBinding) {
             tvRecipeTitle.text = recipe.title
             ivRecipeBcg.setImageDrawable(drawable)
-            tvPortion.text = "$portionString $defaultNumberOfPortions"
+            tvPortion.text = defaultPortionString
         }
 
         initRecyclers(recipe.ingredients, recipe.method)
@@ -101,17 +100,14 @@ class RecipeFragment : Fragment() {
                     progress: Int,
                     fromUser: Boolean
                 ) {
+                    val currentPortion = "$portionString $progress"
                     ingredientsAdapter.updateIngredients(progress)
-                    tvPortion.text = "$portionString $progress"
+                    tvPortion.text = currentPortion
                 }
 
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 
-                }
-
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {
-
-                }
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
 
             })
         }
