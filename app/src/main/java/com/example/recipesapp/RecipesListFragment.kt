@@ -58,7 +58,7 @@ class RecipesListFragment : Fragment() {
 
         with(recipesListFragmentBinding) {
             tvCategoryName.text = categoryName
-            ivCategoryBck.background = drawable
+            ivCategoryBck.setImageDrawable(drawable)
         }
     }
 
