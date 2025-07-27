@@ -11,4 +11,7 @@
     <dimen name="methodTitleMarginTop">20dp</dimen>
     <dimen name="methodAndIngredientsPadding">4dp</dimen>
     <dimen name="portionVerticalMargin">6dp</dimen>
+    <dimen name="seekBarThumbHeight">30dp</dimen>
+    <dimen name="seekBarThumbRadius">2dp</dimen>
+    <dimen name="seekBarProgressRadius">4dp</dimen>
 </resources>
