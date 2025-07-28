@@ -45,12 +45,10 @@ class IngredientsAdapter(private val dataSet: List<Ingredient>) :
     }
 
     private fun makeCorrectQuantity(quantityPerOne: String): String {
-        val fullQuantity = BigDecimal(quantityPerOne).multiply(BigDecimal(quantity))
-        val formatted = fullQuantity.stripTrailingZeros()
-        return if (formatted.scale() <= 0) {
-            formatted.toPlainString()
-        } else {
-            formatted.setScale(1, RoundingMode.HALF_UP).toPlainString()
-        }
+        return BigDecimal(quantityPerOne)
+            .multiply(BigDecimal(quantity))
+            .setScale(1, RoundingMode.HALF_UP)
+            .stripTrailingZeros()
+            .toPlainString()
     }
 }
