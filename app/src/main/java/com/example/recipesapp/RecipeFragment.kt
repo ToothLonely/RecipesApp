@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipesapp.databinding.FragmentRecipeBinding
@@ -18,6 +19,8 @@ class RecipeFragment : Fragment() {
         get() = _recipeFragmentBinding ?: throw IllegalStateException(
             "Binding for recipeFragmentBinding mustn't be null"
         )
+    private val portionString
+        get() = requireContext().getString(R.string.tv_portion)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,6 +60,8 @@ class RecipeFragment : Fragment() {
         with(recipeFragmentBinding) {
             tvRecipeTitle.text = recipe.title
             ivRecipeBcg.setImageDrawable(drawable)
+            tvPortion.text = portionString
+            tvNumberOfPortions.text = DEFAULT_NUMBER_OF_PORTIONS.toString()
         }
 
         initRecyclers(recipe.ingredients, recipe.method)
@@ -73,16 +78,37 @@ class RecipeFragment : Fragment() {
             dividerInsetEnd = resources.getDimension(R.dimen.halfMainDimen).toInt()
         }
 
-        recipeFragmentBinding.rvIngredients.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = IngredientsAdapter(ingredients)
-            addItemDecoration(divider)
-        }
+        with(recipeFragmentBinding) {
 
-        recipeFragmentBinding.rvMethods.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = MethodAdapter(method)
-            addItemDecoration(divider)
+            val ingredientsAdapter = IngredientsAdapter(ingredients)
+
+            rvIngredients.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = ingredientsAdapter
+                addItemDecoration(divider)
+            }
+
+            rvMethods.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = MethodAdapter(method)
+                addItemDecoration(divider)
+            }
+
+            sbPortions.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                    ingredientsAdapter.updateIngredients(progress)
+                    tvNumberOfPortions.text = progress.toString()
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+
+            })
         }
     }
 

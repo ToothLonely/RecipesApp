@@ -42,6 +42,45 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivRecipeBcg" />
 
+        <LinearLayout
+            android:id="@+id/layoutPortion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/mainDimen"
+            android:layout_marginTop="@dimen/portionMargin"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvIngredientsTitle">
+
+            <TextView
+                android:id="@+id/tvPortion"
+                style="@style/StylePortions"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/portionMargin"
+                tools:text="@string/tv_portion" />
+
+            <TextView
+                android:id="@+id/tvNumberOfPortions"
+                style="@style/StylePortions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="3" />
+
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/sbPortions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/mainDimen"
+            android:layout_marginTop="@dimen/portionMargin"
+            android:max="5"
+            android:min="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutPortion" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvIngredients"
             android:layout_width="match_parent"
@@ -49,7 +88,7 @@
             android:layout_margin="@dimen/mainDimen"
             android:background="@drawable/shape_rounded_ingredients_and_methods"
             android:padding="@dimen/methodAndIngredientsPadding"
-            app:layout_constraintTop_toBottomOf="@id/tvIngredientsTitle"
+            app:layout_constraintTop_toBottomOf="@id/sbPortions"
             tools:listitem="@layout/item_ingredient" />
 
         <TextView
