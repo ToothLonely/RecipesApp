@@ -57,11 +57,11 @@ class RecipeFragment : Fragment() {
             throw java.lang.IllegalStateException("Cannot create drawable")
         }
 
-        val defaultPortionString = "$portionString 1"
         with(recipeFragmentBinding) {
             tvRecipeTitle.text = recipe.title
             ivRecipeBcg.setImageDrawable(drawable)
-            tvPortion.text = defaultPortionString
+            tvPortion.text = portionString
+            tvNumberOfPortions.text = DEFAULT_NUMBER_OF_PORTIONS.toString()
         }
 
         initRecyclers(recipe.ingredients, recipe.method)
@@ -100,9 +100,8 @@ class RecipeFragment : Fragment() {
                     progress: Int,
                     fromUser: Boolean
                 ) {
-                    val currentPortion = "$portionString $progress"
                     ingredientsAdapter.updateIngredients(progress)
-                    tvPortion.text = currentPortion
+                    tvNumberOfPortions.text = progress.toString()
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}

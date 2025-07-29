@@ -14,4 +14,5 @@
     <dimen name="seekBarThumbHeight">30dp</dimen>
     <dimen name="seekBarThumbRadius">2dp</dimen>
     <dimen name="seekBarProgressRadius">4dp</dimen>
+    <dimen name="portionMargin">6dp</dimen>
 </resources>
