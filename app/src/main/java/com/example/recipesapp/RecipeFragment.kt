@@ -72,21 +72,10 @@ class RecipeFragment : Fragment() {
                 )
             )
             ibFavorites.setOnClickListener {
-                if (isFavorite) {
-                    ibFavorites.setImageDrawable(
-                        getDrawable(
-                            requireContext(),
-                            R.drawable.ic_heart_big
-                        )
-                    )
-                } else {
-                    ibFavorites.setImageDrawable(
-                        getDrawable(
-                            requireContext(),
-                            R.drawable.ic_heart_empty_big
-                        )
-                    )
-                }
+                val icon =
+                    if (isFavorite) R.drawable.ic_heart_big
+                    else R.drawable.ic_heart_empty_big
+                ibFavorites.setImageDrawable(getDrawable(requireContext(), icon))
                 isFavorite = !isFavorite
             }
         }
