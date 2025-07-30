@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/halfDimensionBetweenButtons"
             android:layout_weight="1"
-            android:backgroundTint="@color/categoryColor"
+            android:backgroundTint="@color/blueColor"
             android:text="@string/categories" />
 
         <Button

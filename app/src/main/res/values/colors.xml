@@ -3,9 +3,10 @@
     <color name="blackColor">#FF000000</color>
     <color name="whiteColor">#FFFFFFFF</color>
     <color name="backgroundColor">#F4FAFF</color>
-    <color name="categoryColor">#525DC0</color>
+    <color name="blueColor">#525DC0</color>
     <color name="favoritesColor">#E13E3E</color>
     <color name="purpleColor">#5F3678</color>
     <color name="greyColor">#666666</color>
     <color name="dividerColor">#F5F5F5</color>
+    <color name="seekBarProgressColor">#A1A9F9</color>
 </resources>
