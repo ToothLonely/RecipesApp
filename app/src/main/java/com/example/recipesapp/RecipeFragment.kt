@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipesapp.databinding.FragmentRecipeBinding
@@ -21,6 +22,8 @@ class RecipeFragment : Fragment() {
         )
     private val portionString
         get() = requireContext().getString(R.string.tv_portion)
+
+    private var isFavorite = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,6 +65,19 @@ class RecipeFragment : Fragment() {
             ivRecipeBcg.setImageDrawable(drawable)
             tvPortion.text = portionString
             tvNumberOfPortions.text = DEFAULT_NUMBER_OF_PORTIONS.toString()
+            ibFavorites.setImageDrawable(
+                getDrawable(
+                    requireContext(),
+                    R.drawable.ic_heart_empty_big
+                )
+            )
+            ibFavorites.setOnClickListener {
+                val icon =
+                    if (isFavorite) R.drawable.ic_heart_big
+                    else R.drawable.ic_heart_empty_big
+                ibFavorites.setImageDrawable(getDrawable(requireContext(), icon))
+                isFavorite = !isFavorite
+            }
         }
 
         initRecyclers(recipe.ingredients, recipe.method)
