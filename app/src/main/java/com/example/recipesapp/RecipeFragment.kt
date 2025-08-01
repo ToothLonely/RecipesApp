@@ -85,11 +85,11 @@ class RecipeFragment : Fragment() {
             ibFavorites.setOnClickListener {
 
                 icon = if (recipeId in favoritesSet) {
-                    favoritesSet.add(recipeId)
-                    R.drawable.ic_heart_big
-                } else {
                     favoritesSet.remove(recipeId)
                     R.drawable.ic_heart_empty_big
+                } else {
+                    favoritesSet.add(recipeId)
+                    R.drawable.ic_heart_big
                 }
                 ibFavorites.setImageDrawable(getDrawable(requireContext(), icon))
 
