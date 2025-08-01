@@ -67,7 +67,7 @@ class RecipeFragment : Fragment() {
         }
 
         val favoritesSet = getFavorites()
-        var icon =
+        val icon =
             if (recipeId in favoritesSet) R.drawable.ic_heart_big
             else R.drawable.ic_heart_empty_big
 
@@ -84,14 +84,23 @@ class RecipeFragment : Fragment() {
             )
             ibFavorites.setOnClickListener {
 
-                icon = if (recipeId in favoritesSet) {
+                if (recipeId in favoritesSet) {
                     favoritesSet.remove(recipeId)
-                    R.drawable.ic_heart_empty_big
+                    ibFavorites.setImageDrawable(
+                        getDrawable(
+                            requireContext(),
+                            R.drawable.ic_heart_empty_big
+                        )
+                    )
                 } else {
                     favoritesSet.add(recipeId)
-                    R.drawable.ic_heart_big
+                    ibFavorites.setImageDrawable(
+                        getDrawable(
+                            requireContext(),
+                            R.drawable.ic_heart_big
+                        )
+                    )
                 }
-                ibFavorites.setImageDrawable(getDrawable(requireContext(), icon))
 
                 saveFavorites(favoritesSet)
             }
