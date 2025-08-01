@@ -1,8 +1,10 @@
 package com.example.recipesapp
 
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +25,11 @@ class RecipeFragment : Fragment() {
     private val portionString
         get() = requireContext().getString(R.string.tv_portion)
 
-    private var isFavorite = true
+    private val sharedPrefs
+        get() = requireContext().getSharedPreferences(FAVORITES, Context.MODE_PRIVATE)
+
+    private val favoritesSet
+        get() = getFavorites()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +43,11 @@ class RecipeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
+    }
+
+    override fun onDestroy() {
+        saveFavorites(favoritesSet)
+        super.onDestroy()
     }
 
     private fun initUI() {
@@ -60,6 +71,9 @@ class RecipeFragment : Fragment() {
             throw java.lang.IllegalStateException("Cannot create drawable")
         }
 
+        var isFavorite = recipe.id.toString() in favoritesSet
+        var icon = if (isFavorite) R.drawable.ic_heart_big else R.drawable.ic_heart_empty_big
+
         with(recipeFragmentBinding) {
             tvRecipeTitle.text = recipe.title
             ivRecipeBcg.setImageDrawable(drawable)
@@ -68,15 +82,18 @@ class RecipeFragment : Fragment() {
             ibFavorites.setImageDrawable(
                 getDrawable(
                     requireContext(),
-                    R.drawable.ic_heart_empty_big
+                    icon
                 )
             )
             ibFavorites.setOnClickListener {
-                val icon =
-                    if (isFavorite) R.drawable.ic_heart_big
-                    else R.drawable.ic_heart_empty_big
-                ibFavorites.setImageDrawable(getDrawable(requireContext(), icon))
                 isFavorite = !isFavorite
+
+                if (isFavorite) favoritesSet.add(recipe.id.toString())
+                else favoritesSet.remove(recipe.id.toString())
+
+                icon = if (isFavorite) R.drawable.ic_heart_big else R.drawable.ic_heart_empty_big
+
+                ibFavorites.setImageDrawable(getDrawable(requireContext(), icon))
             }
         }
 
@@ -126,6 +143,22 @@ class RecipeFragment : Fragment() {
 
             })
         }
+    }
+
+    private fun saveFavorites(favoritesSet: Set<String>) {
+        sharedPrefs.edit().apply {
+            putStringSet(FAVORITES_SET, favoritesSet)
+            apply()
+        }
+    }
+
+    private fun getFavorites(): MutableSet<String> {
+        val set = sharedPrefs.getStringSet(FAVORITES_SET, mutableSetOf())
+            ?: throw IllegalStateException(
+                "Не удалось извлечь данные избранных рецептов из SharedPreeferences"
+            )
+        val hashSet: HashSet<MutableSet<String>> = hashSetOf(set)
+        return hashSet.first()
     }
 
 }
