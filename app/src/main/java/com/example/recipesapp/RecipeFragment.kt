@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipesapp.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import androidx.core.content.edit
 
 class RecipeFragment : Fragment() {
 
@@ -22,6 +23,7 @@ class RecipeFragment : Fragment() {
         get() = _recipeFragmentBinding ?: throw IllegalStateException(
             "Binding for recipeFragmentBinding mustn't be null"
         )
+
     private val portionString
         get() = requireContext().getString(R.string.tv_portion)
 
@@ -53,6 +55,7 @@ class RecipeFragment : Fragment() {
                 "Couldn't transmit arguments from RecipesListFragment"
             )
         }
+        val recipeId = recipe.id.toString()
 
         val drawable = try {
             Drawable.createFromStream(
@@ -64,9 +67,9 @@ class RecipeFragment : Fragment() {
         }
 
         val favoritesSet = getFavorites()
-        var isFavorite = recipe.id.toString() in favoritesSet
-        Log.i("!!!", "$isFavorite")
-        var icon = if (isFavorite) R.drawable.ic_heart_big else R.drawable.ic_heart_empty_big
+        var icon =
+            if (recipeId in favoritesSet) R.drawable.ic_heart_big
+            else R.drawable.ic_heart_empty_big
 
         with(recipeFragmentBinding) {
             tvRecipeTitle.text = recipe.title
@@ -80,13 +83,14 @@ class RecipeFragment : Fragment() {
                 )
             )
             ibFavorites.setOnClickListener {
-                isFavorite = !isFavorite
 
-                if (isFavorite) favoritesSet.add(recipe.id.toString())
-                else favoritesSet.remove(recipe.id.toString())
-
-                icon = if (isFavorite) R.drawable.ic_heart_big else R.drawable.ic_heart_empty_big
-
+                icon = if (recipeId in favoritesSet) {
+                    favoritesSet.add(recipeId)
+                    R.drawable.ic_heart_big
+                } else {
+                    favoritesSet.remove(recipeId)
+                    R.drawable.ic_heart_empty_big
+                }
                 ibFavorites.setImageDrawable(getDrawable(requireContext(), icon))
 
                 saveFavorites(favoritesSet)
@@ -142,17 +146,14 @@ class RecipeFragment : Fragment() {
     }
 
     private fun saveFavorites(favoritesSet: Set<String>) {
-        sharedPrefs.edit().apply {
+        sharedPrefs.edit {
             putStringSet(FAVORITES_SET, favoritesSet)
-            apply()
         }
-        Log.i("!!!", "saveFavorites")
     }
 
     private fun getFavorites(): MutableSet<String> {
         val set = sharedPrefs.getStringSet(FAVORITES_SET, mutableSetOf())?.toMutableSet()
             ?: mutableSetOf()
-        Log.i("!!!", "set: $set")
         return set
     }
 
