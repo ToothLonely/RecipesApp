@@ -28,9 +28,6 @@ class RecipeFragment : Fragment() {
     private val sharedPrefs
         get() = requireContext().getSharedPreferences(FAVORITES, Context.MODE_PRIVATE)
 
-    private val favoritesSet
-        get() = getFavorites()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,11 +40,6 @@ class RecipeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
-    }
-
-    override fun onDestroy() {
-        saveFavorites(favoritesSet)
-        super.onDestroy()
     }
 
     private fun initUI() {
@@ -71,7 +63,9 @@ class RecipeFragment : Fragment() {
             throw java.lang.IllegalStateException("Cannot create drawable")
         }
 
+        val favoritesSet = getFavorites()
         var isFavorite = recipe.id.toString() in favoritesSet
+        Log.i("!!!", "$isFavorite")
         var icon = if (isFavorite) R.drawable.ic_heart_big else R.drawable.ic_heart_empty_big
 
         with(recipeFragmentBinding) {
@@ -94,6 +88,8 @@ class RecipeFragment : Fragment() {
                 icon = if (isFavorite) R.drawable.ic_heart_big else R.drawable.ic_heart_empty_big
 
                 ibFavorites.setImageDrawable(getDrawable(requireContext(), icon))
+
+                saveFavorites(favoritesSet)
             }
         }
 
@@ -150,15 +146,14 @@ class RecipeFragment : Fragment() {
             putStringSet(FAVORITES_SET, favoritesSet)
             apply()
         }
+        Log.i("!!!", "saveFavorites")
     }
 
     private fun getFavorites(): MutableSet<String> {
-        val set = sharedPrefs.getStringSet(FAVORITES_SET, mutableSetOf())
-            ?: throw IllegalStateException(
-                "Не удалось извлечь данные избранных рецептов из SharedPreeferences"
-            )
-        val hashSet: HashSet<MutableSet<String>> = hashSetOf(set)
-        return hashSet.first()
+        val set = sharedPrefs.getStringSet(FAVORITES_SET, mutableSetOf())?.toMutableSet()
+            ?: mutableSetOf()
+        Log.i("!!!", "set: $set")
+        return set
     }
 
 }
