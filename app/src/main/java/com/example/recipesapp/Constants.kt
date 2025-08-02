@@ -6,3 +6,5 @@ const val ARG_CATEGORY_IMAGE_URL = "categoryImageUrl"
 const val ARG_RECIPE = "recipe"
 const val DEFAULT_RECIPE = 0
 const val DEFAULT_NUMBER_OF_PORTIONS = 1
+const val FAVORITES = "Favorites"
+const val FAVORITES_SET = "Favorites set"

@@ -1,8 +1,10 @@
 package com.example.recipesapp
 
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipesapp.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import androidx.core.content.edit
 
 class RecipeFragment : Fragment() {
 
@@ -20,10 +23,12 @@ class RecipeFragment : Fragment() {
         get() = _recipeFragmentBinding ?: throw IllegalStateException(
             "Binding for recipeFragmentBinding mustn't be null"
         )
+
     private val portionString
         get() = requireContext().getString(R.string.tv_portion)
 
-    private var isFavorite = true
+    private val sharedPrefs
+        get() = requireContext().getSharedPreferences(FAVORITES, Context.MODE_PRIVATE)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,6 +55,7 @@ class RecipeFragment : Fragment() {
                 "Couldn't transmit arguments from RecipesListFragment"
             )
         }
+        val recipeId = recipe.id.toString()
 
         val drawable = try {
             Drawable.createFromStream(
@@ -60,6 +66,11 @@ class RecipeFragment : Fragment() {
             throw java.lang.IllegalStateException("Cannot create drawable")
         }
 
+        val favoritesSet = getFavorites()
+        val icon =
+            if (recipeId in favoritesSet) R.drawable.ic_heart_big
+            else R.drawable.ic_heart_empty_big
+
         with(recipeFragmentBinding) {
             tvRecipeTitle.text = recipe.title
             ivRecipeBcg.setImageDrawable(drawable)
@@ -68,15 +79,30 @@ class RecipeFragment : Fragment() {
             ibFavorites.setImageDrawable(
                 getDrawable(
                     requireContext(),
-                    R.drawable.ic_heart_empty_big
+                    icon
                 )
             )
             ibFavorites.setOnClickListener {
-                val icon =
-                    if (isFavorite) R.drawable.ic_heart_big
-                    else R.drawable.ic_heart_empty_big
-                ibFavorites.setImageDrawable(getDrawable(requireContext(), icon))
-                isFavorite = !isFavorite
+
+                if (recipeId in favoritesSet) {
+                    favoritesSet.remove(recipeId)
+                    ibFavorites.setImageDrawable(
+                        getDrawable(
+                            requireContext(),
+                            R.drawable.ic_heart_empty_big
+                        )
+                    )
+                } else {
+                    favoritesSet.add(recipeId)
+                    ibFavorites.setImageDrawable(
+                        getDrawable(
+                            requireContext(),
+                            R.drawable.ic_heart_big
+                        )
+                    )
+                }
+
+                saveFavorites(favoritesSet)
             }
         }
 
@@ -126,6 +152,18 @@ class RecipeFragment : Fragment() {
 
             })
         }
+    }
+
+    private fun saveFavorites(favoritesSet: Set<String>) {
+        sharedPrefs.edit {
+            putStringSet(FAVORITES_SET, favoritesSet)
+        }
+    }
+
+    private fun getFavorites(): MutableSet<String> {
+        val set = sharedPrefs.getStringSet(FAVORITES_SET, mutableSetOf())?.toMutableSet()
+            ?: mutableSetOf()
+        return set
     }
 
 }
