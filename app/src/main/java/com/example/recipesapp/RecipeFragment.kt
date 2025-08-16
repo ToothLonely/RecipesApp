@@ -161,9 +161,8 @@ class RecipeFragment : Fragment() {
     }
 
     private fun getFavorites(): MutableSet<String> {
-        val set = sharedPrefs.getStringSet(FAVORITES_SET, mutableSetOf())?.toMutableSet()
+        return sharedPrefs.getStringSet(FAVORITES_SET, mutableSetOf())?.toMutableSet()
             ?: mutableSetOf()
-        return set
     }
 
 }

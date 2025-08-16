@@ -256,4 +256,12 @@ object STUB {
     fun getRecipeById(recipeId: Int): Recipe {
         return burgerRecipes.find { it.id == recipeId } ?: burgerRecipes[DEFAULT_RECIPE]
     }
+
+    fun getRecipesByIds(set: Set<String>): List<Recipe> {
+        val listOfRecipes = mutableListOf<Recipe>()
+        set.forEach {
+            listOfRecipes.add(getRecipeById(it.toInt()))
+        }
+        return listOfRecipes
+    }
 }
