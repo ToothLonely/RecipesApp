@@ -1,10 +1,9 @@
-package com.example.recipesapp
+package com.example.recipesapp.ui.recipe.recipe
 
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipesapp.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import androidx.core.content.edit
+import com.example.recipesapp.data.ARG_RECIPE
+import com.example.recipesapp.data.DEFAULT_NUMBER_OF_PORTIONS
+import com.example.recipesapp.data.FAVORITES
+import com.example.recipesapp.data.FAVORITES_SET
+import com.example.recipesapp.R
+import com.example.recipesapp.model.Ingredient
+import com.example.recipesapp.model.Recipe
 
 class RecipeFragment : Fragment() {
 
