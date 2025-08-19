@@ -8,7 +8,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
-import com.example.recipesapp.ui.recipe.favorites.FavoritesFragment
+import com.example.recipesapp.ui.recipes.favorites.FavoritesFragment
 import com.example.recipesapp.R
 import com.example.recipesapp.databinding.ActivityMainBinding
 import com.example.recipesapp.ui.category.CategoriesListFragment
