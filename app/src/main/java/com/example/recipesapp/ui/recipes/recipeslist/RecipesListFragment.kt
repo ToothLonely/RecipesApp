@@ -1,4 +1,4 @@
-package com.example.recipesapp.ui.recipe.recipeslist
+package com.example.recipesapp.ui.recipes.recipeslist
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -17,7 +17,7 @@ import com.example.recipesapp.data.ARG_RECIPE
 import com.example.recipesapp.R
 import com.example.recipesapp.data.STUB
 import com.example.recipesapp.databinding.FragmentRecipesListBinding
-import com.example.recipesapp.ui.recipe.recipe.RecipeFragment
+import com.example.recipesapp.ui.recipes.recipe.RecipeFragment
 import java.lang.IllegalStateException
 
 class RecipesListFragment : Fragment() {
