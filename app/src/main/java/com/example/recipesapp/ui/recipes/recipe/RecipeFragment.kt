@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipesapp.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import androidx.core.content.edit
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.example.recipesapp.data.ARG_RECIPE
 import com.example.recipesapp.data.DEFAULT_NUMBER_OF_PORTIONS
 import com.example.recipesapp.data.FAVORITES
@@ -21,6 +24,7 @@ import com.example.recipesapp.data.FAVORITES_SET
 import com.example.recipesapp.R
 import com.example.recipesapp.model.Ingredient
 import com.example.recipesapp.model.Recipe
+import com.example.recipesapp.ui.recipes.RecipeViewModel
 
 class RecipeFragment : Fragment() {
 
@@ -36,6 +40,8 @@ class RecipeFragment : Fragment() {
     private val sharedPrefs
         get() = requireContext().getSharedPreferences(FAVORITES, Context.MODE_PRIVATE)
 
+    private val viewModel: RecipeViewModel by activityViewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,6 +53,9 @@ class RecipeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.recipeLiveData.observe(viewLifecycleOwner, Observer {
+            Log.i("!!!", "RecipeState.isFavorite: ${it.isFavorite}")
+        })
         initUI()
     }
 
@@ -90,6 +99,8 @@ class RecipeFragment : Fragment() {
             )
             ibFavorites.setOnClickListener {
 
+                val currentState = RecipeViewModel.RecipeState()
+
                 if (recipeId in favoritesSet) {
                     favoritesSet.remove(recipeId)
                     ibFavorites.setImageDrawable(
@@ -98,6 +109,8 @@ class RecipeFragment : Fragment() {
                             R.drawable.ic_heart_empty_big
                         )
                     )
+                    currentState.isFavorite = false
+                    viewModel.setNewState(currentState)
                 } else {
                     favoritesSet.add(recipeId)
                     ibFavorites.setImageDrawable(
@@ -106,6 +119,8 @@ class RecipeFragment : Fragment() {
                             R.drawable.ic_heart_big
                         )
                     )
+                    currentState.isFavorite = true
+                    viewModel.setNewState(currentState)
                 }
 
                 saveFavorites(favoritesSet)
