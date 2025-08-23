@@ -60,7 +60,7 @@ class RecipeFragment : Fragment() {
 
         viewModel.recipeLiveData.observe(viewLifecycleOwner, Observer {
 
-            val icon =
+            var icon =
                 if (it.isFavorite == true) R.drawable.ic_heart_big
                 else R.drawable.ic_heart_empty_big
 
@@ -79,21 +79,16 @@ class RecipeFragment : Fragment() {
 
                     viewModel.onFavoritesClicked()
 
-                    if (viewModel.recipeLiveData.value?.isFavorite == false) {
-                        ibFavorites.setImageDrawable(
-                            getDrawable(
-                                requireContext(),
-                                R.drawable.ic_heart_empty_big
-                            )
+                    icon =
+                        if (viewModel.recipeLiveData.value?.isFavorite == false) R.drawable.ic_heart_empty_big
+                        else R.drawable.ic_heart_big
+
+                    ibFavorites.setImageDrawable(
+                        getDrawable(
+                            requireContext(),
+                            icon
                         )
-                    } else {
-                        ibFavorites.setImageDrawable(
-                            getDrawable(
-                                requireContext(),
-                                R.drawable.ic_heart_big
-                            )
-                        )
-                    }
+                    )
                 }
             }
         })
@@ -110,8 +105,8 @@ class RecipeFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         viewModel.saveFavorites() //Вроде должно оптимизировать работу с SP,
-    // т.к. данные не будут туда записываться при каждом клике на кнопку избранных
-    // (зачем, если эти данные хранятся в VM), а запишутся один раз при уничтожении фрагмента
+        // т.к. данные не будут туда записываться при каждом клике на кнопку избранных
+        // (зачем, если эти данные хранятся в VM), а запишутся один раз при уничтожении фрагмента
     }
 
     private fun initRecyclers(ingredients: List<Ingredient>, method: List<String>) {
