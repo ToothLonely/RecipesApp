@@ -1,8 +1,9 @@
 package com.example.recipesapp.ui.recipes.recipe
 
+import android.app.Application
 import android.content.Context
+import android.graphics.LinearGradient
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,14 +18,17 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import androidx.core.content.edit
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.recipesapp.data.ARG_RECIPE
 import com.example.recipesapp.data.DEFAULT_NUMBER_OF_PORTIONS
 import com.example.recipesapp.data.FAVORITES
 import com.example.recipesapp.data.FAVORITES_SET
 import com.example.recipesapp.R
+import com.example.recipesapp.data.DEFAULT_RECIPE_IMAGE_URL
+import com.example.recipesapp.data.STUB
 import com.example.recipesapp.model.Ingredient
-import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.ui.recipes.RecipeViewModel
+import com.example.recipesapp.ui.recipes.RecipeViewModelFactory
 
 class RecipeFragment : Fragment() {
 
@@ -40,7 +44,15 @@ class RecipeFragment : Fragment() {
     private val sharedPrefs
         get() = requireContext().getSharedPreferences(FAVORITES, Context.MODE_PRIVATE)
 
-    private val viewModel: RecipeViewModel by activityViewModels()
+    private val application
+        get() = requireActivity().application
+
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this,
+            RecipeViewModelFactory(requireArguments().getInt(ARG_RECIPE), application)
+        )[RecipeViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,81 +65,76 @@ class RecipeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.recipeLiveData.observe(viewLifecycleOwner, Observer {
-            Log.i("!!!", "RecipeState.isFavorite: ${it.isFavorite}")
-        })
         initUI()
     }
 
     private fun initUI() {
-        val recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java)
-                ?: throw IllegalArgumentException(
-                    "Couldn't transmit arguments from RecipesListFragment"
+
+        viewModel.recipeLiveData.observe(viewLifecycleOwner, Observer {
+            val recipeId = it.id
+            Log.i("!!!", "recipeId from bundle: $recipeId")
+
+            val drawable = try {
+                val imageUrl = it.imageUrl ?: DEFAULT_RECIPE_IMAGE_URL
+                Drawable.createFromStream(
+                    view?.context?.assets?.open(imageUrl),
+                    null
                 )
-        } else {
-            requireArguments().getParcelable<Recipe>(ARG_RECIPE) ?: throw IllegalArgumentException(
-                "Couldn't transmit arguments from RecipesListFragment"
-            )
-        }
-        val recipeId = recipe.id.toString()
-
-        val drawable = try {
-            Drawable.createFromStream(
-                view?.context?.assets?.open(recipe.imageUrl),
-                null
-            )
-        } catch (e: Exception) {
-            throw java.lang.IllegalStateException("Cannot create drawable")
-        }
-
-        val favoritesSet = getFavorites()
-        val icon =
-            if (recipeId in favoritesSet) R.drawable.ic_heart_big
-            else R.drawable.ic_heart_empty_big
-
-        with(recipeFragmentBinding) {
-            tvRecipeTitle.text = recipe.title
-            ivRecipeBcg.setImageDrawable(drawable)
-            tvPortion.text = portionString
-            tvNumberOfPortions.text = DEFAULT_NUMBER_OF_PORTIONS.toString()
-            ibFavorites.setImageDrawable(
-                getDrawable(
-                    requireContext(),
-                    icon
-                )
-            )
-            ibFavorites.setOnClickListener {
-
-                val currentState = RecipeViewModel.RecipeState()
-
-                if (recipeId in favoritesSet) {
-                    favoritesSet.remove(recipeId)
-                    ibFavorites.setImageDrawable(
-                        getDrawable(
-                            requireContext(),
-                            R.drawable.ic_heart_empty_big
-                        )
-                    )
-                    currentState.isFavorite = false
-                    viewModel.setNewState(currentState)
-                } else {
-                    favoritesSet.add(recipeId)
-                    ibFavorites.setImageDrawable(
-                        getDrawable(
-                            requireContext(),
-                            R.drawable.ic_heart_big
-                        )
-                    )
-                    currentState.isFavorite = true
-                    viewModel.setNewState(currentState)
-                }
-
-                saveFavorites(favoritesSet)
+            } catch (e: Exception) {
+                throw java.lang.IllegalStateException("Cannot create drawable")
             }
-        }
 
-        initRecyclers(recipe.ingredients, recipe.method)
+            val favoritesSet = getFavorites()
+            Log.i("!!!", "favoritesSet in start $favoritesSet and isFavorite: ${it.isFavorite}")
+            val icon =
+                if (it.isFavorite == true) R.drawable.ic_heart_big
+                else R.drawable.ic_heart_empty_big
+
+            with(recipeFragmentBinding) {
+                tvRecipeTitle.text = it.title
+                ivRecipeBcg.setImageDrawable(drawable)
+                tvPortion.text = portionString
+                tvNumberOfPortions.text = DEFAULT_NUMBER_OF_PORTIONS.toString()
+                ibFavorites.setImageDrawable(
+                    getDrawable(
+                        requireContext(),
+                        icon
+                    )
+                )
+                ibFavorites.setOnClickListener {
+                    Log.i("!!!", "favorites clicked $favoritesSet")
+
+                    val newState = viewModel.recipeLiveData.value?.copy()
+                        ?: throw IllegalStateException("cannot copy current state")
+
+                    if (viewModel.recipeLiveData.value?.isFavorite!!) {
+                        newState.isFavorite = false
+                        favoritesSet.remove(recipeId.toString())
+                        ibFavorites.setImageDrawable(
+                            getDrawable(
+                                requireContext(),
+                                R.drawable.ic_heart_empty_big
+                            )
+                        )
+                    } else {
+                        newState.isFavorite = true
+                        favoritesSet.add(recipeId.toString())
+                        ibFavorites.setImageDrawable(
+                            getDrawable(
+                                requireContext(),
+                                R.drawable.ic_heart_big
+                            )
+                        )
+                    }
+                    Log.i("!!!", "new state favorite is: ${newState.isFavorite}")
+                    saveFavorites(favoritesSet)
+                    viewModel.setNewState(newState)
+                }
+            }
+
+            initRecyclers(it.ingredients, it.method)
+
+        })
     }
 
     private fun initRecyclers(ingredients: List<Ingredient>, method: List<String>) {

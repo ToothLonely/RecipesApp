@@ -8,3 +8,4 @@ const val DEFAULT_RECIPE = 0
 const val DEFAULT_NUMBER_OF_PORTIONS = 1
 const val FAVORITES = "Favorites"
 const val FAVORITES_SET = "Favorites set"
+const val DEFAULT_RECIPE_IMAGE_URL = "burger-hamburger.png"

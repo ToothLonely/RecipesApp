@@ -53,8 +53,7 @@ class RecipesListAdapter(private val dataSet: List<Recipe>) :
             tvRecipeName.text = recipe.title
             ivBcgRecipe.setImageDrawable(drawable)
             cvRecipe.setOnClickListener {
-                val recipeId = recipe.id
-                itemClickListener?.onItemClick(recipeId)
+                itemClickListener?.onItemClick(recipe.id)
             }
         }
     }
