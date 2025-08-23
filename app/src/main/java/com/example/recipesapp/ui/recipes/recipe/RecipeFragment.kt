@@ -118,10 +118,15 @@ class RecipeFragment : Fragment() {
                     }
                 }
             }
-
-            initRecyclers(it.ingredients, it.method)
-
         })
+
+        val currentState = viewModel.recipeLiveData.value
+            ?: throw IllegalStateException("cannot get state to recycler")
+        initRecyclers(
+            currentState.ingredients,
+            currentState.method
+        )
+
     }
 
     private fun initRecyclers(ingredients: List<Ingredient>, method: List<String>) {
