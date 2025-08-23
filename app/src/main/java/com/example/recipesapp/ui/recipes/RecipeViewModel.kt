@@ -36,20 +36,17 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
     )
 
     init {
-        Log.i("!!!", "ViewModel created")
         loadRecipe(recipeId)
     }
 
     private fun loadRecipe(recipeId: Int) {
         val recipe = STUB.getRecipeById(recipeId)
-        Log.i("!!!", "recipeId indide VM: $recipeId")
         _recipeLiveData.value = recipe.toRecipeState()
         _recipeLiveData.value?.apply {
             isFavorite = id.toString() in favoritesSet
             Log.i("!!!", "favoritesSet in VM $favoritesSet isFavorite $isFavorite")
             portionsCount = DEFAULT_NUMBER_OF_PORTIONS
         }
-        Log.i("!!!", "Loaded recipe: ${_recipeLiveData.value!!.title}")
     }
 
     private fun getFavorites(): MutableSet<String> {
