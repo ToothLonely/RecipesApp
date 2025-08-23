@@ -41,11 +41,6 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
         loadRecipe(recipeId)
     }
 
-    fun setNewState(state: RecipeState) {
-        _recipeLiveData.value = state
-        Log.i("!!!", "New state: ${_recipeLiveData.value!!.title}")
-    }
-
     private fun loadRecipe(recipeId: Int) {
         val recipe = STUB.getRecipeById(recipeId)
         Log.i("!!!", "recipeId indide VM: $recipeId")
@@ -62,4 +57,26 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
         return sharedPrefs.getStringSet(FAVORITES_SET, mutableSetOf())?.toMutableSet()
             ?: mutableSetOf()
     }
+
+    private fun saveFavorites(favoritesSet: Set<String>) {
+        sharedPrefs.edit {
+            putStringSet(FAVORITES_SET, favoritesSet)
+        }
+    }
+
+    fun onFavoritesClicked() {
+        val favoriteFlag: Boolean
+
+        if (_recipeLiveData.value?.isFavorite == true) {
+            favoriteFlag = false
+            favoritesSet.remove(recipeId.toString())
+        } else {
+            favoriteFlag = true
+            favoritesSet.add(recipeId.toString())
+        }
+
+        saveFavorites(favoritesSet)
+        _recipeLiveData.value = _recipeLiveData.value?.copy(isFavorite = favoriteFlag)
+    }
+
 }

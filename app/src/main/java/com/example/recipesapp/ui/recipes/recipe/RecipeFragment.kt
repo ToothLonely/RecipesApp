@@ -71,8 +71,6 @@ class RecipeFragment : Fragment() {
     private fun initUI() {
 
         viewModel.recipeLiveData.observe(viewLifecycleOwner, Observer {
-            val recipeId = it.id
-            Log.i("!!!", "recipeId from bundle: $recipeId")
 
             val drawable = try {
                 val imageUrl = it.imageUrl ?: DEFAULT_RECIPE_IMAGE_URL
@@ -84,8 +82,6 @@ class RecipeFragment : Fragment() {
                 throw java.lang.IllegalStateException("Cannot create drawable")
             }
 
-            val favoritesSet = getFavorites()
-            Log.i("!!!", "favoritesSet in start $favoritesSet and isFavorite: ${it.isFavorite}")
             val icon =
                 if (it.isFavorite == true) R.drawable.ic_heart_big
                 else R.drawable.ic_heart_empty_big
@@ -102,14 +98,10 @@ class RecipeFragment : Fragment() {
                     )
                 )
                 ibFavorites.setOnClickListener {
-                    Log.i("!!!", "favorites clicked $favoritesSet")
 
-                    val newState = viewModel.recipeLiveData.value?.copy()
-                        ?: throw IllegalStateException("cannot copy current state")
+                    viewModel.onFavoritesClicked()
 
-                    if (viewModel.recipeLiveData.value?.isFavorite!!) {
-                        newState.isFavorite = false
-                        favoritesSet.remove(recipeId.toString())
+                    if (viewModel.recipeLiveData.value?.isFavorite == false) {
                         ibFavorites.setImageDrawable(
                             getDrawable(
                                 requireContext(),
@@ -117,8 +109,6 @@ class RecipeFragment : Fragment() {
                             )
                         )
                     } else {
-                        newState.isFavorite = true
-                        favoritesSet.add(recipeId.toString())
                         ibFavorites.setImageDrawable(
                             getDrawable(
                                 requireContext(),
@@ -126,9 +116,6 @@ class RecipeFragment : Fragment() {
                             )
                         )
                     }
-                    Log.i("!!!", "new state favorite is: ${newState.isFavorite}")
-                    saveFavorites(favoritesSet)
-                    viewModel.setNewState(newState)
                 }
             }
 
