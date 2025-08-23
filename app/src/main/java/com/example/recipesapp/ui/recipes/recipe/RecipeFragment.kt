@@ -129,6 +129,13 @@ class RecipeFragment : Fragment() {
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.saveFavorites() //Вроде должно оптимизировать работу с SP,
+    // т.к. данные не будут туда записываться при каждом клике на кнопку избранных
+    // (зачем, если эти данные хранятся в VM), а запишутся один раз при уничтожении фрагмента
+    }
+
     private fun initRecyclers(ingredients: List<Ingredient>, method: List<String>) {
         val divider = MaterialDividerItemDecoration(
             requireContext(),

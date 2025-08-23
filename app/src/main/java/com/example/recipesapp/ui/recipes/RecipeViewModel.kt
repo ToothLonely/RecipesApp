@@ -7,7 +7,6 @@ import androidx.core.content.edit
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.recipesapp.data.DEFAULT_NUMBER_OF_PORTIONS
 import com.example.recipesapp.data.FAVORITES
 import com.example.recipesapp.data.FAVORITES_SET
@@ -58,7 +57,7 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
             ?: mutableSetOf()
     }
 
-    private fun saveFavorites(favoritesSet: Set<String>) {
+    fun saveFavorites() {
         sharedPrefs.edit {
             putStringSet(FAVORITES_SET, favoritesSet)
         }
@@ -75,7 +74,6 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
             favoritesSet.add(recipeId.toString())
         }
 
-        saveFavorites(favoritesSet)
         _recipeLiveData.value = _recipeLiveData.value?.copy(isFavorite = favoriteFlag)
     }
 
