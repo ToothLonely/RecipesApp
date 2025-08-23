@@ -1,11 +1,7 @@
 package com.example.recipesapp.ui.recipes.recipe
 
-import android.app.Application
-import android.content.Context
-import android.graphics.LinearGradient
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,17 +11,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipesapp.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
-import androidx.core.content.edit
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.recipesapp.data.ARG_RECIPE
 import com.example.recipesapp.data.DEFAULT_NUMBER_OF_PORTIONS
-import com.example.recipesapp.data.FAVORITES
-import com.example.recipesapp.data.FAVORITES_SET
 import com.example.recipesapp.R
 import com.example.recipesapp.data.DEFAULT_RECIPE_IMAGE_URL
-import com.example.recipesapp.data.STUB
 import com.example.recipesapp.model.Ingredient
 import com.example.recipesapp.ui.recipes.RecipeViewModel
 import com.example.recipesapp.ui.recipes.RecipeViewModelFactory
@@ -40,9 +31,6 @@ class RecipeFragment : Fragment() {
 
     private val portionString
         get() = requireContext().getString(R.string.tv_portion)
-
-    private val sharedPrefs
-        get() = requireContext().getSharedPreferences(FAVORITES, Context.MODE_PRIVATE)
 
     private val application
         get() = requireActivity().application
@@ -179,17 +167,6 @@ class RecipeFragment : Fragment() {
 
             })
         }
-    }
-
-    private fun saveFavorites(favoritesSet: Set<String>) {
-        sharedPrefs.edit {
-            putStringSet(FAVORITES_SET, favoritesSet)
-        }
-    }
-
-    private fun getFavorites(): MutableSet<String> {
-        return sharedPrefs.getStringSet(FAVORITES_SET, mutableSetOf())?.toMutableSet()
-            ?: mutableSetOf()
     }
 
 }
