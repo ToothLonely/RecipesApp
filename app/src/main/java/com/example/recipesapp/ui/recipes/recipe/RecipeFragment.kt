@@ -60,7 +60,7 @@ class RecipeFragment : Fragment() {
 
         viewModel.recipeLiveData.observe(viewLifecycleOwner, Observer {
 
-            var icon =
+            val icon =
                 if (it.isFavorite == true) R.drawable.ic_heart_big
                 else R.drawable.ic_heart_empty_big
 
@@ -76,19 +76,7 @@ class RecipeFragment : Fragment() {
                     )
                 )
                 ibFavorites.setOnClickListener {
-
                     viewModel.onFavoritesClicked()
-
-                    icon =
-                        if (viewModel.recipeLiveData.value?.isFavorite == false) R.drawable.ic_heart_empty_big
-                        else R.drawable.ic_heart_big
-
-                    ibFavorites.setImageDrawable(
-                        getDrawable(
-                            requireContext(),
-                            icon
-                        )
-                    )
                 }
             }
         })
