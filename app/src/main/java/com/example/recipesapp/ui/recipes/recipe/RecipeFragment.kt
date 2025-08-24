@@ -117,11 +117,11 @@ class RecipeFragment : Fragment() {
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.saveFavorites() //Вроде должно оптимизировать работу с SP,
-    // т.к. данные не будут туда записываться при каждом клике на кнопку избранных
-    // (зачем, если эти данные хранятся в VM), а запишутся один раз при уничтожении фрагмента
+    override fun onPause() {
+        super.onPause()
+        viewModel.saveFavorites() //Реализовал сохранение в методе onPause,
+        // т.к. в случае нажатия на кнопку навигации Избранное вызываются onPause и onStop, но не onDestroy.
+        // Выбрал именно onPause, чтобы сохранять данные в случае вызова только onPause
     }
 
     private fun initRecyclers(ingredients: List<Ingredient>, method: List<String>) {
