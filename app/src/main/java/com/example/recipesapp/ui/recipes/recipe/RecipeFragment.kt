@@ -86,24 +86,7 @@ class RecipeFragment : Fragment() {
                     )
                 )
                 ibFavorites.setOnClickListener {
-
                     viewModel.onFavoritesClicked()
-
-                    if (viewModel.recipeLiveData.value?.isFavorite == false) {
-                        ibFavorites.setImageDrawable(
-                            getDrawable(
-                                requireContext(),
-                                R.drawable.ic_heart_empty_big
-                            )
-                        )
-                    } else {
-                        ibFavorites.setImageDrawable(
-                            getDrawable(
-                                requireContext(),
-                                R.drawable.ic_heart_big
-                            )
-                        )
-                    }
                 }
             }
         })
