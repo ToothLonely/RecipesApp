@@ -2,6 +2,7 @@ package com.example.recipesapp.ui.recipes
 
 import android.app.Application
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.core.content.edit
 import androidx.lifecycle.AndroidViewModel
@@ -33,6 +34,7 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
         val imageUrl: String? = null,
         var isFavorite: Boolean? = null,
         var portionsCount: Int? = null,
+        var recipeImage: Drawable? = null,
     )
 
     init {
@@ -44,8 +46,20 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
         _recipeLiveData.value = recipe.toRecipeState()
         _recipeLiveData.value?.apply {
             isFavorite = id.toString() in favoritesSet
-            Log.i("!!!", "favoritesSet in VM $favoritesSet isFavorite $isFavorite")
             portionsCount = DEFAULT_NUMBER_OF_PORTIONS
+            recipeImage = try {
+                Drawable.createFromStream(
+                    imageUrl?.let {
+                        getApplication<Application>().applicationContext?.assets?.open(
+                            it
+                        )
+                    },
+                    null
+                )
+            } catch (e: Exception) {
+                Log.e("RecipeViewModel", "Cannot create drawable from assets")
+                null
+            }
         }
     }
 
