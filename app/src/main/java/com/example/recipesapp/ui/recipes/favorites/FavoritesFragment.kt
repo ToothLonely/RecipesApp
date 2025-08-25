@@ -82,7 +82,6 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-
         val bundle = bundleOf(
             ARG_RECIPE to recipeId
         )
