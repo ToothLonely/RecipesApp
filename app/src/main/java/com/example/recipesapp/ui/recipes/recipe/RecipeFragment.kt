@@ -92,9 +92,7 @@ class RecipeFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        viewModel.saveFavorites() //Реализовал сохранение в методе onPause,
-        // т.к. в случае нажатия на кнопку навигации Избранное вызываются onPause и onStop, но не onDestroy.
-        // Выбрал именно onPause, чтобы сохранять данные в случае вызова только onPause
+        viewModel.saveFavorites()
     }
 
     private fun initRecyclers(ingredients: List<Ingredient>, method: List<String>) {
