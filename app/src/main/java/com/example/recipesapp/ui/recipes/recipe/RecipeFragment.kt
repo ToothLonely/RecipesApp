@@ -60,23 +60,13 @@ class RecipeFragment : Fragment() {
 
         viewModel.recipeLiveData.observe(viewLifecycleOwner, Observer {
 
-            val drawable = try {
-                val imageUrl = it.imageUrl ?: DEFAULT_RECIPE_IMAGE_URL
-                Drawable.createFromStream(
-                    view?.context?.assets?.open(imageUrl),
-                    null
-                )
-            } catch (e: Exception) {
-                throw java.lang.IllegalStateException("Cannot create drawable")
-            }
-
             val icon =
                 if (it.isFavorite == true) R.drawable.ic_heart_big
                 else R.drawable.ic_heart_empty_big
 
             with(recipeFragmentBinding) {
                 tvRecipeTitle.text = it.title
-                ivRecipeBcg.setImageDrawable(drawable)
+                ivRecipeBcg.setImageDrawable(it.recipeImage)
                 tvPortion.text = portionString
                 tvNumberOfPortions.text = DEFAULT_NUMBER_OF_PORTIONS.toString()
                 ibFavorites.setImageDrawable(
@@ -102,9 +92,7 @@ class RecipeFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        viewModel.saveFavorites() //Реализовал сохранение в методе onPause,
-        // т.к. в случае нажатия на кнопку навигации Избранное вызываются onPause и onStop, но не onDestroy.
-        // Выбрал именно onPause, чтобы сохранять данные в случае вызова только onPause
+        viewModel.saveFavorites()
     }
 
     private fun initRecyclers(ingredients: List<Ingredient>, method: List<String>) {
