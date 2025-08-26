@@ -1,5 +1,6 @@
 package com.example.recipesapp.ui.recipes
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -86,6 +87,10 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
         }
 
         _recipeLiveData.value = _recipeLiveData.value?.copy(isFavorite = favoriteFlag)
+    }
+
+    fun setPortionsCount(newPortionsCount: Int) {
+        _recipeLiveData.value = _recipeLiveData.value?.copy(portionsCount = newPortionsCount)
     }
 
 }

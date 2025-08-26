@@ -2,6 +2,7 @@ package com.example.recipesapp.ui.recipes.recipe
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,44 +59,6 @@ class RecipeFragment : Fragment() {
 
     private fun initUI() {
 
-        viewModel.recipeLiveData.observe(viewLifecycleOwner, Observer {
-
-            val icon =
-                if (it.isFavorite == true) R.drawable.ic_heart_big
-                else R.drawable.ic_heart_empty_big
-
-            with(recipeFragmentBinding) {
-                tvRecipeTitle.text = it.title
-                ivRecipeBcg.setImageDrawable(it.recipeImage)
-                tvPortion.text = portionString
-                tvNumberOfPortions.text = DEFAULT_NUMBER_OF_PORTIONS.toString()
-                ibFavorites.setImageDrawable(
-                    getDrawable(
-                        requireContext(),
-                        icon
-                    )
-                )
-                ibFavorites.setOnClickListener {
-                    viewModel.onFavoritesClicked()
-                }
-            }
-        })
-
-        val currentState = viewModel.recipeLiveData.value
-            ?: throw IllegalStateException("cannot get state to recycler")
-        initRecyclers(
-            currentState.ingredients,
-            currentState.method
-        )
-
-    }
-
-    override fun onPause() {
-        super.onPause()
-        viewModel.saveFavorites()
-    }
-
-    private fun initRecyclers(ingredients: List<Ingredient>, method: List<String>) {
         val divider = MaterialDividerItemDecoration(
             requireContext(),
             LinearLayoutManager.VERTICAL
@@ -106,38 +69,74 @@ class RecipeFragment : Fragment() {
             dividerInsetEnd = resources.getDimension(R.dimen.halfMainDimen).toInt()
         }
 
+        //Пришлось вынести добавление разделителя отдельно от наблюдателя,
+        //т.к. при каждой перерисовке UI, добавлялся новый разделитель,
+        //из-за чего пространство между элементами RecyclerView становилось больше и recycler расширялся
         with(recipeFragmentBinding) {
+            rvIngredients.addItemDecoration(divider)
+            rvMethods.addItemDecoration(divider)
+        }
 
-            val ingredientsAdapter = IngredientsAdapter(ingredients)
+        val ingredientsAdapter =
+            IngredientsAdapter(viewModel.recipeLiveData.value?.ingredients ?: emptyList())
+        val methodAdapter = MethodAdapter(viewModel.recipeLiveData.value?.method ?: emptyList())
 
-            rvIngredients.apply {
-                layoutManager = LinearLayoutManager(requireContext())
-                adapter = ingredientsAdapter
-                addItemDecoration(divider)
-            }
+        viewModel.recipeLiveData.observe(viewLifecycleOwner, Observer {
 
-            rvMethods.apply {
-                layoutManager = LinearLayoutManager(requireContext())
-                adapter = MethodAdapter(method)
-                addItemDecoration(divider)
-            }
+            val icon =
+                if (it.isFavorite == true) R.drawable.ic_heart_big
+                else R.drawable.ic_heart_empty_big
 
-            sbPortions.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(
-                    seekBar: SeekBar?,
-                    progress: Int,
-                    fromUser: Boolean
-                ) {
-                    ingredientsAdapter.updateIngredients(progress)
-                    tvNumberOfPortions.text = progress.toString()
+            with(recipeFragmentBinding) {
+                tvRecipeTitle.text = it.title
+                ivRecipeBcg.setImageDrawable(it.recipeImage)
+                tvPortion.text = portionString
+                tvNumberOfPortions.text = it.portionsCount.toString()
+
+                ibFavorites.setImageDrawable(
+                    getDrawable(
+                        requireContext(),
+                        icon
+                    )
+                )
+
+                ibFavorites.setOnClickListener {
+                    viewModel.onFavoritesClicked()
                 }
 
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                rvIngredients.apply {
+                    layoutManager = LinearLayoutManager(requireContext())
+                    adapter = ingredientsAdapter
+                }
 
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+                rvMethods.apply {
+                    layoutManager = LinearLayoutManager(requireContext())
+                    adapter = methodAdapter
+                }
 
-            })
-        }
+                sbPortions.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(
+                        seekBar: SeekBar?,
+                        progress: Int,
+                        fromUser: Boolean
+                    ) {
+                        viewModel.setPortionsCount(progress)
+                    }
+
+                    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+                    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+
+                })
+            }
+
+            ingredientsAdapter.updateIngredients(it.portionsCount ?: DEFAULT_NUMBER_OF_PORTIONS)
+
+        })
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.saveFavorites()
+    }
 }

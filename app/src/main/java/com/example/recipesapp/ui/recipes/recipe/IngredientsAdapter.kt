@@ -1,6 +1,7 @@
 package com.example.recipesapp.ui.recipes.recipe
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,7 @@ import java.math.RoundingMode
 class IngredientsAdapter(private val dataSet: List<Ingredient>) :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
 
-    private var quantity: Int = 0
+    private var quantity: Int = 1
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val itemIngredientBinding = ItemIngredientBinding.bind(view)
