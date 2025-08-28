@@ -2,10 +2,10 @@ package com.example.recipesapp.ui.recipes.recipe
 
 import android.widget.SeekBar
 
-class PortionSeekBarListener(val onChangeOnClickListener: (Int) -> Unit) :
+class PortionSeekBarListener(val onChangeIngredients: (Int) -> Unit) :
     SeekBar.OnSeekBarChangeListener {
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-        onChangeOnClickListener(progress)
+        onChangeIngredients(progress)
     }
 
     override fun onStartTrackingTouch(seekBar: SeekBar?) {}
