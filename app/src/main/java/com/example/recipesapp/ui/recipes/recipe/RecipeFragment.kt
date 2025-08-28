@@ -69,17 +69,23 @@ class RecipeFragment : Fragment() {
             dividerInsetEnd = resources.getDimension(R.dimen.halfMainDimen).toInt()
         }
 
-        //Пришлось вынести добавление разделителя отдельно от наблюдателя,
-        //т.к. при каждой перерисовке UI, добавлялся новый разделитель,
-        //из-за чего пространство между элементами RecyclerView становилось больше и recycler расширялся
-        with(recipeFragmentBinding) {
-            rvIngredients.addItemDecoration(divider)
-            rvMethods.addItemDecoration(divider)
-        }
-
         val ingredientsAdapter =
             IngredientsAdapter(viewModel.recipeLiveData.value?.ingredients ?: emptyList())
         val methodAdapter = MethodAdapter(viewModel.recipeLiveData.value?.method ?: emptyList())
+
+        with(recipeFragmentBinding) {
+            rvIngredients.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = ingredientsAdapter
+                addItemDecoration(divider)
+            }
+
+            rvMethods.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = methodAdapter
+                addItemDecoration(divider)
+            }
+        }
 
         viewModel.recipeLiveData.observe(viewLifecycleOwner, Observer {
 
@@ -104,30 +110,11 @@ class RecipeFragment : Fragment() {
                     viewModel.onFavoritesClicked()
                 }
 
-                rvIngredients.apply {
-                    layoutManager = LinearLayoutManager(requireContext())
-                    adapter = ingredientsAdapter
-                }
-
-                rvMethods.apply {
-                    layoutManager = LinearLayoutManager(requireContext())
-                    adapter = methodAdapter
-                }
-
-                sbPortions.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                    override fun onProgressChanged(
-                        seekBar: SeekBar?,
-                        progress: Int,
-                        fromUser: Boolean
-                    ) {
+                sbPortions.setOnSeekBarChangeListener(
+                    PortionSeekBarListener { progress ->
                         viewModel.setPortionsCount(progress)
                     }
-
-                    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-
-                    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-
-                })
+                )
             }
 
             ingredientsAdapter.updateIngredients(it.portionsCount ?: DEFAULT_NUMBER_OF_PORTIONS)
