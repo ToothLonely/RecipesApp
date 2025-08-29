@@ -4,19 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.recipesapp.data.ARG_CATEGORY_ID
-import com.example.recipesapp.data.ARG_CATEGORY_IMAGE_URL
-import com.example.recipesapp.data.ARG_CATEGORY_NAME
-import com.example.recipesapp.R
-import com.example.recipesapp.ui.recipes.recipeslist.RecipesListFragment
-import com.example.recipesapp.data.STUB
 import com.example.recipesapp.databinding.FragmentListCategoriesBinding
-import com.example.recipesapp.model.Category
 
 class CategoriesListFragment : Fragment() {
     private var _categoriesListFragmentBinding: FragmentListCategoriesBinding? = null
@@ -24,6 +15,8 @@ class CategoriesListFragment : Fragment() {
         get() = _categoriesListFragmentBinding ?: throw IllegalStateException(
             "Binding for CategoriesListFragmentBinding mustn't be null"
         )
+
+    private val viewModel: CategoriesListViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,40 +30,27 @@ class CategoriesListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecycler()
+        initUI()
     }
 
-    private fun initRecycler() {
-        val categoriesAdapter = CategoriesListAdapter(STUB.getCategories())
+    private fun initUI() {
+        val categoriesListState = viewModel.categoriesListLiveData.value
+        val categoriesAdapter = CategoriesListAdapter(categoriesListState?.dataSet ?: emptyList())
 
-        categoriesListFragmentBinding.rvCategories.apply {
-            layoutManager = GridLayoutManager(requireContext(), 2)
-            adapter = categoriesAdapter
+        with(categoriesListFragmentBinding) {
+            tvCategories.text = categoriesListState?.categoryTitle
+            ivBckCategories.background = categoriesListState?.categoryImageBackground
+            rvCategories.apply {
+                layoutManager = GridLayoutManager(requireContext(), 2)
+                adapter = categoriesAdapter
+            }
         }
 
         categoriesAdapter.setOnItemClickListener(object :
             CategoriesListAdapter.OnItemClickListener {
             override fun onItemClick(categoryId: Int) {
-                openRecipesByCategoryId(categoryId)
+                viewModel.openRecipesByCategoryId(this@CategoriesListFragment, categoryId)
             }
         })
-    }
-
-    private fun openRecipesByCategoryId(categoryId: Int) {
-        val currentCategory: Category = STUB.getCategories().find { it.id == categoryId }
-            ?: throw IllegalArgumentException("Категория с ID $categoryId не найдена!")
-        val (_, categoryName, _, categoryImageUrl) = currentCategory
-
-        val bundle: Bundle = bundleOf(
-            ARG_CATEGORY_ID to categoryId,
-            ARG_CATEGORY_NAME to categoryName,
-            ARG_CATEGORY_IMAGE_URL to categoryImageUrl
-        )
-
-        parentFragmentManager.commit {
-            replace<RecipesListFragment>(R.id.mainContainer, args = bundle)
-            setReorderingAllowed(true)
-            addToBackStack(null)
-        }
     }
 }
