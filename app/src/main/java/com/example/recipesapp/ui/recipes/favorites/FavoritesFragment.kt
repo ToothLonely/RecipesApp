@@ -66,8 +66,8 @@ class FavoritesFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         viewModel.reloadFavorites()
     }
 }

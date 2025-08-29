@@ -40,7 +40,6 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
 
     init {
         loadFavorites(application)
-        Log.i("!!!", "VM created")
     }
 
     fun reloadFavorites(){
