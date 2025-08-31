@@ -54,17 +54,18 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun initCategory() {
-        viewModel.recipesListLiveData.observe(viewLifecycleOwner, Observer {
+        val recipesListAdapter = RecipesListAdapter(viewModel.recipesListLiveData.value?.dataSet ?: emptyList())
 
-            val recipesListAdapter = RecipesListAdapter(it?.dataSet ?: emptyList())
+        recipesListFragmentBinding.rvRecipes.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = recipesListAdapter
+        }
+
+        viewModel.recipesListLiveData.observe(viewLifecycleOwner, Observer {
 
             with(recipesListFragmentBinding) {
                 tvCategoryName.text = it?.title
                 ivCategoryBck.setImageDrawable(it?.image)
-                rvRecipes.apply {
-                    layoutManager = LinearLayoutManager(requireContext())
-                    adapter = recipesListAdapter
-                }
             }
 
             recipesListAdapter.setOnItemClickListener(object :

@@ -35,17 +35,18 @@ class CategoriesListFragment : Fragment() {
     }
 
     private fun initUI() {
-        viewModel.categoriesListLiveData.observe(viewLifecycleOwner, Observer {
+        val categoriesAdapter = CategoriesListAdapter(viewModel.categoriesListLiveData.value?.dataSet ?: emptyList())
 
-            val categoriesAdapter = CategoriesListAdapter(it?.dataSet ?: emptyList())
+        categoriesListFragmentBinding.rvCategories.apply {
+            layoutManager = GridLayoutManager(requireContext(), 2)
+            adapter = categoriesAdapter
+        }
+
+        viewModel.categoriesListLiveData.observe(viewLifecycleOwner, Observer {
 
             with(categoriesListFragmentBinding) {
                 tvCategories.text = it?.categoryTitle
                 ivBckCategories.background = it?.categoryImageBackground
-                rvCategories.apply {
-                    layoutManager = GridLayoutManager(requireContext(), 2)
-                    adapter = categoriesAdapter
-                }
             }
 
             categoriesAdapter.setOnItemClickListener(object :

@@ -33,10 +33,20 @@ class FavoritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.reloadFavorites()
         initFavorites()
     }
 
     private fun initFavorites() {
+
+        val favoritesListAdapter =
+            RecipesListAdapter(viewModel.favoritesLiveData.value?.favoritesLayoutState?.dataSet ?: emptyList())
+
+        fragmentFavoritesBinding.rvFavorites.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = favoritesListAdapter
+        }
+
         viewModel.favoritesLiveData.observe(viewLifecycleOwner, Observer {
             if (it?.isVisible == false) {
                 with(fragmentFavoritesBinding) {
@@ -44,16 +54,10 @@ class FavoritesFragment : Fragment() {
                     layoutFavorites.visibility = View.GONE
                 }
             } else {
-                val favoritesListAdapter =
-                    RecipesListAdapter(it?.favoritesLayoutState?.dataSet ?: emptyList())
 
                 with(fragmentFavoritesBinding) {
                     tvDefaultFavorites.visibility = View.GONE
                     layoutFavorites.visibility = View.VISIBLE
-                    rvFavorites.apply {
-                        layoutManager = LinearLayoutManager(requireContext())
-                        adapter = favoritesListAdapter
-                    }
 
                     favoritesListAdapter.setOnItemClickListener(object :
                         RecipesListAdapter.OnItemClickListener {
@@ -64,12 +68,5 @@ class FavoritesFragment : Fragment() {
                 }
             }
         })
-
-
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.reloadFavorites()
     }
 }
