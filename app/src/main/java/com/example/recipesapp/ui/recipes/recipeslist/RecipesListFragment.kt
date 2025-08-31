@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipesapp.data.ARG_CATEGORY_ID
@@ -53,23 +54,28 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun initCategory() {
-        val categoryState = viewModel.recipesListLiveData.value
-        val recipesListAdapter = RecipesListAdapter(categoryState?.dataSet ?: emptyList())
+        viewModel.recipesListLiveData.observe(viewLifecycleOwner, Observer {
 
-        with(recipesListFragmentBinding) {
-            tvCategoryName.text = categoryState?.title
-            ivCategoryBck.setImageDrawable(categoryState?.image)
-            rvRecipes.apply {
-                layoutManager = LinearLayoutManager(requireContext())
-                adapter = recipesListAdapter
-            }
-        }
+            val recipesListAdapter = RecipesListAdapter(it?.dataSet ?: emptyList())
 
-        recipesListAdapter.setOnItemClickListener(object :
-            RecipesListAdapter.OnItemClickListener {
-            override fun onItemClick(recipeId: Int) {
-                viewModel.openRecipeByRecipeId(this@RecipesListFragment, recipeId)
+            with(recipesListFragmentBinding) {
+                tvCategoryName.text = it?.title
+                ivCategoryBck.setImageDrawable(it?.image)
+                rvRecipes.apply {
+                    layoutManager = LinearLayoutManager(requireContext())
+                    adapter = recipesListAdapter
+                }
             }
+
+            recipesListAdapter.setOnItemClickListener(object :
+                RecipesListAdapter.OnItemClickListener {
+                override fun onItemClick(recipeId: Int) {
+                    viewModel.openRecipeByRecipeId(this@RecipesListFragment, recipeId)
+                }
+            })
+
         })
+
+
     }
 }

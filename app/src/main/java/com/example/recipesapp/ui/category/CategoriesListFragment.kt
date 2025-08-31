@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.recipesapp.databinding.FragmentListCategoriesBinding
 
@@ -34,23 +35,27 @@ class CategoriesListFragment : Fragment() {
     }
 
     private fun initUI() {
-        val categoriesListState = viewModel.categoriesListLiveData.value
-        val categoriesAdapter = CategoriesListAdapter(categoriesListState?.dataSet ?: emptyList())
+        viewModel.categoriesListLiveData.observe(viewLifecycleOwner, Observer {
 
-        with(categoriesListFragmentBinding) {
-            tvCategories.text = categoriesListState?.categoryTitle
-            ivBckCategories.background = categoriesListState?.categoryImageBackground
-            rvCategories.apply {
-                layoutManager = GridLayoutManager(requireContext(), 2)
-                adapter = categoriesAdapter
-            }
-        }
+            val categoriesAdapter = CategoriesListAdapter(it?.dataSet ?: emptyList())
 
-        categoriesAdapter.setOnItemClickListener(object :
-            CategoriesListAdapter.OnItemClickListener {
-            override fun onItemClick(categoryId: Int) {
-                viewModel.openRecipesByCategoryId(this@CategoriesListFragment, categoryId)
+            with(categoriesListFragmentBinding) {
+                tvCategories.text = it?.categoryTitle
+                ivBckCategories.background = it?.categoryImageBackground
+                rvCategories.apply {
+                    layoutManager = GridLayoutManager(requireContext(), 2)
+                    adapter = categoriesAdapter
+                }
             }
+
+            categoriesAdapter.setOnItemClickListener(object :
+                CategoriesListAdapter.OnItemClickListener {
+                override fun onItemClick(categoryId: Int) {
+                    viewModel.openRecipesByCategoryId(this@CategoriesListFragment, categoryId)
+                }
+            })
         })
+
+
     }
 }

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.recipesapp.R
 import com.example.recipesapp.data.ARG_RECIPE
@@ -22,7 +23,7 @@ import com.example.recipesapp.ui.recipes.recipe.RecipeFragment
 class FavoritesViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _favoritesLiveData = MutableLiveData<FavoritesState>()
-    val favoritesLiveData
+    val favoritesLiveData: LiveData<FavoritesState>
         get() = _favoritesLiveData
 
     private val sharedPrefs = application.getSharedPreferences(FAVORITES, Context.MODE_PRIVATE)

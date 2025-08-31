@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.recipesapp.R
 import com.example.recipesapp.data.ARG_CATEGORY_ID
@@ -22,7 +23,7 @@ import com.example.recipesapp.ui.recipes.recipeslist.RecipesListFragment
 class CategoriesListViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _categoriesListLiveData = MutableLiveData<CategoriesListState>()
-    val categoriesListLiveData
+    val categoriesListLiveData: LiveData<CategoriesListState>
         get() = _categoriesListLiveData
 
     data class CategoriesListState(
