@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">RecipesApp</string>
-    <string name="categories">categories</string>
-    <string name="favorites">favorites</string>
+    <string name="tv_categories">categories</string>
+    <string name="tv_favorites">favorites</string>
     <string name="favorites_fragment_name" translatable="false">Favorites Fragment Name</string>
     <string name="cd_categories_background">Categories background</string>
     <string name="cd_category_item">Category image</string>

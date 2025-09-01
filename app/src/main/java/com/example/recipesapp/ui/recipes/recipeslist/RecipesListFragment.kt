@@ -1,23 +1,19 @@
 package com.example.recipesapp.ui.recipes.recipeslist
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipesapp.data.ARG_CATEGORY_ID
 import com.example.recipesapp.data.ARG_CATEGORY_IMAGE_URL
 import com.example.recipesapp.data.ARG_CATEGORY_NAME
-import com.example.recipesapp.data.ARG_RECIPE
-import com.example.recipesapp.R
-import com.example.recipesapp.data.STUB
 import com.example.recipesapp.databinding.FragmentRecipesListBinding
-import com.example.recipesapp.ui.recipes.recipe.RecipeFragment
+import com.example.recipesapp.ui.recipes.RecipesListViewModel
+import com.example.recipesapp.ui.recipes.RecipesListViewModelFactory
 import java.lang.IllegalStateException
 
 class RecipesListFragment : Fragment() {
@@ -27,9 +23,20 @@ class RecipesListFragment : Fragment() {
             "Binding for recipesListFragmentBinding mustn't be null"
         )
 
-    private var categoryId: Int? = null
-    private var categoryName: String? = null
-    private var categoryImageUrl: String? = null
+    private val application
+        get() = requireActivity().application
+
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this,
+            RecipesListViewModelFactory(
+                requireArguments().getInt(ARG_CATEGORY_ID),
+                requireArguments().getString(ARG_CATEGORY_NAME),
+                requireArguments().getString(ARG_CATEGORY_IMAGE_URL),
+                application
+            )
+        )[RecipesListViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,56 +51,32 @@ class RecipesListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initCategory()
-        initRecipesRecycler()
     }
 
     private fun initCategory() {
-
-        categoryId = requireArguments().getInt(ARG_CATEGORY_ID)
-        categoryName = requireArguments().getString(ARG_CATEGORY_NAME)
-        categoryImageUrl = requireArguments().getString(ARG_CATEGORY_IMAGE_URL)
-
-        val drawable = try {
-            Drawable.createFromStream(
-                categoryImageUrl?.let { view?.context?.assets?.open(it) },
-                null
-            )
-        } catch (e: Exception) {
-            throw IllegalStateException("Cannot create drawable")
-        }
-
-        with(recipesListFragmentBinding) {
-            tvCategoryName.text = categoryName
-            ivCategoryBck.setImageDrawable(drawable)
-        }
-    }
-
-    private fun initRecipesRecycler() {
-        val recipesListAdapter = RecipesListAdapter(STUB.getRecipesByCategoryId(categoryId))
+        val recipesListAdapter = RecipesListAdapter(viewModel.recipesListLiveData.value?.dataSet ?: emptyList())
 
         recipesListFragmentBinding.rvRecipes.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = recipesListAdapter
         }
 
-        recipesListAdapter.setOnItemClickListener(object :
-            RecipesListAdapter.OnItemClickListener {
-            override fun onItemClick(recipeId: Int) {
-                openRecipeByRecipeId(recipeId)
+        viewModel.recipesListLiveData.observe(viewLifecycleOwner, Observer {
+
+            with(recipesListFragmentBinding) {
+                tvCategoryName.text = it?.title
+                ivCategoryBck.setImageDrawable(it?.image)
             }
+
+            recipesListAdapter.setOnItemClickListener(object :
+                RecipesListAdapter.OnItemClickListener {
+                override fun onItemClick(recipeId: Int) {
+                    viewModel.openRecipeByRecipeId(this@RecipesListFragment, recipeId)
+                }
+            })
+
         })
-    }
 
-    private fun openRecipeByRecipeId(recipeId: Int) {
 
-        val bundle = bundleOf(
-            ARG_RECIPE to recipeId
-        )
-
-        parentFragmentManager.commit {
-            replace<RecipeFragment>(R.id.mainContainer, args = bundle)
-            setReorderingAllowed(true)
-            addToBackStack(null)
-        }
     }
 }
