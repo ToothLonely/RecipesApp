@@ -12,8 +12,6 @@ import com.example.recipesapp.data.ARG_CATEGORY_ID
 import com.example.recipesapp.data.ARG_CATEGORY_IMAGE_URL
 import com.example.recipesapp.data.ARG_CATEGORY_NAME
 import com.example.recipesapp.databinding.FragmentRecipesListBinding
-import com.example.recipesapp.ui.recipes.RecipesListViewModel
-import com.example.recipesapp.ui.recipes.RecipesListViewModelFactory
 import java.lang.IllegalStateException
 
 class RecipesListFragment : Fragment() {

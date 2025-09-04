@@ -12,6 +12,7 @@ import androidx.fragment.app.replace
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.fragment.findNavController
 import com.example.recipesapp.R
 import com.example.recipesapp.data.ARG_CATEGORY_ID
 import com.example.recipesapp.data.ARG_CATEGORY_IMAGE_URL
@@ -55,11 +56,7 @@ class CategoriesListViewModel(application: Application) : AndroidViewModel(appli
             ARG_CATEGORY_IMAGE_URL to categoryImageUrl
         )
 
-        fragment.parentFragmentManager.commit {
-            replace<RecipesListFragment>(R.id.mainContainer, args = bundle)
-            setReorderingAllowed(true)
-            addToBackStack(null)
-        }
+        fragment.findNavController().navigate(R.id.recipesListFragment, bundle)
     }
 
 }

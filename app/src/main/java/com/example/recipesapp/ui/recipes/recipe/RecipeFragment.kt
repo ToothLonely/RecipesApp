@@ -1,12 +1,9 @@
 package com.example.recipesapp.ui.recipes.recipe
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SeekBar
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,10 +14,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.recipesapp.data.ARG_RECIPE
 import com.example.recipesapp.data.DEFAULT_NUMBER_OF_PORTIONS
 import com.example.recipesapp.R
-import com.example.recipesapp.data.DEFAULT_RECIPE_IMAGE_URL
-import com.example.recipesapp.model.Ingredient
-import com.example.recipesapp.ui.recipes.RecipeViewModel
-import com.example.recipesapp.ui.recipes.RecipeViewModelFactory
 
 class RecipeFragment : Fragment() {
 

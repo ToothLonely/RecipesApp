@@ -9,7 +9,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipesapp.databinding.FragmentFavoritesBinding
-import com.example.recipesapp.ui.recipes.FavoritesViewModel
 import com.example.recipesapp.ui.recipes.recipeslist.RecipesListAdapter
 
 class FavoritesFragment : Fragment() {

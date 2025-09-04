@@ -8,6 +8,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.navigation.findNavController
 import com.example.recipesapp.ui.recipes.favorites.FavoritesFragment
 import com.example.recipesapp.R
 import com.example.recipesapp.databinding.ActivityMainBinding
@@ -32,28 +33,12 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.commit {
-                add<CategoriesListFragment>(R.id.mainContainer)
-                setReorderingAllowed(true)
-                addToBackStack(null)
-            }
-        }
-
         mainActivityBinding.btnFavorites.setOnClickListener {
-            supportFragmentManager.commit {
-                replace<FavoritesFragment>(R.id.mainContainer)
-                setReorderingAllowed(true)
-                addToBackStack(null)
-            }
+            findNavController(R.id.navHostFragment).navigate(R.id.favoritesFragment)
         }
 
         mainActivityBinding.btnCategories.setOnClickListener {
-            supportFragmentManager.commit {
-                replace<CategoriesListFragment>(R.id.mainContainer)
-                setReorderingAllowed(true)
-                addToBackStack(null)
-            }
+            findNavController(R.id.navHostFragment).navigate(R.id.categoriesListFragment)
         }
     }
 }

@@ -1,9 +1,8 @@
-package com.example.recipesapp.ui.recipes
+package com.example.recipesapp.ui.recipes.favorites
 
 import android.app.Application
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -12,6 +11,7 @@ import androidx.fragment.app.replace
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.fragment.findNavController
 import com.example.recipesapp.R
 import com.example.recipesapp.data.ARG_RECIPE
 import com.example.recipesapp.data.FAVORITES
@@ -70,11 +70,7 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
             ARG_RECIPE to recipeId
         )
 
-        fragment.parentFragmentManager.commit {
-            replace<RecipeFragment>(R.id.mainContainer, args = bundle)
-            setReorderingAllowed(true)
-            addToBackStack(null)
-        }
+        fragment.findNavController().navigate(R.id.recipeFragment, bundle)
     }
 
 }
