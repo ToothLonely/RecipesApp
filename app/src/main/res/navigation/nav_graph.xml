@@ -16,14 +16,6 @@
         <action
             android:id="@+id/action_categoriesListFragment_to_favoritesFragment"
             app:destination="@id/favoritesFragment" />
-        <action
-            android:id="@+id/action_recipesListFragment_back_to_categoriesListFragment"
-            app:popUpTo="@id/categoriesListFragment"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_favoritesFragment_back_to_categoriesListFragment"
-            app:popUpTo="@id/categoriesListFragment"
-            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
@@ -32,17 +24,15 @@
         tools:layout='@layout/fragment_favorites'>
         <action
             android:id="@+id/action_favoritesFragment_to_recipeFragment"
-            app:destination="@id/recipeFragment" />
+            app:destination="@id/recipeFragment"
+            app:popUpTo="@id/recipeFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/recipeFragment"
         android:name="com.example.recipesapp.ui.recipes.recipe.RecipeFragment"
         android:label="RecipeFragment"
         tools:layout='@layout/fragment_recipe'>
-        <action
-            android:id="@+id/action_recipeFragment_back_to_recipesListFragment"
-            app:popUpTo="@id/recipesListFragment"
-            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/recipesListFragment"
@@ -51,6 +41,8 @@
         tools:layout='@layout/fragment_recipes_list'>
         <action
             android:id="@+id/action_recipesListFragment_to_recipeFragment"
-            app:destination="@id/recipeFragment" />
+            app:destination="@id/recipeFragment"
+            app:popUpTo="@id/recipeFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

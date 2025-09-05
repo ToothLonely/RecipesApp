@@ -5,14 +5,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.add
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.navigation.findNavController
-import com.example.recipesapp.ui.recipes.favorites.FavoritesFragment
 import com.example.recipesapp.R
 import com.example.recipesapp.databinding.ActivityMainBinding
-import com.example.recipesapp.ui.category.CategoriesListFragment
 
 class MainActivity : AppCompatActivity() {
 

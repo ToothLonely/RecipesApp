@@ -70,7 +70,7 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
             ARG_RECIPE to recipeId
         )
 
-        fragment.findNavController().navigate(R.id.recipeFragment, bundle)
+        fragment.findNavController().navigate(R.id.action_favoritesFragment_to_recipeFragment, bundle)
     }
 
 }

@@ -64,7 +64,7 @@ class RecipesListViewModel(
             ARG_RECIPE to recipeId
         )
 
-        fragment.findNavController().navigate(R.id.recipeFragment, bundle)
+        fragment.findNavController().navigate(R.id.action_recipesListFragment_to_recipeFragment, bundle)
     }
 
 }
