@@ -1,4 +1,4 @@
-package com.example.recipesapp.ui.recipes
+package com.example.recipesapp.ui.recipes.recipeslist
 
 import android.app.Application
 import android.graphics.drawable.Drawable
@@ -10,6 +10,8 @@ import androidx.fragment.app.replace
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.navigateUp
 import com.example.recipesapp.R
 import com.example.recipesapp.data.ARG_RECIPE
 import com.example.recipesapp.data.STUB
@@ -62,11 +64,7 @@ class RecipesListViewModel(
             ARG_RECIPE to recipeId
         )
 
-        fragment.parentFragmentManager.commit {
-            replace<RecipeFragment>(R.id.mainContainer, args = bundle)
-            setReorderingAllowed(true)
-            addToBackStack(null)
-        }
+        fragment.findNavController().navigate(R.id.recipeFragment, bundle)
     }
 
 }

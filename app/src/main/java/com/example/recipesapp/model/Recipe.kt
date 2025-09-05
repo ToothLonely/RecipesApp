@@ -1,8 +1,6 @@
 package com.example.recipesapp.model
 
-import android.os.Parcelable
-import com.example.recipesapp.ui.recipes.RecipeViewModel
-import kotlinx.parcelize.Parcelize
+import com.example.recipesapp.ui.recipes.recipe.RecipeViewModel
 
 data class Recipe(
     val id: Int,
