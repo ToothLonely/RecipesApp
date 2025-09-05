@@ -17,11 +17,11 @@
             android:id="@+id/action_categoriesListFragment_to_favoritesFragment"
             app:destination="@id/favoritesFragment" />
         <action
-            android:id="@+id/action_pop_out_of_recipesListFragment"
+            android:id="@+id/action_recipesListFragment_back_to_categoriesListFragment"
             app:popUpTo="@id/categoriesListFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_pop_out_of_favoritesFragment"
+            android:id="@+id/action_favoritesFragment_back_to_categoriesListFragment"
             app:popUpTo="@id/categoriesListFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -40,7 +40,7 @@
         android:label="RecipeFragment"
         tools:layout='@layout/fragment_recipe'>
         <action
-            android:id="@+id/action_pop_up_of_recipeFragment"
+            android:id="@+id/action_recipeFragment_back_to_recipesListFragment"
             app:popUpTo="@id/recipesListFragment"
             app:popUpToInclusive="true" />
     </fragment>
