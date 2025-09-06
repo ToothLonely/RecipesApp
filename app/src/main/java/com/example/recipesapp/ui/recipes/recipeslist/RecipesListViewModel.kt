@@ -60,11 +60,9 @@ class RecipesListViewModel(
 
     fun openRecipeByRecipeId(fragment: Fragment, recipeId: Int) {
 
-        val bundle = bundleOf(
-            ARG_RECIPE to recipeId
-        )
+        val action = RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(recipeId)
 
-        fragment.findNavController().navigate(R.id.recipeFragment, bundle)
+        fragment.findNavController().navigate(action)
     }
 
 }

@@ -50,13 +50,9 @@ class CategoriesListViewModel(application: Application) : AndroidViewModel(appli
             ?: throw IllegalArgumentException("Категория с ID $categoryId не найдена!")
         val (_, categoryName, _, categoryImageUrl) = currentCategory
 
-        val bundle: Bundle = bundleOf(
-            ARG_CATEGORY_ID to categoryId,
-            ARG_CATEGORY_NAME to categoryName,
-            ARG_CATEGORY_IMAGE_URL to categoryImageUrl
-        )
+        val action = CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(categoryId, categoryName, categoryImageUrl)
 
-        fragment.findNavController().navigate(R.id.recipesListFragment, bundle)
+        fragment.findNavController().navigate(action)
     }
 
 }
