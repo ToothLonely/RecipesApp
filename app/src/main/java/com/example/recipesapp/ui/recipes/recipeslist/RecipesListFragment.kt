@@ -9,9 +9,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.recipesapp.data.ARG_CATEGORY_ID
-import com.example.recipesapp.data.ARG_CATEGORY_IMAGE_URL
-import com.example.recipesapp.data.ARG_CATEGORY_NAME
 import com.example.recipesapp.databinding.FragmentRecipesListBinding
 import java.lang.IllegalStateException
 
@@ -31,9 +28,7 @@ class RecipesListFragment : Fragment() {
         ViewModelProvider(
             this,
             RecipesListViewModelFactory(
-                categoryId = args.categoryId,
-                categoryName = args.categoryName,
-                categoryImageUrl = args.categoryImageUrl,
+                args.category,
                 application
             )
         )[RecipesListViewModel::class.java]
