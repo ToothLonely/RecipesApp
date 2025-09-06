@@ -13,9 +13,6 @@
         <action
             android:id="@+id/action_categoriesListFragment_to_recipesListFragment"
             app:destination="@id/recipesListFragment" />
-        <action
-            android:id="@+id/action_categoriesListFragment_to_favoritesFragment"
-            app:destination="@id/favoritesFragment" />
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
@@ -33,6 +30,9 @@
         android:name="com.example.recipesapp.ui.recipes.recipe.RecipeFragment"
         android:label="RecipeFragment"
         tools:layout='@layout/fragment_recipe'>
+        <argument
+            android:name="recipeId"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/recipesListFragment"
@@ -44,5 +44,14 @@
             app:destination="@id/recipeFragment"
             app:popUpTo="@id/recipeFragment"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="categoryId"
+            app:argType="integer" />
+        <argument
+            android:name="categoryName"
+            app:argType="string" />
+        <argument
+            android:name="categoryImageUrl"
+            app:argType="string" />
     </fragment>
 </navigation>

@@ -11,6 +11,7 @@ import com.example.recipesapp.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import com.example.recipesapp.data.ARG_RECIPE
 import com.example.recipesapp.data.DEFAULT_NUMBER_OF_PORTIONS
 import com.example.recipesapp.R
@@ -29,10 +30,12 @@ class RecipeFragment : Fragment() {
     private val application
         get() = requireActivity().application
 
+    private val args: RecipeFragmentArgs by navArgs()
+
     private val viewModel by lazy {
         ViewModelProvider(
             this,
-            RecipeViewModelFactory(requireArguments().getInt(ARG_RECIPE), application)
+            RecipeViewModelFactory(args.recipeId, application)
         )[RecipeViewModel::class.java]
     }
 
