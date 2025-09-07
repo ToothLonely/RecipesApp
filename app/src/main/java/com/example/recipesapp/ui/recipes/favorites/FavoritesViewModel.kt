@@ -66,11 +66,10 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun openRecipeByRecipeId(fragment: Fragment, recipeId: Int) {
-        val bundle = bundleOf(
-            ARG_RECIPE to recipeId
-        )
 
-        fragment.findNavController().navigate(R.id.recipeFragment, bundle)
+        val action = FavoritesFragmentDirections.actionFavoritesFragmentToRecipeFragment(recipeId)
+
+        fragment.findNavController().navigate(action)
     }
 
 }

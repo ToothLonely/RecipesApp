@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipesapp.data.ARG_CATEGORY_ID
 import com.example.recipesapp.data.ARG_CATEGORY_IMAGE_URL
@@ -24,13 +25,15 @@ class RecipesListFragment : Fragment() {
     private val application
         get() = requireActivity().application
 
+    private val args: RecipesListFragmentArgs by navArgs()
+
     private val viewModel by lazy {
         ViewModelProvider(
             this,
             RecipesListViewModelFactory(
-                requireArguments().getInt(ARG_CATEGORY_ID),
-                requireArguments().getString(ARG_CATEGORY_NAME),
-                requireArguments().getString(ARG_CATEGORY_IMAGE_URL),
+                categoryId = args.categoryId,
+                categoryName = args.categoryName,
+                categoryImageUrl = args.categoryImageUrl,
                 application
             )
         )[RecipesListViewModel::class.java]
