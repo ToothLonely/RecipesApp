@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
             val encodedData = json.decodeFromString<List<Category>>(jsonInput)
             Log.i("!!!", "Выполняю запрос на потоке: ${Thread.currentThread().name}")
             Log.i("!!!", "Полученные данные: $encodedData")
+            connection.disconnect()
         }
         thread.start()
 
