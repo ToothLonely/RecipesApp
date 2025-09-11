@@ -42,34 +42,33 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        var categoryIds = listOf<Int>()
-
         val thread = Thread {
             val connection = URL(URL_CATEGORY).openConnection() as HttpURLConnection
             connection.connect()
 
             val jsonInput = connection.inputStream.bufferedReader().readText()
             val decodedData = json.decodeFromString<List<Category>>(jsonInput)
-            categoryIds = decodedData.map { it.id }
+            val categoryIds = decodedData.map { it.id }
+
+            categoryIds.forEach { categoryId ->
+                threadPool.submit {
+
+                    val connection =
+                        URL("$URL_CATEGORY/$categoryId/recipes").openConnection() as HttpURLConnection
+                    connection.connect()
+
+                    val jsonRecipe = connection.inputStream.bufferedReader().readText()
+                    val decodedRecipe = json.decodeFromString<List<Recipe>>(jsonRecipe)
+
+                    Log.i("!!!", "Recipes by CategoryId $categoryId: $decodedRecipe")
+
+                    connection.disconnect()
+                }
+            }
 
             connection.disconnect()
         }
         thread.start()
-
-        threadPool.submit {
-            categoryIds.forEach { categoryId ->
-                val connection =
-                    URL("$URL_CATEGORY/$categoryId/recipes").openConnection() as HttpURLConnection
-                connection.connect()
-
-                val jsonRecipe = connection.inputStream.bufferedReader().readText()
-                val decodedRecipe = json.decodeFromString<Recipe>(jsonRecipe)
-
-                Log.i("!!!", "Recipes by CategoryId $categoryId: $decodedRecipe")
-
-                connection.disconnect()
-            }
-        }
 
         mainActivityBinding.btnFavorites.setOnClickListener {
             findNavController(R.id.navHostFragment).navigate(R.id.favoritesFragment)
