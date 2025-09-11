@@ -8,11 +8,14 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.findNavController
 import com.example.recipesapp.R
+import com.example.recipesapp.data.URL_CATEGORY
 import com.example.recipesapp.databinding.ActivityMainBinding
 import com.example.recipesapp.model.Category
+import com.example.recipesapp.model.Recipe
 import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,6 +24,12 @@ class MainActivity : AppCompatActivity() {
         get() = _mainActivityBinding ?: throw IllegalStateException(
             "Binding for MainActivityBinding mustn't be null"
         )
+
+    private val threadPool = Executors.newFixedThreadPool(10)
+
+    private val json = Json {
+        ignoreUnknownKeys = true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,23 +42,34 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        var categoryIds = listOf<Int>()
+
         val thread = Thread {
-            val json = Json {
-                ignoreUnknownKeys = true
-            }
-            val url = URL("https://recipes.androidsprint.ru/api/category")
-            val connection = url.openConnection() as HttpURLConnection
+            val connection = URL(URL_CATEGORY).openConnection() as HttpURLConnection
             connection.connect()
 
             val jsonInput = connection.inputStream.bufferedReader().readText()
-            val encodedData = json.decodeFromString<List<Category>>(jsonInput)
-            Log.i("!!!", "Выполняю запрос на потоке: ${Thread.currentThread().name}")
-            Log.i("!!!", "Полученные данные: $encodedData")
+            val decodedData = json.decodeFromString<List<Category>>(jsonInput)
+            categoryIds = decodedData.map { it.id }
+
             connection.disconnect()
         }
         thread.start()
 
-        Log.i("!!!", "Метод onCreate() выполняется на потоке:: ${Thread.currentThread().name}")
+        threadPool.submit {
+            categoryIds.forEach { categoryId ->
+                val connection =
+                    URL("$URL_CATEGORY/$categoryId/recipes").openConnection() as HttpURLConnection
+                connection.connect()
+
+                val jsonRecipe = connection.inputStream.bufferedReader().readText()
+                val decodedRecipe = json.decodeFromString<Recipe>(jsonRecipe)
+
+                Log.i("!!!", "Recipes by CategoryId $categoryId: $decodedRecipe")
+
+                connection.disconnect()
+            }
+        }
 
         mainActivityBinding.btnFavorites.setOnClickListener {
             findNavController(R.id.navHostFragment).navigate(R.id.favoritesFragment)
