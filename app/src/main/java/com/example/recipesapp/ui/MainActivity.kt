@@ -43,30 +43,43 @@ class MainActivity : AppCompatActivity() {
         }
 
         val thread = Thread {
-            val connection = URL(URL_CATEGORY).openConnection() as HttpURLConnection
-            connection.connect()
+            val basicThreadConnection = URL(URL_CATEGORY).openConnection() as HttpURLConnection
 
-            val jsonInput = connection.inputStream.bufferedReader().readText()
-            val decodedData = json.decodeFromString<List<Category>>(jsonInput)
-            val categoryIds = decodedData.map { it.id }
+            try {
+                val jsonInput = basicThreadConnection.inputStream.bufferedReader().readText()
+                val decodedData = json.decodeFromString<List<Category>>(jsonInput)
+                val categoryIds = decodedData.map { it.id }
 
-            categoryIds.forEach { categoryId ->
-                threadPool.submit {
+                categoryIds.forEach { categoryId ->
+                    threadPool.execute {
 
-                    val connection =
-                        URL("$URL_CATEGORY/$categoryId/recipes").openConnection() as HttpURLConnection
-                    connection.connect()
+                        val threadPoolConnection =
+                            URL("$URL_CATEGORY/$categoryId/recipes").openConnection() as HttpURLConnection
 
-                    val jsonRecipe = connection.inputStream.bufferedReader().readText()
-                    val decodedRecipe = json.decodeFromString<List<Recipe>>(jsonRecipe)
+                        try {
+                            val jsonRecipe =
+                                threadPoolConnection.inputStream.bufferedReader().readText()
+                            val decodedRecipe = json.decodeFromString<List<Recipe>>(jsonRecipe)
 
-                    Log.i("!!!", "Recipes by CategoryId $categoryId: $decodedRecipe")
-
-                    connection.disconnect()
+                            Log.i("!!!", "Recipes by CategoryId $categoryId: $decodedRecipe")
+                        } catch (e: Exception) {
+                            Log.e(
+                                "network",
+                                "status code = ${threadPoolConnection.responseCode}, error = ${e.message}"
+                            )
+                        } finally {
+                            threadPoolConnection.disconnect()
+                        }
+                    }
                 }
+            } catch (e: Exception) {
+                Log.e(
+                    "network",
+                    "status code = ${basicThreadConnection.responseCode}, error = ${e.message}"
+                )
+            } finally {
+                basicThreadConnection.disconnect()
             }
-
-            connection.disconnect()
         }
         thread.start()
 
@@ -77,5 +90,10 @@ class MainActivity : AppCompatActivity() {
         mainActivityBinding.btnCategories.setOnClickListener {
             findNavController(R.id.navHostFragment).navigate(R.id.categoriesListFragment)
         }
+    }
+
+    override fun onDestroy() {
+        threadPool.shutdown()
+        super.onDestroy()
     }
 }
