@@ -4,21 +4,16 @@ import android.app.Application
 import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.recipesapp.R
-import com.example.recipesapp.data.ARG_RECIPE
 import com.example.recipesapp.data.FAVORITES
 import com.example.recipesapp.data.FAVORITES_SET
 import com.example.recipesapp.data.STUB
 import com.example.recipesapp.model.Recipe
-import com.example.recipesapp.ui.recipes.recipe.RecipeFragment
 
 class FavoritesViewModel(application: Application) : AndroidViewModel(application) {
 
