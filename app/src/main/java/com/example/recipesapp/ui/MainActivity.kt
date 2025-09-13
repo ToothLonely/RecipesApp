@@ -8,6 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.findNavController
 import com.example.recipesapp.R
+import com.example.recipesapp.data.COUNT_OF_THREADS
 import com.example.recipesapp.data.URL_CATEGORY
 import com.example.recipesapp.databinding.ActivityMainBinding
 import com.example.recipesapp.model.Category
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity() {
             "Binding for MainActivityBinding mustn't be null"
         )
 
-    private val threadPool = Executors.newFixedThreadPool(10)
+    private val threadPool = Executors.newFixedThreadPool(COUNT_OF_THREADS)
 
     private val json = Json {
         ignoreUnknownKeys = true
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val thread = Thread {
+        threadPool.execute {
             val basicThreadConnection = URL(URL_CATEGORY).openConnection() as HttpURLConnection
 
             try {
@@ -81,7 +82,6 @@ class MainActivity : AppCompatActivity() {
                 basicThreadConnection.disconnect()
             }
         }
-        thread.start()
 
         mainActivityBinding.btnFavorites.setOnClickListener {
             findNavController(R.id.navHostFragment).navigate(R.id.favoritesFragment)
