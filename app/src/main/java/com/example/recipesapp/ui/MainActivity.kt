@@ -16,6 +16,7 @@ import com.example.recipesapp.model.Recipe
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
@@ -32,7 +33,11 @@ class MainActivity : AppCompatActivity() {
         ignoreUnknownKeys = true
     }
 
-    private val client = OkHttpClient()
+    private val interceptor = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
+
+    private val client = OkHttpClient().newBuilder()
+        .addInterceptor(interceptor)
+        .build()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,8 +58,7 @@ class MainActivity : AppCompatActivity() {
             try {
                 client.newCall(getCategoriesRequest).execute().use { response ->
 
-                    val jsonResponse = response.body?.string()
-                        ?: throw java.lang.IllegalStateException("Cannot get response body, maybe response is null")
+                    val jsonResponse = response.body.string()
                     val decodedResponse = json.decodeFromString<List<Category>>(jsonResponse)
                     val categoryIds = decodedResponse.map { it.id }
 
@@ -67,8 +71,7 @@ class MainActivity : AppCompatActivity() {
 
                             try {
                                 client.newCall(getRecipesRequest).execute().use { response ->
-                                    val jsonResponse = response.body?.string()
-                                        ?: throw java.lang.IllegalStateException("Cannot get response body, maybe response is null")
+                                    val jsonResponse = response.body.string()
                                     val decodedResponse =
                                         json.decodeFromString<List<Recipe>>(jsonResponse)
 
