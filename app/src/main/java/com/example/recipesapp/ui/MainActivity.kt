@@ -14,8 +14,8 @@ import com.example.recipesapp.databinding.ActivityMainBinding
 import com.example.recipesapp.model.Category
 import com.example.recipesapp.model.Recipe
 import kotlinx.serialization.json.Json
-import java.net.HttpURLConnection
-import java.net.URL
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
@@ -32,6 +32,8 @@ class MainActivity : AppCompatActivity() {
         ignoreUnknownKeys = true
     }
 
+    private val client = OkHttpClient()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -44,42 +46,48 @@ class MainActivity : AppCompatActivity() {
         }
 
         threadPool.execute {
-            val basicThreadConnection = URL(URL_CATEGORY).openConnection() as HttpURLConnection
+            val getCategoriesRequest = Request.Builder()
+                .url(URL_CATEGORY)
+                .build()
 
             try {
-                val jsonInput = basicThreadConnection.inputStream.bufferedReader().readText()
-                val decodedData = json.decodeFromString<List<Category>>(jsonInput)
-                val categoryIds = decodedData.map { it.id }
+                client.newCall(getCategoriesRequest).execute().use { response ->
 
-                categoryIds.forEach { categoryId ->
-                    threadPool.execute {
+                    val jsonResponse = response.body?.string()
+                        ?: throw java.lang.IllegalStateException("Cannot get response body, maybe response is null")
+                    val decodedResponse = json.decodeFromString<List<Category>>(jsonResponse)
+                    val categoryIds = decodedResponse.map { it.id }
 
-                        val threadPoolConnection =
-                            URL("$URL_CATEGORY/$categoryId/recipes").openConnection() as HttpURLConnection
+                    categoryIds.forEach { categoryId ->
+                        threadPool.execute {
 
-                        try {
-                            val jsonRecipe =
-                                threadPoolConnection.inputStream.bufferedReader().readText()
-                            val decodedRecipe = json.decodeFromString<List<Recipe>>(jsonRecipe)
+                            val getRecipesRequest = Request.Builder()
+                                .url("$URL_CATEGORY/$categoryId/recipes")
+                                .build()
 
-                            Log.i("!!!", "Recipes by CategoryId $categoryId: $decodedRecipe")
-                        } catch (e: Exception) {
-                            Log.e(
-                                "network",
-                                "status code = ${threadPoolConnection.responseCode}, error = ${e.message}"
-                            )
-                        } finally {
-                            threadPoolConnection.disconnect()
+                            try {
+                                client.newCall(getRecipesRequest).execute().use { response ->
+                                    val jsonResponse = response.body?.string()
+                                        ?: throw java.lang.IllegalStateException("Cannot get response body, maybe response is null")
+                                    val decodedResponse =
+                                        json.decodeFromString<List<Recipe>>(jsonResponse)
+
+                                    Log.i(
+                                        "!!!",
+                                        "Recipes by CategoryId $categoryId: $decodedResponse"
+                                    )
+
+                                }
+                            } catch (e: Exception) {
+                                Log.e("!!!", "failure in getting recipes by category ids", e)
+                                e.printStackTrace()
+                            }
                         }
                     }
                 }
             } catch (e: Exception) {
-                Log.e(
-                    "network",
-                    "status code = ${basicThreadConnection.responseCode}, error = ${e.message}"
-                )
-            } finally {
-                basicThreadConnection.disconnect()
+                Log.e("!!!", "failure in getting categories", e)
+                e.printStackTrace()
             }
         }
 
