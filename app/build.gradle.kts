@@ -44,7 +44,9 @@ android {
 
 dependencies {
 
+    implementation("com.squareup.okhttp3:logging-interceptor:5.1.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+    implementation(libs.okhttp)
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.navigation.ui)
     implementation(libs.androidx.navigation.dynamic.features.fragment)
