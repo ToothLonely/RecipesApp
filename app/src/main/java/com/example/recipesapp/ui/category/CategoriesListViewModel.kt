@@ -32,18 +32,33 @@ class CategoriesListViewModel(application: Application) : AndroidViewModel(appli
     }
 
     private fun loadCategoryList(application: Application) {
+        val categories = listOf<Category>()
+        RecipesRepository.getCategories(object :
+            RepositoryCallback {
+            override fun onComplete(result: Result, categories: List<Category>): List<Category> {
+                return if (result is Result.Success<*>) {
+                    categories
+                } else {
+                    emptyList()
+                }
+            }
+        })
         _categoriesListLiveData.value = CategoriesListState(
             getString(application, R.string.tv_categories),
-            getDrawable(application, R.drawable.bcg_categories),
-            RecipesRepository.getCategories()
+            categoryImageBackground = getDrawable(application, R.drawable.bcg_categories),
+            dataSet =
         )
     }
 
     fun openRecipesByCategoryId(fragment: Fragment, categoryId: Int) {
-        val currentCategory: Category = RecipesRepository.getCategories().find { it.id == categoryId }
-            ?: throw IllegalArgumentException("Категория с ID $categoryId не найдена!")
+        val currentCategory: Category =
+            RecipesRepository.getCategories().find { it.id == categoryId }
+                ?: throw IllegalArgumentException("Категория с ID $categoryId не найдена!")
 
-        val action = CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(currentCategory)
+        val action =
+            CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(
+                currentCategory
+            )
 
         fragment.findNavController().navigate(action)
     }

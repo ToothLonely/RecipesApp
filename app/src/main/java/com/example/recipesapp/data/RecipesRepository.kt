@@ -10,13 +10,15 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.util.concurrent.Executors
 
 sealed class Result {
-    class Success(var data: Response<*>?) : Result()
+    class Success<T>(var data: T) : Result() {
+        val _data = data
+    }
 
     class Error(var exception: Exception?) : Result()
 }
 
 interface RepositoryCallback {
-    fun onComplete(result: Result)
+    fun onComplete(result: Result, categories: List<Category>): List<Category>
 }
 
 object RecipesRepository {
@@ -31,9 +33,19 @@ object RecipesRepository {
 
     private val service = client.create(RecipeApiService::class.java)
 
-    fun getCategories(): List<Category> {
-        return service.getCategories().execute().body()
-            ?: throw IllegalStateException("cannot get categories")
+    fun getCategories(callback: RepositoryCallback): List<Category> {
+        try {
+            threadPool.execute {
+                val response = service.getCategories().execute()
+                val result = Result.Success<List<Category>>(response.body()!!)
+                return@execute callback.onComplete(result, result.data)
+            }
+        } catch (e: Exception) {
+            val result = Result.Error(e)
+            callback.onComplete(result, emptyList())
+            throw IllegalStateException("fasfs")
+        }
+
     }
 
     fun getRecipesByCategoryId(id: Int?): List<Recipe> {
