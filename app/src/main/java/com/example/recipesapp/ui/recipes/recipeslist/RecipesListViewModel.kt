@@ -8,7 +8,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
-import com.example.recipesapp.data.STUB
+import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.model.Category
 import com.example.recipesapp.model.Recipe
 
@@ -46,7 +46,7 @@ class RecipesListViewModel(
         _recipesListLiveData.value = RecipesListState(
             category.title,
             categoryImage,
-            STUB.getRecipesByCategoryId(category.id),
+            RecipesRepository.getRecipesByCategoryId(category.id),
         )
     }
 

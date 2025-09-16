@@ -11,7 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.recipesapp.data.DEFAULT_NUMBER_OF_PORTIONS
 import com.example.recipesapp.data.FAVORITES
 import com.example.recipesapp.data.FAVORITES_SET
-import com.example.recipesapp.data.STUB
+import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.model.Ingredient
 import com.example.recipesapp.model.toRecipeState
 
@@ -42,7 +42,7 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
     }
 
     private fun loadRecipe(recipeId: Int) {
-        val recipe = STUB.getRecipeById(recipeId)
+        val recipe = RecipesRepository.getRecipeById(recipeId)
         _recipeLiveData.value = recipe.toRecipeState()
         _recipeLiveData.value?.apply {
             isFavorite = id.toString() in favoritesSet
