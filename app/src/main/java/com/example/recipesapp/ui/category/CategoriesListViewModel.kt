@@ -10,7 +10,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.recipesapp.R
-import com.example.recipesapp.data.STUB
+import com.example.recipesapp.data.RecipesRepository
+import com.example.recipesapp.data.RepositoryCallback
+import com.example.recipesapp.data.Result
 import com.example.recipesapp.model.Category
 
 class CategoriesListViewModel(application: Application) : AndroidViewModel(application) {
@@ -33,12 +35,12 @@ class CategoriesListViewModel(application: Application) : AndroidViewModel(appli
         _categoriesListLiveData.value = CategoriesListState(
             getString(application, R.string.tv_categories),
             getDrawable(application, R.drawable.bcg_categories),
-            STUB.getCategories()
+            RecipesRepository.getCategories()
         )
     }
 
     fun openRecipesByCategoryId(fragment: Fragment, categoryId: Int) {
-        val currentCategory: Category = STUB.getCategories().find { it.id == categoryId }
+        val currentCategory: Category = RecipesRepository.getCategories().find { it.id == categoryId }
             ?: throw IllegalArgumentException("Категория с ID $categoryId не найдена!")
 
         val action = CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(currentCategory)

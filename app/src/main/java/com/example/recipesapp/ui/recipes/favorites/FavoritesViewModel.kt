@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.recipesapp.R
 import com.example.recipesapp.data.FAVORITES
 import com.example.recipesapp.data.FAVORITES_SET
-import com.example.recipesapp.data.STUB
+import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.model.Recipe
 
 class FavoritesViewModel(application: Application) : AndroidViewModel(application) {
@@ -50,7 +50,7 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
             if (isVisible) FavoritesLayoutState(
                 application.getString(R.string.tv_favorites),
                 getDrawable(application, R.drawable.bcg_favorites),
-                STUB.getRecipesByIds(getFavorites()),
+                RecipesRepository.getRecipesByIds(getFavorites()),
             ) else null,
         )
     }
