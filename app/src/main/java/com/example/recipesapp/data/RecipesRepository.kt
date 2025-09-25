@@ -4,26 +4,10 @@ import com.example.recipesapp.model.Category
 import com.example.recipesapp.model.Recipe
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
-import java.util.concurrent.Executors
 
-sealed class Result {
-    class Success<T>(var data: T) : Result() {
-        val _data = data
-    }
-
-    class Error(var exception: Exception?) : Result()
-}
-
-interface RepositoryCallback {
-    fun onComplete(result: Result, categories: List<Category>): List<Category>
-}
-
-object RecipesRepository {
-
-    private val threadPool = Executors.newFixedThreadPool(COUNT_OF_THREADS)
+class RecipesRepository {
     private val client = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(
@@ -33,40 +17,43 @@ object RecipesRepository {
 
     private val service = client.create(RecipeApiService::class.java)
 
-    fun getCategories(callback: RepositoryCallback): List<Category> {
-        try {
-            threadPool.execute {
-                val response = service.getCategories().execute()
-                val result = Result.Success<List<Category>>(response.body()!!)
-                return@execute callback.onComplete(result, result.data)
-            }
+    suspend fun getCategories(): List<Category>? {
+        return try {
+            service.getCategories().execute().body()
         } catch (e: Exception) {
-            val result = Result.Error(e)
-            callback.onComplete(result, emptyList())
-            throw IllegalStateException("fasfs")
+            null
         }
-
     }
 
-    fun getRecipesByCategoryId(id: Int?): List<Recipe> {
-        return service.getRecipesByCategoryId(id).execute().body()
-            ?: throw IllegalStateException("cannot get recipes by categoryId: $id")
+    suspend fun getRecipesByCategoryId(id: Int?): List<Recipe>? {
+        return try {
+            service.getRecipesByCategoryId(id).execute().body()
+        } catch (e: Exception) {
+            null
+        }
     }
 
-    fun getRecipeById(recipeId: Int): Recipe {
-        return service.getRecipeById(recipeId).execute().body()
-            ?: throw IllegalStateException("cannot get recipe by recipeId: $recipeId")
+    suspend fun getRecipeById(recipeId: Int): Recipe? {
+        return try {
+            service.getRecipeById(recipeId).execute().body()
+        } catch (e: Exception) {
+            null
+        }
     }
 
-    fun getRecipesByIds(set: Set<String>): List<Recipe> {
-        return service.getRecipesByIds(set.joinToString(",")).execute().body()
-            ?: throw IllegalStateException("cannot get recipes by ids")
+    suspend fun getRecipesByIds(set: Set<String>): List<Recipe>? {
+        return try {
+            service.getRecipesByIds(set.joinToString(",")).execute().body()
+        } catch (e: Exception) {
+            null
+        }
     }
 
-    fun getCategoryById(id: Int): Category {
-        return service.getCategoryById(id).execute().body()
-            ?: throw IllegalStateException("cannot get category by categoryId: $id")
+    suspend fun getCategoryById(id: Int): Category? {
+        return try {
+            service.getCategoryById(id).execute().body()
+        } catch (e: Exception) {
+            null
+        }
     }
-
-
 }

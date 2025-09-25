@@ -4,16 +4,25 @@ import android.app.Application
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.Log
+import android.widget.Toast
+import androidx.core.content.ContextCompat.getString
 import androidx.core.content.edit
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.application
+import androidx.lifecycle.viewModelScope
+import com.example.recipesapp.R
 import com.example.recipesapp.data.DEFAULT_NUMBER_OF_PORTIONS
 import com.example.recipesapp.data.FAVORITES
 import com.example.recipesapp.data.FAVORITES_SET
 import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.model.Ingredient
+import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.model.toRecipeState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RecipeViewModel(private val recipeId: Int, application: Application) :
     AndroidViewModel(application) {
@@ -25,6 +34,8 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
     private val sharedPrefs = application.getSharedPreferences(FAVORITES, Context.MODE_PRIVATE)
 
     private val favoritesSet = getFavorites()
+
+    private val recipesRepo = RecipesRepository()
 
     data class RecipeState(
         val id: Int? = null,
@@ -38,12 +49,14 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
     )
 
     init {
-        loadRecipe(recipeId)
+        viewModelScope.launch {
+            loadRecipe(recipeId)
+        }
     }
 
-    private fun loadRecipe(recipeId: Int) {
-        val recipe = RecipesRepository.getRecipeById(recipeId)
-        _recipeLiveData.value = recipe.toRecipeState()
+    private suspend fun loadRecipe(recipeId: Int) {
+        val recipe = getRecipeById(recipeId)
+        _recipeLiveData.value = recipe?.toRecipeState()
         _recipeLiveData.value?.apply {
             isFavorite = id.toString() in favoritesSet
             portionsCount = DEFAULT_NUMBER_OF_PORTIONS
@@ -60,6 +73,25 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
                 Log.e("RecipeViewModel", "Cannot create drawable from assets")
                 null
             }
+        }
+    }
+
+    private suspend fun getRecipeById(recipeId: Int): Recipe? {
+        val recipe = withContext(Dispatchers.IO){
+            recipesRepo.getRecipeById(recipeId)
+        }
+
+        return when (recipe) {
+            null -> {
+                Toast.makeText(
+                    application,
+                    getString(application, R.string.network_error),
+                    Toast.LENGTH_SHORT
+                ).show()
+                null
+            }
+
+            else -> recipe
         }
     }
 
@@ -91,5 +123,4 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
     fun setPortionsCount(newPortionsCount: Int) {
         _recipeLiveData.value = _recipeLiveData.value?.copy(portionsCount = newPortionsCount)
     }
-
 }

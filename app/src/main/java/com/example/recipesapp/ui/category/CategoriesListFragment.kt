@@ -35,7 +35,9 @@ class CategoriesListFragment : Fragment() {
     }
 
     private fun initUI() {
-        val categoriesAdapter = CategoriesListAdapter(viewModel.categoriesListLiveData.value?.dataSet ?: emptyList())
+        val categoriesAdapter = CategoriesListAdapter(
+            viewModel.categoriesListLiveData.value?.dataSet ?: emptyList()
+        )
 
         categoriesListFragmentBinding.rvCategories.apply {
             layoutManager = GridLayoutManager(requireContext(), 2)
