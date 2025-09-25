@@ -84,6 +84,9 @@ class RecipeFragment : Fragment() {
 
         viewModel.recipeLiveData.observe(viewLifecycleOwner, Observer {
 
+            ingredientsAdapter.setNewDataSet(it.ingredients)
+            methodAdapter.setNewDataSet(it.method)
+
             val icon =
                 if (it.isFavorite == true) R.drawable.ic_heart_big
                 else R.drawable.ic_heart_empty_big

@@ -46,6 +46,8 @@ class CategoriesListFragment : Fragment() {
 
         viewModel.categoriesListLiveData.observe(viewLifecycleOwner, Observer {
 
+            categoriesAdapter.setNewDataSet(it.dataSet ?: emptyList())
+
             with(categoriesListFragmentBinding) {
                 tvCategories.text = it?.categoryTitle
                 ivBckCategories.background = it?.categoryImageBackground

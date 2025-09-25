@@ -47,6 +47,9 @@ class FavoritesFragment : Fragment() {
         }
 
         viewModel.favoritesLiveData.observe(viewLifecycleOwner, Observer {
+
+            favoritesListAdapter.setNewDataSet(it.favoritesLayoutState?.dataSet ?: emptyList())
+
             if (it?.isVisible == false) {
                 with(fragmentFavoritesBinding) {
                     tvDefaultFavorites.visibility = View.VISIBLE

@@ -74,6 +74,8 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
                 null
             }
         }
+
+        _recipeLiveData.value = _recipeLiveData.value
     }
 
     private suspend fun getRecipeById(recipeId: Int): Recipe? {

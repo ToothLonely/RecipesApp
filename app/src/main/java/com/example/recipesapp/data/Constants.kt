@@ -5,6 +5,3 @@ const val DEFAULT_NUMBER_OF_PORTIONS = 1
 const val FAVORITES = "Favorites"
 const val FAVORITES_SET = "Favorites set"
 const val BASE_URL = "https://recipes.androidsprint.ru/api/"
-const val URL_CATEGORY = "${BASE_URL}category"
-
-const val NUMBER_OF_THREADS = 10

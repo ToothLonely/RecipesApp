@@ -9,8 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.recipesapp.R
 import com.example.recipesapp.databinding.ItemCategoryBinding
 import com.example.recipesapp.model.Category
+import com.example.recipesapp.model.Recipe
 
-class CategoriesListAdapter(private val dataSet: List<Category>) :
+class CategoriesListAdapter(private var dataSet: List<Category>) :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
 
     private var itemClickListener: OnItemClickListener? = null
@@ -58,9 +59,12 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
                 itemClickListener?.onItemClick(categoryId)
             }
         }
-
     }
 
     override fun getItemCount() = dataSet.size
 
+    fun setNewDataSet(newDataSet: List<Category>) {
+        dataSet = newDataSet
+        notifyDataSetChanged()
+    }
 }

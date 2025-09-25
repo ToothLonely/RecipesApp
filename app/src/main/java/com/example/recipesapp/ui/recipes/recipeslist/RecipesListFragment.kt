@@ -59,6 +59,8 @@ class RecipesListFragment : Fragment() {
 
         viewModel.recipesListLiveData.observe(viewLifecycleOwner, Observer {
 
+            recipesListAdapter.setNewDataSet(it.dataSet ?: emptyList())
+
             with(recipesListFragmentBinding) {
                 tvCategoryName.text = it?.title
                 ivCategoryBck.setImageDrawable(it?.image)
