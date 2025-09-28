@@ -32,8 +32,6 @@ class CategoriesListViewModel(application: Application) : AndroidViewModel(appli
         val dataSet: List<Category>? = listOf(),
     )
 
-    val recipeRepo = RecipesRepository()
-
     init {
         viewModelScope.launch {
             loadCategoryList(application)
@@ -50,7 +48,7 @@ class CategoriesListViewModel(application: Application) : AndroidViewModel(appli
 
     private suspend fun getCategories(): List<Category>? {
         val categories = withContext(Dispatchers.IO) {
-            recipeRepo.getCategories()
+            RecipesRepository.getCategories()
         }
 
         return when (categories) {

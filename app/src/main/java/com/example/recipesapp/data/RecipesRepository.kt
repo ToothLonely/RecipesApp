@@ -7,7 +7,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
-class RecipesRepository {
+object RecipesRepository {
     private val client = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(

@@ -30,8 +30,6 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
 
     private val sharedPrefs = application.getSharedPreferences(FAVORITES, Context.MODE_PRIVATE)
 
-    private val recipesRepo = RecipesRepository()
-
     data class FavoritesState(
         val isVisible: Boolean? = null,
         val favoritesLayoutState: FavoritesLayoutState? = null
@@ -70,7 +68,7 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
 
     private suspend fun getRecipesByIds(set: Set<String>): List<Recipe>? {
         val recipes = withContext(Dispatchers.IO) {
-            recipesRepo.getRecipesByIds(set)
+            RecipesRepository.getRecipesByIds(set)
         }
 
         return when (recipes) {
