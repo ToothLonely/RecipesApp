@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.recipesapp.R
 import com.example.recipesapp.databinding.FragmentRecipesListBinding
 import java.lang.IllegalStateException
 
@@ -60,6 +62,14 @@ class RecipesListFragment : Fragment() {
         viewModel.recipesListLiveData.observe(viewLifecycleOwner, Observer {
 
             recipesListAdapter.setNewDataSet(it.dataSet ?: emptyList())
+
+            if (it.dataSet == null) {
+                Toast.makeText(
+                    context,
+                    getString(R.string.network_error),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
 
             with(recipesListFragmentBinding) {
                 tvCategoryName.text = it?.title

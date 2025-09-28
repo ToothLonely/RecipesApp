@@ -77,21 +77,8 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
     }
 
     private suspend fun getRecipeById(recipeId: Int): Recipe? {
-        val recipe = withContext(Dispatchers.IO){
+        return withContext(Dispatchers.IO){
             RecipesRepository.getRecipeById(recipeId)
-        }
-
-        return when (recipe) {
-            null -> {
-                Toast.makeText(
-                    application,
-                    getString(application, R.string.network_error),
-                    Toast.LENGTH_SHORT
-                ).show()
-                null
-            }
-
-            else -> recipe
         }
     }
 

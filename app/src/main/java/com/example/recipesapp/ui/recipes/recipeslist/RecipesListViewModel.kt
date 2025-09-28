@@ -61,21 +61,8 @@ class RecipesListViewModel(
     }
 
     private suspend fun getRecipesByCategoryId(categoryId: Int?): List<Recipe>? {
-        val category = withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.IO) {
             RecipesRepository.getRecipesByCategoryId(categoryId)
-        }
-
-        return when (category) {
-            null -> {
-                Toast.makeText(
-                    application,
-                    getString(application, R.string.network_error),
-                    Toast.LENGTH_SHORT
-                ).show()
-                null
-            }
-
-            else -> category
         }
     }
 

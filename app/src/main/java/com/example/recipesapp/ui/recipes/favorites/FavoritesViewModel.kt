@@ -67,21 +67,8 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     private suspend fun getRecipesByIds(set: Set<String>): List<Recipe>? {
-        val recipes = withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.IO) {
             RecipesRepository.getRecipesByIds(set)
-        }
-
-        return when (recipes) {
-            null -> {
-                Toast.makeText(
-                    application,
-                    getString(application, R.string.network_error),
-                    Toast.LENGTH_SHORT
-                ).show()
-                null
-            }
-
-            else -> recipes
         }
     }
 

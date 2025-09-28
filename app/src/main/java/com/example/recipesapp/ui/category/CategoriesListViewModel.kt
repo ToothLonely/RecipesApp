@@ -47,21 +47,8 @@ class CategoriesListViewModel(application: Application) : AndroidViewModel(appli
     }
 
     private suspend fun getCategories(): List<Category>? {
-        val categories = withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.IO) {
             RecipesRepository.getCategories()
-        }
-
-        return when (categories) {
-            null -> {
-                Toast.makeText(
-                    application,
-                    getString(application, R.string.network_error),
-                    Toast.LENGTH_SHORT
-                ).show()
-                null
-            }
-
-            else -> categories
         }
     }
 
