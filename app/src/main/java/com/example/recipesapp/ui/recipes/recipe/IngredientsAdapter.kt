@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.recipesapp.R
 import com.example.recipesapp.databinding.ItemIngredientBinding
 import com.example.recipesapp.model.Ingredient
+import com.example.recipesapp.model.Recipe
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -53,5 +54,10 @@ class IngredientsAdapter(var dataSet: List<Ingredient>) :
             .setScale(1, RoundingMode.HALF_UP)
             .stripTrailingZeros()
             .toPlainString()
+    }
+
+    fun setNewDataSet(newDataSet: List<Ingredient>) {
+        dataSet = newDataSet
+        notifyDataSetChanged()
     }
 }

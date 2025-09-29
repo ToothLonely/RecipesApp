@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -83,6 +84,17 @@ class RecipeFragment : Fragment() {
         }
 
         viewModel.recipeLiveData.observe(viewLifecycleOwner, Observer {
+
+            ingredientsAdapter.setNewDataSet(it.ingredients)
+            methodAdapter.setNewDataSet(it.method)
+
+            if (it == null) {
+                Toast.makeText(
+                    context,
+                    getString(R.string.network_error),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
 
             val icon =
                 if (it.isFavorite == true) R.drawable.ic_heart_big

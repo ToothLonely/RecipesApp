@@ -2,16 +2,23 @@ package com.example.recipesapp.ui.category
 
 import android.app.Application
 import android.graphics.drawable.Drawable
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.content.ContextCompat.getString
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.application
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.recipesapp.R
-import com.example.recipesapp.data.STUB
+import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.model.Category
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.Dispatcher
 
 class CategoriesListViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -22,28 +29,42 @@ class CategoriesListViewModel(application: Application) : AndroidViewModel(appli
     data class CategoriesListState(
         val categoryTitle: String? = null,
         val categoryImageBackground: Drawable? = null,
-        val dataSet: List<Category> = listOf(),
+        val dataSet: List<Category>? = listOf(),
     )
 
     init {
-        loadCategoryList(application)
+        viewModelScope.launch {
+            loadCategoryList(application)
+        }
     }
 
-    private fun loadCategoryList(application: Application) {
+    private suspend fun loadCategoryList(application: Application) {
         _categoriesListLiveData.value = CategoriesListState(
-            getString(application, R.string.tv_categories),
-            getDrawable(application, R.drawable.bcg_categories),
-            STUB.getCategories()
+            categoryTitle = getString(application, R.string.tv_categories),
+            categoryImageBackground = getDrawable(application, R.drawable.bcg_categories),
+            dataSet = getCategories()
         )
     }
 
+    private suspend fun getCategories(): List<Category>? {
+        return withContext(Dispatchers.IO) {
+            RecipesRepository.getCategories()
+        }
+    }
+
     fun openRecipesByCategoryId(fragment: Fragment, categoryId: Int) {
-        val currentCategory: Category = STUB.getCategories().find { it.id == categoryId }
-            ?: throw IllegalArgumentException("Категория с ID $categoryId не найдена!")
+        viewModelScope.launch {
+            val currentCategory: Category =
+                getCategories()?.find { it.id == categoryId }
+                    ?: throw IllegalArgumentException("Категория с ID $categoryId не найдена!")
 
-        val action = CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(currentCategory)
+            val action =
+                CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(
+                    currentCategory
+                )
 
-        fragment.findNavController().navigate(action)
+            fragment.findNavController().navigate(action)
+        }
     }
 
 }

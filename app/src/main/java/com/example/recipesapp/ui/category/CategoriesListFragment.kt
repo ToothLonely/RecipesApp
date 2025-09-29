@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.recipesapp.R
 import com.example.recipesapp.databinding.FragmentListCategoriesBinding
 
 class CategoriesListFragment : Fragment() {
@@ -35,7 +37,9 @@ class CategoriesListFragment : Fragment() {
     }
 
     private fun initUI() {
-        val categoriesAdapter = CategoriesListAdapter(viewModel.categoriesListLiveData.value?.dataSet ?: emptyList())
+        val categoriesAdapter = CategoriesListAdapter(
+            viewModel.categoriesListLiveData.value?.dataSet ?: emptyList()
+        )
 
         categoriesListFragmentBinding.rvCategories.apply {
             layoutManager = GridLayoutManager(requireContext(), 2)
@@ -43,6 +47,16 @@ class CategoriesListFragment : Fragment() {
         }
 
         viewModel.categoriesListLiveData.observe(viewLifecycleOwner, Observer {
+
+            categoriesAdapter.setNewDataSet(it.dataSet ?: emptyList())
+
+            if (it.dataSet == null) {
+                Toast.makeText(
+                    context,
+                    getString(R.string.network_error),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
 
             with(categoriesListFragmentBinding) {
                 tvCategories.text = it?.categoryTitle

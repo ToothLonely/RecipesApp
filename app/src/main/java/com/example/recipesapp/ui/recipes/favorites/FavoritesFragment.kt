@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.recipesapp.R
 import com.example.recipesapp.databinding.FragmentFavoritesBinding
 import com.example.recipesapp.ui.recipes.recipeslist.RecipesListAdapter
 
@@ -47,6 +49,18 @@ class FavoritesFragment : Fragment() {
         }
 
         viewModel.favoritesLiveData.observe(viewLifecycleOwner, Observer {
+
+            favoritesListAdapter.setNewDataSet(it.favoritesLayoutState?.dataSet ?: emptyList())
+
+            if (it.favoritesLayoutState?.dataSet == null) {
+                Toast.makeText(
+                    context,
+                    getString(R.string.network_error),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+
             if (it?.isVisible == false) {
                 with(fragmentFavoritesBinding) {
                     tvDefaultFavorites.visibility = View.VISIBLE

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipesapp.R
 import com.example.recipesapp.databinding.ItemMethodBinding
+import com.example.recipesapp.model.Recipe
 
 class MethodAdapter(var dataSet: List<String>) :
     RecyclerView.Adapter<MethodAdapter.ViewHolder>() {
@@ -27,4 +28,9 @@ class MethodAdapter(var dataSet: List<String>) :
     }
 
     override fun getItemCount(): Int = dataSet.size
+
+    fun setNewDataSet(newDataSet: List<String>) {
+        dataSet = newDataSet
+        notifyDataSetChanged()
+    }
 }

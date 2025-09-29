@@ -13,4 +13,5 @@
     <string name="cd_icon_heart">Icon favorites</string>
     <string name="cd_favorites_image">image favorites</string>
     <string name="tv_default_favorites">You haven\'t added any recipes in favorites yet</string>
+    <string name="network_error">Error getting data</string>
 </resources>
