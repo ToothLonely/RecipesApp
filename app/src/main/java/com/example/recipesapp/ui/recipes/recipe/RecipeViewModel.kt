@@ -16,6 +16,7 @@ import com.example.recipesapp.R
 import com.example.recipesapp.data.DEFAULT_NUMBER_OF_PORTIONS
 import com.example.recipesapp.data.FAVORITES
 import com.example.recipesapp.data.FAVORITES_SET
+import com.example.recipesapp.data.IMAGE_URL
 import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.model.Ingredient
 import com.example.recipesapp.model.Recipe
@@ -43,7 +44,7 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
         val imageUrl: String? = null,
         var isFavorite: Boolean? = null,
         var portionsCount: Int? = null,
-        var recipeImage: Drawable? = null,
+        var recipeImage: String? = null,
     )
 
     init {
@@ -58,19 +59,7 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
         _recipeLiveData.value?.apply {
             isFavorite = id.toString() in favoritesSet
             portionsCount = DEFAULT_NUMBER_OF_PORTIONS
-            recipeImage = try {
-                Drawable.createFromStream(
-                    imageUrl?.let {
-                        getApplication<Application>().applicationContext?.assets?.open(
-                            it
-                        )
-                    },
-                    null
-                )
-            } catch (e: Exception) {
-                Log.e("RecipeViewModel", "Cannot create drawable from assets")
-                null
-            }
+            recipeImage = "$IMAGE_URL${recipe?.imageUrl}"
         }
 
         _recipeLiveData.value = _recipeLiveData.value

@@ -13,6 +13,7 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.example.recipesapp.data.DEFAULT_NUMBER_OF_PORTIONS
 import com.example.recipesapp.R
 
@@ -102,9 +103,14 @@ class RecipeFragment : Fragment() {
 
             with(recipeFragmentBinding) {
                 tvRecipeTitle.text = it.title
-                ivRecipeBcg.setImageDrawable(it.recipeImage)
                 tvPortion.text = portionString
                 tvNumberOfPortions.text = it.portionsCount.toString()
+
+                Glide.with(requireContext())
+                    .load(it.recipeImage)
+                    .placeholder(R.drawable.img_placeholder)
+                    .error(R.drawable.img_error)
+                    .into(ivRecipeBcg)
 
                 ibFavorites.setImageDrawable(
                     getDrawable(

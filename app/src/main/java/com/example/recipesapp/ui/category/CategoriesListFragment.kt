@@ -38,7 +38,8 @@ class CategoriesListFragment : Fragment() {
 
     private fun initUI() {
         val categoriesAdapter = CategoriesListAdapter(
-            viewModel.categoriesListLiveData.value?.dataSet ?: emptyList()
+            viewModel.categoriesListLiveData.value?.dataSet ?: emptyList(),
+            this
         )
 
         categoriesListFragmentBinding.rvCategories.apply {
@@ -60,7 +61,6 @@ class CategoriesListFragment : Fragment() {
 
             with(categoriesListFragmentBinding) {
                 tvCategories.text = it?.categoryTitle
-                ivBckCategories.background = it?.categoryImageBackground
             }
 
             categoriesAdapter.setOnItemClickListener(object :

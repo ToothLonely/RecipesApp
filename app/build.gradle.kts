@@ -44,6 +44,7 @@ android {
 
 dependencies {
 
+    implementation(libs.glide)
     implementation(libs.converter.kotlinx.serialization)
     implementation(libs.logging.interceptor)
     implementation(libs.kotlinx.serialization.json)

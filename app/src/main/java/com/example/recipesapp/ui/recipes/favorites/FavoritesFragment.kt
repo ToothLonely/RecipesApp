@@ -41,7 +41,10 @@ class FavoritesFragment : Fragment() {
     private fun initFavorites() {
 
         val favoritesListAdapter =
-            RecipesListAdapter(viewModel.favoritesLiveData.value?.favoritesLayoutState?.dataSet ?: emptyList())
+            RecipesListAdapter(
+                viewModel.favoritesLiveData.value?.favoritesLayoutState?.dataSet ?: emptyList(),
+                this
+            )
 
         fragmentFavoritesBinding.rvFavorites.apply {
             layoutManager = LinearLayoutManager(requireContext())
