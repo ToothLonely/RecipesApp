@@ -17,41 +17,41 @@ object RecipesRepository {
 
     private val service = client.create(RecipeApiService::class.java)
 
-    fun getCategories(): List<Category>? {
+    suspend fun getCategories(): List<Category>? {
         return try {
-            service.getCategories().execute().body()
+            service.getCategories()
         } catch (e: Exception) {
             null
         }
     }
 
-    fun getRecipesByCategoryId(id: Int?): List<Recipe>? {
+    suspend fun getRecipesByCategoryId(id: Int?): List<Recipe>? {
         return try {
-            service.getRecipesByCategoryId(id).execute().body()
+            service.getRecipesByCategoryId(id)
         } catch (e: Exception) {
             null
         }
     }
 
-    fun getRecipeById(recipeId: Int): Recipe? {
+    suspend fun getRecipeById(recipeId: Int): Recipe? {
         return try {
-            service.getRecipeById(recipeId).execute().body()
+            service.getRecipeById(recipeId)
         } catch (e: Exception) {
             null
         }
     }
 
-    fun getRecipesByIds(set: Set<String>): List<Recipe>? {
+    suspend fun getRecipesByIds(set: Set<String>): List<Recipe>? {
         return try {
-            service.getRecipesByIds(set.joinToString(",")).execute().body()
+            service.getRecipesByIds(set.joinToString(","))
         } catch (e: Exception) {
             null
         }
     }
 
-    fun getCategoryById(id: Int): Category? {
+    suspend fun getCategoryById(id: Int): Category? {
         return try {
-            service.getCategoryById(id).execute().body()
+            service.getCategoryById(id)
         } catch (e: Exception) {
             null
         }
