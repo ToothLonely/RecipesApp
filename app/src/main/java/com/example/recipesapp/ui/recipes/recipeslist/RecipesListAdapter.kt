@@ -1,16 +1,17 @@
 package com.example.recipesapp.ui.recipes.recipeslist
 
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.recipesapp.R
+import com.example.recipesapp.data.IMAGE_URL
 import com.example.recipesapp.databinding.ItemRecipeBinding
 import com.example.recipesapp.model.Recipe
 
-class RecipesListAdapter(private var dataSet: List<Recipe>) :
+class RecipesListAdapter(private var dataSet: List<Recipe>, fragment: Fragment) :
     RecyclerView.Adapter<RecipesListAdapter.ViewHolder>() {
 
     private var itemClickListener: OnItemClickListener? = null
@@ -22,6 +23,8 @@ class RecipesListAdapter(private var dataSet: List<Recipe>) :
     fun setOnItemClickListener(listener: OnItemClickListener) {
         itemClickListener = listener
     }
+
+    private val glide = Glide.with(fragment)
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val itemRecipeBinding = ItemRecipeBinding.bind(view)
@@ -38,20 +41,15 @@ class RecipesListAdapter(private var dataSet: List<Recipe>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val recipe = dataSet[position]
-        val drawable = try {
-            Drawable.createFromStream(
-                holder.itemView.context?.assets?.open(recipe.imageUrl),
-                null
-            )
-        } catch (e: Exception) {
-            val stackTrace = Log.getStackTraceString(e)
-            Log.e("OnBindViewHolder", stackTrace)
-            null
-        }
 
         with(holder) {
             tvRecipeName.text = recipe.title
-            ivBcgRecipe.setImageDrawable(drawable)
+
+            glide.load("$IMAGE_URL${recipe.imageUrl}")
+                .placeholder(R.drawable.img_placeholder)
+                .error(R.drawable.img_error)
+                .into(ivBcgRecipe)
+
             cvRecipe.setOnClickListener {
                 itemClickListener?.onItemClick(recipe.id)
             }

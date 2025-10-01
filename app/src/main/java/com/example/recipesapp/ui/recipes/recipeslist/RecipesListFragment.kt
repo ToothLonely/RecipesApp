@@ -10,7 +10,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.recipesapp.R
+import com.example.recipesapp.data.IMAGE_URL
 import com.example.recipesapp.databinding.FragmentRecipesListBinding
 import java.lang.IllegalStateException
 
@@ -52,7 +54,10 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun initCategory() {
-        val recipesListAdapter = RecipesListAdapter(viewModel.recipesListLiveData.value?.dataSet ?: emptyList())
+        val recipesListAdapter = RecipesListAdapter(
+            viewModel.recipesListLiveData.value?.dataSet ?: emptyList(),
+            this
+        )
 
         recipesListFragmentBinding.rvRecipes.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -73,7 +78,12 @@ class RecipesListFragment : Fragment() {
 
             with(recipesListFragmentBinding) {
                 tvCategoryName.text = it?.title
-                ivCategoryBck.setImageDrawable(it?.image)
+
+                Glide.with(requireContext())
+                    .load(it.image)
+                    .placeholder(R.drawable.img_placeholder)
+                    .error(R.drawable.img_error)
+                    .into(ivCategoryBck)
             }
 
             recipesListAdapter.setOnItemClickListener(object :

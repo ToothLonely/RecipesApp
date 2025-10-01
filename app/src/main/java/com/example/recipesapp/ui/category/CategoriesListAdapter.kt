@@ -1,17 +1,17 @@
 package com.example.recipesapp.ui.category
 
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.recipesapp.R
+import com.example.recipesapp.data.IMAGE_URL
 import com.example.recipesapp.databinding.ItemCategoryBinding
 import com.example.recipesapp.model.Category
-import com.example.recipesapp.model.Recipe
 
-class CategoriesListAdapter(private var dataSet: List<Category>) :
+class CategoriesListAdapter(private var dataSet: List<Category>, private val fragment: Fragment) :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
 
     private var itemClickListener: OnItemClickListener? = null
@@ -19,6 +19,8 @@ class CategoriesListAdapter(private var dataSet: List<Category>) :
     interface OnItemClickListener {
         fun onItemClick(categoryId: Int)
     }
+
+    private val glide = Glide.with(fragment)
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
         itemClickListener = listener
@@ -40,20 +42,16 @@ class CategoriesListAdapter(private var dataSet: List<Category>) :
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val category = dataSet[position]
-        val drawable = try {
-            Drawable.createFromStream(
-                viewHolder.itemView.context?.assets?.open(category.imageUrl),
-                null
-            )
-        } catch (e: Exception) {
-            val stackTrace = Log.getStackTraceString(e)
-            Log.e("OnBindViewHolder", stackTrace)
-            null
-        }
+
         with(viewHolder) {
             tvCategoryName.text = category.title
             tvCategoryDescription.text = category.description
-            ivCategoryHead.setImageDrawable(drawable)
+
+            glide.load("$IMAGE_URL${category.imageUrl}")
+                .placeholder(R.drawable.img_placeholder)
+                .error(R.drawable.img_error)
+                .into(ivCategoryHead)
+
             cvCategory.setOnClickListener {
                 val categoryId: Int = category.id
                 itemClickListener?.onItemClick(categoryId)

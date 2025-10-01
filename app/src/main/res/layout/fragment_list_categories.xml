@@ -16,7 +16,7 @@
             android:id="@+id/ivBckCategories"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:background="@drawable/bcg_categories"
+            android:background="@drawable/bcg_categories"
             android:contentDescription="@string/cd_categories_background"
             android:scaleType="center"
             app:layout_constraintBottom_toBottomOf="parent"
