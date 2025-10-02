@@ -2,6 +2,8 @@ package com.example.recipesapp.data
 
 import com.example.recipesapp.model.Category
 import com.example.recipesapp.model.Recipe
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
@@ -19,7 +21,9 @@ object RecipesRepository {
 
     suspend fun getCategories(): List<Category>? {
         return try {
-            service.getCategories()
+            withContext(Dispatchers.IO) {
+                service.getCategories()
+            }
         } catch (e: Exception) {
             null
         }
@@ -27,7 +31,9 @@ object RecipesRepository {
 
     suspend fun getRecipesByCategoryId(id: Int?): List<Recipe>? {
         return try {
-            service.getRecipesByCategoryId(id)
+            withContext(Dispatchers.IO) {
+                service.getRecipesByCategoryId(id)
+            }
         } catch (e: Exception) {
             null
         }
@@ -35,7 +41,9 @@ object RecipesRepository {
 
     suspend fun getRecipeById(recipeId: Int): Recipe? {
         return try {
-            service.getRecipeById(recipeId)
+            withContext(Dispatchers.IO) {
+                service.getRecipeById(recipeId)
+            }
         } catch (e: Exception) {
             null
         }
@@ -43,7 +51,9 @@ object RecipesRepository {
 
     suspend fun getRecipesByIds(set: Set<String>): List<Recipe>? {
         return try {
-            service.getRecipesByIds(set.joinToString(","))
+            withContext(Dispatchers.IO) {
+                service.getRecipesByIds(set.joinToString(","))
+            }
         } catch (e: Exception) {
             null
         }
@@ -51,7 +61,9 @@ object RecipesRepository {
 
     suspend fun getCategoryById(id: Int): Category? {
         return try {
-            service.getCategoryById(id)
+            withContext(Dispatchers.IO) {
+                service.getCategoryById(id)
+            }
         } catch (e: Exception) {
             null
         }
