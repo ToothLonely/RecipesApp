@@ -2,15 +2,10 @@ package com.example.recipesapp.ui.recipes.favorites
 
 import android.app.Application
 import android.content.Context
-import android.graphics.drawable.Drawable
-import android.widget.Toast
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
-import androidx.core.content.ContextCompat.getString
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.application
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.recipesapp.R
@@ -37,7 +32,6 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
 
     data class FavoritesLayoutState(
         val title: String? = null,
-        val image: Drawable? = null,
         val dataSet: List<Recipe>? = listOf()
     )
 
@@ -60,7 +54,6 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
             isVisible,
             if (isVisible) FavoritesLayoutState(
                 title = application.getString(R.string.tv_favorites),
-                image = getDrawable(application, R.drawable.bcg_favorites),
                 dataSet = getRecipesByIds(getFavorites()),
             ) else null,
         )
