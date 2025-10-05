@@ -49,11 +49,13 @@ class CategoriesListViewModel(application: Application) : AndroidViewModel(appli
             when (cachedCategories.isEmpty()) {
                 true -> {
                     val backendCategories = repo.getCategories()
-                    viewModelScope.launch {
+
+                    launch {
                         if (backendCategories != null) {
                             repo.addNewCategoryInDatabase(backendCategories)
                         }
                     }
+
                     backendCategories
                 }
 

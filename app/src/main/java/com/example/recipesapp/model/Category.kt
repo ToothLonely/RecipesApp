@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 @Parcelize
 @Entity(tableName = "category")
 data class Category(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val title: String,
     val description: String,
     @ColumnInfo(name = "image_url") val imageUrl: String
