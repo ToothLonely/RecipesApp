@@ -36,6 +36,8 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
 
     private val favoritesSet = getFavorites()
 
+    private val repo = RecipesRepository(application)
+
     data class RecipeState(
         val id: Int? = null,
         val title: String? = null,
@@ -67,7 +69,7 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
 
     private suspend fun getRecipeById(recipeId: Int): Recipe? {
         return withContext(Dispatchers.IO){
-            RecipesRepository.getRecipeById(recipeId)
+            repo.getRecipeById(recipeId)
         }
     }
 

@@ -24,6 +24,8 @@ class RecipesListViewModel(
     val recipesListLiveData: LiveData<RecipesListState>
         get() = _recipesListLiveData
 
+    private val repo = RecipesRepository(application)
+
     data class RecipesListState(
         val title: String? = null,
         val image: String? = null,
@@ -46,7 +48,7 @@ class RecipesListViewModel(
 
     private suspend fun getRecipesByCategoryId(categoryId: Int?): List<Recipe>? {
         return withContext(Dispatchers.IO) {
-            RecipesRepository.getRecipesByCategoryId(categoryId)
+            repo.getRecipesByCategoryId(categoryId)
         }
     }
 
