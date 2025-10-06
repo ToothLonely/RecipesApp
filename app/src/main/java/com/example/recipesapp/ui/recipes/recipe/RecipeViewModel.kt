@@ -68,9 +68,7 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
     }
 
     private suspend fun getRecipeById(recipeId: Int): Recipe? {
-        return withContext(Dispatchers.IO){
-            repo.getRecipeById(recipeId)
-        }
+        return repo.getRecipeById(recipeId)
     }
 
     private fun getFavorites(): MutableSet<String> {

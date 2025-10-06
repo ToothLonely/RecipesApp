@@ -47,9 +47,7 @@ class RecipesListViewModel(
     }
 
     private suspend fun getRecipesByCategoryId(categoryId: Int?): List<Recipe>? {
-        return withContext(Dispatchers.IO) {
-            repo.getRecipesByCategoryId(categoryId)
-        }
+        return repo.getRecipesByCategoryId(categoryId)
     }
 
     fun openRecipeByRecipeId(fragment: Fragment, recipeId: Int) {

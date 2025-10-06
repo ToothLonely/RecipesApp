@@ -11,8 +11,8 @@ interface CategoriesDao {
     @Query("""
         SELECT * FROM category
     """)
-    fun getCategories(): List<Category>
+    suspend fun getCategories(): List<Category>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addCategories(newCategories: List<Category>)
+    suspend fun addCategories(newCategories: List<Category>)
 }
