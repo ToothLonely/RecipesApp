@@ -3,6 +3,7 @@ package com.example.recipesapp.data
 import android.app.Application
 import androidx.room.Room
 import com.example.recipesapp.model.Category
+import com.example.recipesapp.model.Ingredient
 import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.model.toIngredientDBEntity
 import com.example.recipesapp.model.toRecipeDBEntity
@@ -27,7 +28,9 @@ class RecipesRepository(val application: Application) {
         application,
         AppDatabase::class.java,
         "database.db"
-    ).build()
+    )
+        .fallbackToDestructiveMigration()
+        .build()
 
     private val categoriesDao = db.getCategoriesDao()
     private val recipesDao = db.getRecipesDao()
@@ -117,5 +120,33 @@ class RecipesRepository(val application: Application) {
                 addIngredients(ingredientsEntityList)
             }
         }
+    }
+
+    suspend fun getRecipeFromCache(recipeId: Int): Recipe? {
+        return withContext(Dispatchers.IO) {
+            val tuple = recipesDao.getRecipe(recipeId)
+            convertToRecipe(tuple)
+        }
+    }
+
+    fun convertToRecipe(result: List<RecipeFullTuple>): Recipe? {
+        if (result.isEmpty()) return null
+
+        val ingredients = result.map {
+            Ingredient(
+                quantity = it.quantity,
+                unitOfMeasure = it.unitOfMeasure,
+                description = it.description,
+            )
+        }
+
+        val recipe = result.first()
+        return Recipe(
+            id = recipe.id,
+            title = recipe.title,
+            ingredients = ingredients,
+            method = recipe.method.split(CONVERTATION_DELIMITER),
+            imageUrl = recipe.imageUrl
+        )
     }
 }
