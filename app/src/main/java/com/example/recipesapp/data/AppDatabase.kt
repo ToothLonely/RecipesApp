@@ -14,4 +14,5 @@ abstract class AppDatabase: RoomDatabase() {
 
     abstract fun getCategoriesDao(): CategoriesDao
 
+    abstract fun getRecipesDao(): RecipesDao
 }

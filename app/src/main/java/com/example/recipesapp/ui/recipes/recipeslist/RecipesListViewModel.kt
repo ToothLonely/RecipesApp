@@ -46,10 +46,20 @@ class RecipesListViewModel(
         )
     }
 
-    private suspend fun getRecipesByCategoryId(categoryId: Int?): List<Recipe>? {
-        return withContext(Dispatchers.IO) {
-            repo.getRecipesByCategoryId(categoryId)
+    private suspend fun getRecipesByCategoryId(categoryId: Int): List<Recipe>? {
+        val cachedRecipes = repo.getRecipesFromCache(categoryId)
+
+        viewModelScope.launch {
+            val backendRecipes = repo.getRecipesByCategoryId(categoryId)
+
+            if (backendRecipes != null && backendRecipes != cachedRecipes) {
+                repo.addRecipes(backendRecipes, categoryId)
+
+                _recipesListLiveData.value = _recipesListLiveData.value?.copy(dataSet = backendRecipes)
+            }
         }
+
+        return cachedRecipes
     }
 
     fun openRecipeByRecipeId(fragment: Fragment, recipeId: Int) {

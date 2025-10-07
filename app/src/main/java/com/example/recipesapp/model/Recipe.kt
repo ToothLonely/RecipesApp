@@ -1,5 +1,6 @@
 package com.example.recipesapp.model
 
+import com.example.recipesapp.data.RecipeDBEntity
 import com.example.recipesapp.ui.recipes.recipe.RecipeViewModel
 import kotlinx.serialization.Serializable
 
@@ -19,5 +20,15 @@ fun Recipe.toRecipeState(): RecipeViewModel.RecipeState {
         ingredients,
         method,
         imageUrl,
+    )
+}
+
+fun Recipe.toRecipeDBEntity(categoryId: Int): RecipeDBEntity {
+    return RecipeDBEntity(
+        id = id,
+        categoryId = categoryId,
+        title = title,
+        method = method,
+        imageUrl = imageUrl
     )
 }

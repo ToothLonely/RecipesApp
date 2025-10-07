@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.room.Room
 import com.example.recipesapp.model.Category
 import com.example.recipesapp.model.Recipe
+import com.example.recipesapp.model.toIngredientDBEntity
+import com.example.recipesapp.model.toRecipeDBEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
@@ -28,6 +30,7 @@ class RecipesRepository(val application: Application) {
     ).build()
 
     private val categoriesDao = db.getCategoriesDao()
+    private val recipesDao = db.getRecipesDao()
 
     suspend fun getCategories(): List<Category>? {
         return try {
@@ -88,6 +91,31 @@ class RecipesRepository(val application: Application) {
     suspend fun addNewCategoryInDatabase(newCategories: List<Category>) {
         withContext(Dispatchers.IO) {
             categoriesDao.addCategories(newCategories)
+        }
+    }
+
+    suspend fun getRecipesFromCache(categoryId: Int): List<Recipe> {
+        return withContext(Dispatchers.IO) {
+            recipesDao.getRecipesList(categoryId).map { it.toRecipe() }
+        }
+    }
+
+    private suspend fun addIngredients(ingredientsList: List<IngredientDBEntity>) {
+        recipesDao.addIngredients(ingredientsList)
+    }
+
+    suspend fun addRecipes(newRecipes: List<Recipe>, categoryId: Int) {
+        withContext(Dispatchers.IO) {
+            val recipesEntityList = newRecipes.map { it.toRecipeDBEntity(categoryId) }
+            recipesDao.addRecipes(recipesEntityList)
+
+            newRecipes.forEach { recipe ->
+                val ingredientsEntityList = recipe.ingredients.map {
+                    it.toIngredientDBEntity(recipe.id)
+                }
+
+                addIngredients(ingredientsEntityList)
+            }
         }
     }
 }
