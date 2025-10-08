@@ -62,9 +62,7 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     private suspend fun getRecipesByIds(set: Set<String>): List<Recipe>? {
-        return withContext(Dispatchers.IO) {
-            repo.getRecipesByIds(set)
-        }
+        return repo.getRecipesByIds(set)
     }
 
     private fun getFavorites(): MutableSet<String> {

@@ -11,9 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.recipesapp.R
 import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.model.Category
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class CategoriesListViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -43,25 +41,20 @@ class CategoriesListViewModel(application: Application) : AndroidViewModel(appli
     }
 
     private suspend fun getCategories(): List<Category>? {
-        return withContext(Dispatchers.IO) {
-            val cachedCategories = repo.getCategoriesFromCache()
 
-            when (cachedCategories.isEmpty()) {
-                true -> {
-                    val backendCategories = repo.getCategories()
+        val cachedCategories = repo.getCategoriesFromCache()
 
-                    launch {
-                        if (backendCategories != null) {
-                            repo.addNewCategoryInDatabase(backendCategories)
-                        }
-                    }
+        viewModelScope.launch {
+            val backendCategories = repo.getCategories()
 
-                    backendCategories
-                }
-
-                false -> cachedCategories
+            if (backendCategories != null && backendCategories != cachedCategories) {
+                repo.addNewCategoryInDatabase(backendCategories)
+                _categoriesListLiveData.value =
+                    _categoriesListLiveData.value?.copy(dataSet = backendCategories)
             }
         }
+
+        return cachedCategories
     }
 
     fun openRecipesByCategoryId(fragment: Fragment, categoryId: Int) {
