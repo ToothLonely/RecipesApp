@@ -9,19 +9,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.recipesapp.R
-import com.example.recipesapp.data.BASE_URL
-import com.example.recipesapp.data.IMAGE_URL
 import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.model.Category
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class CategoriesListViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _categoriesListLiveData = MutableLiveData<CategoriesListState>()
     val categoriesListLiveData: LiveData<CategoriesListState>
         get() = _categoriesListLiveData
+
+    private val repo = RecipesRepository(application)
 
     data class CategoriesListState(
         val categoryTitle: String? = null,
@@ -43,9 +41,20 @@ class CategoriesListViewModel(application: Application) : AndroidViewModel(appli
     }
 
     private suspend fun getCategories(): List<Category>? {
-        return withContext(Dispatchers.IO) {
-            RecipesRepository.getCategories()
+
+        val cachedCategories = repo.getCategoriesFromCache()
+
+        viewModelScope.launch {
+            val backendCategories = repo.getCategories()
+
+            if (backendCategories != null && backendCategories != cachedCategories) {
+                repo.addNewCategoryInDatabase(backendCategories)
+                _categoriesListLiveData.value =
+                    _categoriesListLiveData.value?.copy(dataSet = backendCategories)
+            }
         }
+
+        return cachedCategories
     }
 
     fun openRecipesByCategoryId(fragment: Fragment, categoryId: Int) {
@@ -62,5 +71,4 @@ class CategoriesListViewModel(application: Application) : AndroidViewModel(appli
             fragment.findNavController().navigate(action)
         }
     }
-
 }
