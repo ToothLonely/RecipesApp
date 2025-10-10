@@ -34,33 +34,28 @@ class CategoriesListViewModel(application: Application) : AndroidViewModel(appli
     }
 
     private suspend fun loadCategoryList(application: Application) {
-        _categoriesListLiveData.value = CategoriesListState(
-            categoryTitle = getString(application, R.string.tv_categories),
-            dataSet = getCategories()
-        )
-    }
-
-    private suspend fun getCategories(): List<Category>? {
 
         val cachedCategories = repo.getCategoriesFromCache()
+        updateUI(cachedCategories, application)
 
-        viewModelScope.launch {
-            val backendCategories = repo.getCategories()
-
-            if (backendCategories != null && backendCategories != cachedCategories) {
-                repo.addNewCategoryInDatabase(backendCategories)
-                _categoriesListLiveData.value =
-                    _categoriesListLiveData.value?.copy(dataSet = backendCategories)
-            }
+        val backedCategories = repo.getCategories()
+        if (backedCategories != null) {
+            updateUI(backedCategories, application)
+            repo.addCategories(backedCategories)
         }
+    }
 
-        return cachedCategories
+    private fun updateUI(categories: List<Category>, application: Application) {
+        _categoriesListLiveData.value = CategoriesListState(
+            categoryTitle = getString(application, R.string.tv_categories),
+            dataSet = categories
+        )
     }
 
     fun openRecipesByCategoryId(fragment: Fragment, categoryId: Int) {
         viewModelScope.launch {
             val currentCategory: Category =
-                getCategories()?.find { it.id == categoryId }
+                repo.getCategoriesFromCache().find { it.id == categoryId }
                     ?: throw IllegalArgumentException("Категория с ID $categoryId не найдена!")
 
             val action =
