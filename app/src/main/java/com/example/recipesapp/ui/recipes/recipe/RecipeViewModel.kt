@@ -48,34 +48,22 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
     }
 
     private suspend fun loadRecipe(recipeId: Int) {
-        val recipe = getRecipeById(recipeId)
-        _recipeLiveData.value = recipe?.toRecipeState()
-        _recipeLiveData.value?.apply {
-            isFavorite = id.toString() in favoritesSet
-            portionsCount = DEFAULT_NUMBER_OF_PORTIONS
-            recipeImage = "$IMAGE_URL${recipe?.imageUrl}"
-        }
 
-        _recipeLiveData.value = _recipeLiveData.value
+        val cachedRecipe = repo.getRecipeFromCache(recipeId)
+        if (cachedRecipe != null) updateUI(cachedRecipe)
+
+        val backendRecipe = repo.getRecipeById(recipeId)
+        if (backendRecipe != null) updateUI(backendRecipe)
     }
 
-    private suspend fun getRecipeById(recipeId: Int): Recipe? {
-        val cachedRecipe = repo.getRecipeFromCache(recipeId)
-
-        viewModelScope.launch {
-            val backendRecipe = repo.getRecipeById(recipeId)
-
-            if (backendRecipe != null && backendRecipe != cachedRecipe) {
-                val newState = backendRecipe.toRecipeState().apply {
-                    isFavorite = id.toString() in favoritesSet
-                    portionsCount = DEFAULT_NUMBER_OF_PORTIONS
-                    recipeImage = "$IMAGE_URL${backendRecipe.imageUrl}"
-                }
-                _recipeLiveData.value = newState
-            }
+    private fun updateUI(recipe: Recipe) {
+        val state = recipe.toRecipeState().apply {
+            isFavorite = id.toString() in favoritesSet
+            portionsCount = DEFAULT_NUMBER_OF_PORTIONS
+            recipeImage = "$IMAGE_URL${recipe.imageUrl}"
         }
 
-        return cachedRecipe
+        _recipeLiveData.value = state
     }
 
     private fun getFavorites(): MutableSet<String> {

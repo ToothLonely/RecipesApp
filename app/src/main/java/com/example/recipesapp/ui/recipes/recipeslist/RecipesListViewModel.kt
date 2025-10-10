@@ -11,9 +11,7 @@ import com.example.recipesapp.data.IMAGE_URL
 import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.model.Category
 import com.example.recipesapp.model.Recipe
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class RecipesListViewModel(
     private val category: Category,
@@ -34,32 +32,28 @@ class RecipesListViewModel(
 
     init {
         viewModelScope.launch {
-            loadRecipesList()
+            loadRecipesList(category.id)
         }
     }
 
-    private suspend fun loadRecipesList() {
+    private suspend fun loadRecipesList(categoryId: Int) {
+
+        val cachedList = repo.getRecipesFromCache(categoryId)
+        updateUI(cachedList)
+
+        val backendList = repo.getRecipesByCategoryId(categoryId)
+        if (backendList != null) {
+            updateUI(backendList)
+            repo.addRecipes(backendList, categoryId)
+        }
+    }
+
+    private fun updateUI(recipesList: List<Recipe>) {
         _recipesListLiveData.value = RecipesListState(
             title = category.title,
             image = "$IMAGE_URL${category.imageUrl}",
-            dataSet = getRecipesByCategoryId(category.id),
+            dataSet = recipesList,
         )
-    }
-
-    private suspend fun getRecipesByCategoryId(categoryId: Int): List<Recipe>? {
-        val cachedRecipes = repo.getRecipesFromCache(categoryId)
-
-        viewModelScope.launch {
-            val backendRecipes = repo.getRecipesByCategoryId(categoryId)
-
-            if (backendRecipes != null && backendRecipes != cachedRecipes) {
-                repo.addRecipes(backendRecipes, categoryId)
-
-                _recipesListLiveData.value = _recipesListLiveData.value?.copy(dataSet = backendRecipes)
-            }
-        }
-
-        return cachedRecipes
     }
 
     fun openRecipeByRecipeId(fragment: Fragment, recipeId: Int) {

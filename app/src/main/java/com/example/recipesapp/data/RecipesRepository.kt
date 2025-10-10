@@ -91,7 +91,7 @@ class RecipesRepository(val application: Application) {
         }
     }
 
-    suspend fun addNewCategoryInDatabase(newCategories: List<Category>) {
+    suspend fun addCategories(newCategories: List<Category>) {
         withContext(Dispatchers.IO) {
             categoriesDao.addCategories(newCategories)
         }
