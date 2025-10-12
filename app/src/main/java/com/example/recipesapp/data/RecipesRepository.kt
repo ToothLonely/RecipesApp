@@ -3,7 +3,10 @@ package com.example.recipesapp.data
 import android.app.Application
 import androidx.room.Room
 import com.example.recipesapp.model.Category
+import com.example.recipesapp.model.Ingredient
 import com.example.recipesapp.model.Recipe
+import com.example.recipesapp.model.toIngredientDBEntity
+import com.example.recipesapp.model.toRecipeDBEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
@@ -25,9 +28,12 @@ class RecipesRepository(val application: Application) {
         application,
         AppDatabase::class.java,
         "database.db"
-    ).build()
+    )
+        .fallbackToDestructiveMigration()
+        .build()
 
     private val categoriesDao = db.getCategoriesDao()
+    private val recipesDao = db.getRecipesDao()
 
     suspend fun getCategories(): List<Category>? {
         return try {
@@ -85,9 +91,62 @@ class RecipesRepository(val application: Application) {
         }
     }
 
-    suspend fun addNewCategoryInDatabase(newCategories: List<Category>) {
+    suspend fun addCategories(newCategories: List<Category>) {
         withContext(Dispatchers.IO) {
             categoriesDao.addCategories(newCategories)
         }
+    }
+
+    suspend fun getRecipesFromCache(categoryId: Int): List<Recipe> {
+        return withContext(Dispatchers.IO) {
+            recipesDao.getRecipesList(categoryId).map { it.toRecipe() }
+        }
+    }
+
+    private suspend fun addIngredients(ingredientsList: List<IngredientDBEntity>) {
+        recipesDao.addIngredients(ingredientsList)
+    }
+
+    suspend fun addRecipes(newRecipes: List<Recipe>, categoryId: Int) {
+        withContext(Dispatchers.IO) {
+            val recipesEntityList = newRecipes.map { it.toRecipeDBEntity(categoryId) }
+            recipesDao.addRecipes(recipesEntityList)
+
+            newRecipes.forEach { recipe ->
+                val ingredientsEntityList = recipe.ingredients.map {
+                    it.toIngredientDBEntity(recipe.id)
+                }
+
+                addIngredients(ingredientsEntityList)
+            }
+        }
+    }
+
+    suspend fun getRecipeFromCache(recipeId: Int): Recipe? {
+        return withContext(Dispatchers.IO) {
+            val tuple = recipesDao.getRecipe(recipeId)
+            convertToRecipe(tuple)
+        }
+    }
+
+    fun convertToRecipe(result: List<RecipeFullTuple>): Recipe? {
+        if (result.isEmpty()) return null
+
+        val ingredients = result.map {
+            Ingredient(
+                quantity = it.quantity,
+                unitOfMeasure = it.unitOfMeasure,
+                description = it.description,
+            )
+        }
+
+        val recipe = result.first()
+        return Recipe(
+            id = recipe.id,
+            title = recipe.title,
+            ingredients = ingredients,
+            method = recipe.method.split(CONVERTATION_DELIMITER),
+            imageUrl = recipe.imageUrl
+        )
     }
 }
