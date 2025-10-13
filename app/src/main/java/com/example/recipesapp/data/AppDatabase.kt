@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.example.recipesapp.model.Category
 
 @Database(
-    version = 2,
+    version = 3,
     entities = [
         Category::class,
         IngredientDBEntity::class,

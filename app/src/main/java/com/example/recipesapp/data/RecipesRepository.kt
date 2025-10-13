@@ -85,29 +85,24 @@ class RecipesRepository(val application: Application) {
         }
     }
 
-    suspend fun getCategoriesFromCache(): List<Category> {
-        return withContext(Dispatchers.IO) {
-            categoriesDao.getCategories()
-        }
+    suspend fun getCategoriesFromCache() = withContext(Dispatchers.IO) {
+        categoriesDao.getCategories()
     }
 
-    suspend fun addCategories(newCategories: List<Category>) {
+    suspend fun addCategories(newCategories: List<Category>) = withContext(Dispatchers.IO) {
+        categoriesDao.addCategories(newCategories)
+    }
+
+    suspend fun getRecipesFromCache(categoryId: Int) = withContext(Dispatchers.IO) {
+        recipesDao.getRecipesList(categoryId).map { it.toRecipe() }
+    }
+
+    private suspend fun addIngredients(ingredientsList: List<IngredientDBEntity>) =
         withContext(Dispatchers.IO) {
-            categoriesDao.addCategories(newCategories)
+            recipesDao.addIngredients(ingredientsList)
         }
-    }
 
-    suspend fun getRecipesFromCache(categoryId: Int): List<Recipe> {
-        return withContext(Dispatchers.IO) {
-            recipesDao.getRecipesList(categoryId).map { it.toRecipe() }
-        }
-    }
-
-    private suspend fun addIngredients(ingredientsList: List<IngredientDBEntity>) {
-        recipesDao.addIngredients(ingredientsList)
-    }
-
-    suspend fun addRecipes(newRecipes: List<Recipe>, categoryId: Int) {
+    suspend fun addRecipes(newRecipes: List<Recipe>, categoryId: Int) =
         withContext(Dispatchers.IO) {
             val recipesEntityList = newRecipes.map { it.toRecipeDBEntity(categoryId) }
             recipesDao.addRecipes(recipesEntityList)
@@ -120,13 +115,10 @@ class RecipesRepository(val application: Application) {
                 addIngredients(ingredientsEntityList)
             }
         }
-    }
 
-    suspend fun getRecipeFromCache(recipeId: Int): Recipe? {
-        return withContext(Dispatchers.IO) {
-            val tuple = recipesDao.getRecipe(recipeId)
-            convertToRecipe(tuple)
-        }
+    suspend fun getRecipeFromCache(recipeId: Int) = withContext(Dispatchers.IO) {
+        val tuple = recipesDao.getRecipe(recipeId)
+        convertToRecipe(tuple)
     }
 
     fun convertToRecipe(result: List<RecipeFullTuple>): Recipe? {
@@ -148,5 +140,15 @@ class RecipesRepository(val application: Application) {
             method = recipe.method.split(CONVERTATION_DELIMITER),
             imageUrl = recipe.imageUrl
         )
+    }
+
+    suspend fun getFavoritesSet() = withContext(Dispatchers.IO) {
+        recipesDao.getFavorites().toMutableSet()
+    }
+
+    suspend fun saveFavorites(favorites: List<Int>) = withContext(Dispatchers.IO) {
+        favorites.forEach { id ->
+            recipesDao.updateFavorite(id)
+        }
     }
 }

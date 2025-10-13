@@ -12,6 +12,7 @@ data class RecipeDBEntity(
     val title: String,
     val method: String,
     @ColumnInfo(name = "image_url") val imageUrl: String,
+    @ColumnInfo(name = "is_favorite") val isFavorite: Boolean,
 )
 
 fun RecipeDBEntity.toRecipe() = Recipe(
