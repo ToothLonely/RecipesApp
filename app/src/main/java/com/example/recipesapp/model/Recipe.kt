@@ -30,6 +30,7 @@ fun Recipe.toRecipeDBEntity(categoryId: Int): RecipeDBEntity {
         categoryId = categoryId,
         title = title,
         method = method.joinToString(CONVERTATION_DELIMITER),
-        imageUrl = imageUrl
+        imageUrl = imageUrl,
+        isFavorite = false
     )
 }
