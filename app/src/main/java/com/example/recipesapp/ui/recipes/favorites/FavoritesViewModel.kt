@@ -1,7 +1,6 @@
 package com.example.recipesapp.ui.recipes.favorites
 
 import android.app.Application
-import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -9,21 +8,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.recipesapp.R
-import com.example.recipesapp.data.FAVORITES
-import com.example.recipesapp.data.FAVORITES_SET
 import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.model.Recipe
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class FavoritesViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _favoritesLiveData = MutableLiveData<FavoritesState>()
     val favoritesLiveData: LiveData<FavoritesState>
         get() = _favoritesLiveData
-
-    private val sharedPrefs = application.getSharedPreferences(FAVORITES, Context.MODE_PRIVATE)
 
     private val repo = RecipesRepository(application)
 
@@ -50,30 +43,28 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     private suspend fun loadFavorites(application: Application) {
-        val isVisible = getFavorites().isNotEmpty()
+        val favoritesSet = getFavorites()
+        val isVisible = favoritesSet.isNotEmpty()
 
         _favoritesLiveData.value = FavoritesState(
             isVisible,
             if (isVisible) FavoritesLayoutState(
                 title = application.getString(R.string.tv_favorites),
-                dataSet = getRecipesByIds(getFavorites()),
+                dataSet = getRecipesByIds(favoritesSet),
             ) else null,
         )
     }
 
-    private suspend fun getRecipesByIds(set: Set<String>): List<Recipe>? {
+    private suspend fun getRecipesByIds(set: Set<Int>): List<Recipe>? {
         return repo.getRecipesByIds(set)
     }
 
-    private fun getFavorites(): MutableSet<String> {
-        return sharedPrefs.getStringSet(FAVORITES_SET, mutableSetOf())?.toMutableSet()
-            ?: mutableSetOf()
+    private suspend fun getFavorites(): MutableSet<Int> {
+        return repo.getFavoritesSet()
     }
 
     fun openRecipeByRecipeId(fragment: Fragment, recipeId: Int) {
-
         val action = FavoritesFragmentDirections.actionFavoritesFragmentToRecipeFragment(recipeId)
-
         fragment.findNavController().navigate(action)
     }
 }

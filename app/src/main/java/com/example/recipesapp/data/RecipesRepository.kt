@@ -65,7 +65,7 @@ class RecipesRepository(val application: Application) {
         }
     }
 
-    suspend fun getRecipesByIds(set: Set<String>): List<Recipe>? {
+    suspend fun getRecipesByIds(set: Set<Int>): List<Recipe>? {
         return try {
             withContext(Dispatchers.IO) {
                 service.getRecipesByIds(set.joinToString(","))
