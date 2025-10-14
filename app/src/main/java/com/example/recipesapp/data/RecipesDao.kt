@@ -32,4 +32,23 @@ interface RecipesDao {
         """
     )
     suspend fun getRecipe(recipeId: Int): List<RecipeFullTuple>
+
+    @Query(
+        """
+            SELECT r.id
+            FROM recipe AS r
+            JOIN ingredient AS ing ON r.id = ing.recipe_id 
+            WHERE r.is_favorite = 1
+        """
+    )
+    suspend fun getFavorites(): List<Int>
+
+    @Query(
+        """
+            UPDATE recipe
+            SET is_favorite = 1
+            WHERE id = :recipeId
+        """
+    )
+    suspend fun updateFavorite(recipeId: Int)
 }

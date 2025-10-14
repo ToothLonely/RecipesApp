@@ -15,6 +15,7 @@ import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.model.Ingredient
 import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.model.toRecipeState
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class RecipeViewModel(private val recipeId: Int, application: Application) :
@@ -24,9 +25,7 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
     val recipeLiveData: LiveData<RecipeState>
         get() = _recipeLiveData
 
-    private val sharedPrefs = application.getSharedPreferences(FAVORITES, Context.MODE_PRIVATE)
-
-    private val favoritesSet = getFavorites()
+    private var favoritesSet = mutableSetOf<Int>()
 
     private val repo = RecipesRepository(application)
 
@@ -43,6 +42,7 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
 
     init {
         viewModelScope.launch {
+            favoritesSet = repo.getFavoritesSet()
             loadRecipe(recipeId)
         }
     }
@@ -58,7 +58,7 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
 
     private fun updateUI(recipe: Recipe) {
         val state = recipe.toRecipeState().apply {
-            isFavorite = id.toString() in favoritesSet
+            isFavorite = id in favoritesSet
             portionsCount = DEFAULT_NUMBER_OF_PORTIONS
             recipeImage = "$IMAGE_URL${recipe.imageUrl}"
         }
@@ -66,14 +66,9 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
         _recipeLiveData.value = state
     }
 
-    private fun getFavorites(): MutableSet<String> {
-        return sharedPrefs.getStringSet(FAVORITES_SET, mutableSetOf())?.toMutableSet()
-            ?: mutableSetOf()
-    }
-
     fun saveFavorites() {
-        sharedPrefs.edit {
-            putStringSet(FAVORITES_SET, favoritesSet)
+        viewModelScope.launch {
+            repo.saveFavorites(favoritesSet.toList())
         }
     }
 
@@ -82,10 +77,10 @@ class RecipeViewModel(private val recipeId: Int, application: Application) :
 
         if (_recipeLiveData.value?.isFavorite == true) {
             favoriteFlag = false
-            favoritesSet.remove(recipeId.toString())
+            favoritesSet.remove(recipeId)
         } else {
             favoriteFlag = true
-            favoritesSet.add(recipeId.toString())
+            favoritesSet.add(recipeId)
         }
 
         _recipeLiveData.value = _recipeLiveData.value?.copy(isFavorite = favoriteFlag)
