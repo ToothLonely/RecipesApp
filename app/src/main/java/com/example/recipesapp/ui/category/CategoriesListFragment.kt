@@ -11,7 +11,9 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.recipesapp.R
 import com.example.recipesapp.databinding.FragmentListCategoriesBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CategoriesListFragment : Fragment() {
     private var _categoriesListFragmentBinding: FragmentListCategoriesBinding? = null
     private val categoriesListFragmentBinding

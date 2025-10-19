@@ -1,33 +1,32 @@
 package com.example.recipesapp.ui.recipes.recipe
 
-import android.app.Application
-import android.content.Context
-import androidx.core.content.edit
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipesapp.data.DEFAULT_NUMBER_OF_PORTIONS
-import com.example.recipesapp.data.FAVORITES
-import com.example.recipesapp.data.FAVORITES_SET
 import com.example.recipesapp.data.IMAGE_URL
 import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.model.Ingredient
 import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.model.toRecipeState
-import kotlinx.coroutines.async
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RecipeViewModel(private val recipeId: Int, application: Application) :
-    AndroidViewModel(application) {
+@HiltViewModel
+class RecipeViewModel @Inject constructor(
+    private val repo: RecipesRepository,
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
 
+    private val recipeId = savedStateHandle["recipeId"] ?: 0
     private val _recipeLiveData = MutableLiveData<RecipeState>()
     val recipeLiveData: LiveData<RecipeState>
         get() = _recipeLiveData
 
     private var favoritesSet = mutableSetOf<Int>()
-
-    private val repo = RecipesRepository(application)
 
     data class RecipeState(
         val id: Int? = null,

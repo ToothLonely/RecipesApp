@@ -1,25 +1,30 @@
 package com.example.recipesapp.ui.category
 
-import android.app.Application
+import android.content.Context
 import androidx.core.content.ContextCompat.getString
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.recipesapp.R
 import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.model.Category
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CategoriesListViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class CategoriesListViewModel @Inject constructor(
+    @param:ApplicationContext private val application: Context,
+    private val repo: RecipesRepository,
+) : ViewModel() {
 
     private val _categoriesListLiveData = MutableLiveData<CategoriesListState>()
     val categoriesListLiveData: LiveData<CategoriesListState>
         get() = _categoriesListLiveData
-
-    private val repo = RecipesRepository(application)
 
     data class CategoriesListState(
         val categoryTitle: String? = null,
@@ -29,23 +34,23 @@ class CategoriesListViewModel(application: Application) : AndroidViewModel(appli
 
     init {
         viewModelScope.launch {
-            loadCategoryList(application)
+            loadCategoryList()
         }
     }
 
-    private suspend fun loadCategoryList(application: Application) {
+    private suspend fun loadCategoryList() {
 
         val cachedCategories = repo.getCategoriesFromCache()
-        updateUI(cachedCategories, application)
+        updateUI(cachedCategories)
 
         val backedCategories = repo.getCategories()
         if (backedCategories != null) {
-            updateUI(backedCategories, application)
+            updateUI(backedCategories)
             repo.addCategories(backedCategories)
         }
     }
 
-    private fun updateUI(categories: List<Category>, application: Application) {
+    private fun updateUI(categories: List<Category>) {
         _categoriesListLiveData.value = CategoriesListState(
             categoryTitle = getString(application, R.string.tv_categories),
             dataSet = categories
