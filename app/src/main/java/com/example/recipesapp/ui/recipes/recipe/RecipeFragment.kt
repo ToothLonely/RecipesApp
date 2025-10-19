@@ -7,16 +7,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipesapp.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.recipesapp.data.DEFAULT_NUMBER_OF_PORTIONS
 import com.example.recipesapp.R
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RecipeFragment : Fragment() {
 
     private var _recipeFragmentBinding: FragmentRecipeBinding? = null
@@ -28,17 +29,7 @@ class RecipeFragment : Fragment() {
     private val portionString
         get() = requireContext().getString(R.string.tv_portion)
 
-    private val application
-        get() = requireActivity().application
-
-    private val args: RecipeFragmentArgs by navArgs()
-
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            RecipeViewModelFactory(args.recipeId, application)
-        )[RecipeViewModel::class.java]
-    }
+    private val viewModel: RecipeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

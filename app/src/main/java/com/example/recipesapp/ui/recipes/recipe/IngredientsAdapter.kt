@@ -49,11 +49,15 @@ class IngredientsAdapter(var dataSet: List<Ingredient>) :
     }
 
     private fun makeCorrectQuantity(quantityPerOne: String): String {
-        return BigDecimal(quantityPerOne)
-            .multiply(BigDecimal(quantity))
-            .setScale(1, RoundingMode.HALF_UP)
-            .stripTrailingZeros()
-            .toPlainString()
+        return try {
+            BigDecimal(quantityPerOne)
+                .multiply(BigDecimal(quantity))
+                .setScale(1, RoundingMode.HALF_UP)
+                .stripTrailingZeros()
+                .toPlainString()
+        } catch (e: NumberFormatException) {
+            "0"
+        }
     }
 
     fun setNewDataSet(newDataSet: List<Ingredient>) {

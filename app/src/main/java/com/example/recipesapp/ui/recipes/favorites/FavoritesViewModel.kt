@@ -1,24 +1,29 @@
 package com.example.recipesapp.ui.recipes.favorites
 
-import android.app.Application
+import android.content.Context
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.recipesapp.R
 import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.model.Recipe
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FavoritesViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class FavoritesViewModel @Inject constructor(
+    @param:ApplicationContext private val application: Context,
+    private val repo: RecipesRepository,
+) : ViewModel() {
 
     private val _favoritesLiveData = MutableLiveData<FavoritesState>()
     val favoritesLiveData: LiveData<FavoritesState>
         get() = _favoritesLiveData
-
-    private val repo = RecipesRepository(application)
 
     data class FavoritesState(
         val isVisible: Boolean? = null,
@@ -32,17 +37,17 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
 
     init {
         viewModelScope.launch {
-            loadFavorites(application)
+            loadFavorites()
         }
     }
 
     fun reloadFavorites() {
         viewModelScope.launch {
-            loadFavorites(getApplication())
+            loadFavorites()
         }
     }
 
-    private suspend fun loadFavorites(application: Application) {
+    private suspend fun loadFavorites() {
         val favoritesSet = getFavorites()
         val isVisible = favoritesSet.isNotEmpty()
 

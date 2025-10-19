@@ -1,7 +1,5 @@
 package com.example.recipesapp.data
 
-import android.app.Application
-import androidx.room.Room
 import com.example.recipesapp.model.Category
 import com.example.recipesapp.model.Ingredient
 import com.example.recipesapp.model.Recipe
@@ -9,32 +7,13 @@ import com.example.recipesapp.model.toIngredientDBEntity
 import com.example.recipesapp.model.toRecipeDBEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
-import retrofit2.Retrofit
-import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import javax.inject.Inject
 
-class RecipesRepository(val application: Application) {
-    private val client = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(
-            Json.asConverterFactory("application/json; charset=UTF8".toMediaType())
-        )
-        .build()
-
-    private val service = client.create(RecipeApiService::class.java)
-
-    private val db = Room.databaseBuilder(
-        application,
-        AppDatabase::class.java,
-        "database.db"
-    )
-        .fallbackToDestructiveMigration()
-        .build()
-
-    private val categoriesDao = db.getCategoriesDao()
-    private val recipesDao = db.getRecipesDao()
-
+class RecipesRepository @Inject constructor(
+    private val recipesDao: RecipesDao,
+    private val categoriesDao: CategoriesDao,
+    private val service: RecipeApiService,
+) {
     suspend fun getCategories(): List<Category>? {
         return try {
             withContext(Dispatchers.IO) {

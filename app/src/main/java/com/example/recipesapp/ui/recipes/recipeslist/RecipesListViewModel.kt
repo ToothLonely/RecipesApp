@@ -1,28 +1,31 @@
 package com.example.recipesapp.ui.recipes.recipeslist
 
-import android.app.Application
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.recipesapp.data.IMAGE_URL
 import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.model.Category
 import com.example.recipesapp.model.Recipe
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RecipesListViewModel(
-    private val category: Category,
-    application: Application,
-) : AndroidViewModel(application) {
+@HiltViewModel
+class RecipesListViewModel @Inject constructor(
+    private val repo: RecipesRepository,
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
+
+    private val category = savedStateHandle["category"] ?: Category(0, "", "", "")
 
     private val _recipesListLiveData = MutableLiveData<RecipesListState>()
     val recipesListLiveData: LiveData<RecipesListState>
         get() = _recipesListLiveData
-
-    private val repo = RecipesRepository(application)
 
     data class RecipesListState(
         val title: String? = null,

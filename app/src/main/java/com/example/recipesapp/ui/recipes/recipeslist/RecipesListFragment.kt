@@ -6,16 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.recipesapp.R
-import com.example.recipesapp.data.IMAGE_URL
 import com.example.recipesapp.databinding.FragmentRecipesListBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.IllegalStateException
 
+@AndroidEntryPoint
 class RecipesListFragment : Fragment() {
     private var _recipesListFragmentBinding: FragmentRecipesListBinding? = null
     private val recipesListFragmentBinding: FragmentRecipesListBinding
@@ -23,20 +23,8 @@ class RecipesListFragment : Fragment() {
             "Binding for recipesListFragmentBinding mustn't be null"
         )
 
-    private val application
-        get() = requireActivity().application
 
-    private val args: RecipesListFragmentArgs by navArgs()
-
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            RecipesListViewModelFactory(
-                args.category,
-                application
-            )
-        )[RecipesListViewModel::class.java]
-    }
+    private val viewModel: RecipesListViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
