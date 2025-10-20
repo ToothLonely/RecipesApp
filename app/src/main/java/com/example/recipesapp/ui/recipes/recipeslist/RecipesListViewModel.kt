@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.recipesapp.data.IMAGE_URL
-import com.example.recipesapp.data.RecipesRepository
+import com.example.recipesapp.data.repository.RecipesRepository
 import com.example.recipesapp.model.Category
 import com.example.recipesapp.model.Recipe
 import dagger.hilt.android.lifecycle.HiltViewModel

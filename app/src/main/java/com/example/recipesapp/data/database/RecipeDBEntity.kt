@@ -1,8 +1,9 @@
-package com.example.recipesapp.data
+package com.example.recipesapp.data.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.recipesapp.data.CONVERTATION_DELIMITER
 import com.example.recipesapp.model.Recipe
 
 @Entity(tableName = "recipe")

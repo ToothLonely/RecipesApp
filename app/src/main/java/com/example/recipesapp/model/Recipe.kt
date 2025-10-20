@@ -1,7 +1,7 @@
 package com.example.recipesapp.model
 
 import com.example.recipesapp.data.CONVERTATION_DELIMITER
-import com.example.recipesapp.data.RecipeDBEntity
+import com.example.recipesapp.data.database.RecipeDBEntity
 import com.example.recipesapp.ui.recipes.recipe.RecipeViewModel
 import kotlinx.serialization.Serializable
 

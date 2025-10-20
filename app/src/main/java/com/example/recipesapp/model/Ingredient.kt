@@ -1,7 +1,7 @@
 package com.example.recipesapp.model
 
 import android.os.Parcelable
-import com.example.recipesapp.data.IngredientDBEntity
+import com.example.recipesapp.data.database.IngredientDBEntity
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 

@@ -1,4 +1,4 @@
-package com.example.recipesapp.data
+package com.example.recipesapp.data.database
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -13,6 +13,6 @@ interface CategoriesDao {
     """)
     suspend fun getCategories(): List<Category>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun addCategories(newCategories: List<Category>)
 }

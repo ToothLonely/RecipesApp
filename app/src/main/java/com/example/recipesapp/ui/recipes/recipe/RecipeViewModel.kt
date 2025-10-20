@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipesapp.data.DEFAULT_NUMBER_OF_PORTIONS
 import com.example.recipesapp.data.IMAGE_URL
-import com.example.recipesapp.data.RecipesRepository
+import com.example.recipesapp.data.repository.RecipesRepository
 import com.example.recipesapp.model.Ingredient
 import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.model.toRecipeState

@@ -1,8 +1,7 @@
-package com.example.recipesapp.data
+package com.example.recipesapp.data.service
 
 import com.example.recipesapp.model.Category
 import com.example.recipesapp.model.Recipe
-import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

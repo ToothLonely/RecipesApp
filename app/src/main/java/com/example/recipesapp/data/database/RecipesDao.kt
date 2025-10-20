@@ -1,4 +1,4 @@
-package com.example.recipesapp.data
+package com.example.recipesapp.data.database
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -7,10 +7,10 @@ import androidx.room.Query
 
 @Dao
 interface RecipesDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun addIngredients(newIngredients: List<IngredientDBEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun addRecipes(newRecipes: List<RecipeDBEntity>)
 
     @Query(

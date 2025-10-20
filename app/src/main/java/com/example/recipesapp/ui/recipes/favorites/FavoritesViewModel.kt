@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.recipesapp.R
-import com.example.recipesapp.data.RecipesRepository
+import com.example.recipesapp.data.repository.RecipesRepository
 import com.example.recipesapp.model.Recipe
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext

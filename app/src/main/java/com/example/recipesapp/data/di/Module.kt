@@ -1,7 +1,10 @@
-package com.example.recipesapp.data
+package com.example.recipesapp.data.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.recipesapp.data.BASE_URL
+import com.example.recipesapp.data.service.RecipeApiService
+import com.example.recipesapp.data.database.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,7 +42,7 @@ class Module {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(
-                Json.asConverterFactory("application/json; charset=UTF8".toMediaType())
+                Json.Default.asConverterFactory("application/json; charset=UTF8".toMediaType())
             )
             .build()
     }
