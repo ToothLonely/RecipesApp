@@ -1,6 +1,6 @@
 # Приложение рецептов
 
-Это приложение рецептов разных блюд, в котором рецепты разделены по категориям. 
+Это приложение рецептов разных блюд, в котором рецепты разделены по категориям.
 Приложение написано в соответствии с рекомендациями Google, по принципам Clean Architecture
 
 ### Автор
@@ -19,7 +19,9 @@
 
 # Структура проекта:
 
-app/ - Application  
-data/ - Database, API service, DAOs, DI Module, repository  
-model/ - Модели данных (data classes) для использования в приложении  
-ui/ - Fragments, ViewModels, Adapters, MainActivity  
+| Package | Content                                                     |
+|---------|-------------------------------------------------------------|
+| app/    | Application                                                 | 
+| data/   | Database, API service, DAOs, DI Module, repository          | 
+| model/  | Модели данных (data classes) для использования в приложении | 
+| ui/     | Fragments, ViewModels, Adapters, MainActivity               |
