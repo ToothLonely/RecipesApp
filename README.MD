@@ -28,5 +28,3 @@
 | data/   | Database, API service, DAOs, DI Module, repository          | 
 | model/  | Модели данных (data classes) для использования в приложении | 
 | ui/     | Fragments, ViewModels, Adapters, MainActivity               |
-
-### Используемые технологии
