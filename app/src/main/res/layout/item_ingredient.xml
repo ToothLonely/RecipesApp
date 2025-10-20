@@ -3,21 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:weightSum="1">
 
     <TextView
         android:id="@+id/tvIngredientName"
         style="@style/StyleIngredient"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        tools:text="куриное яйцо" />
+        tools:text="куриное яйцо"
+        android:layout_weight="0.7"/>
 
     <TextView
         android:id="@+id/tvIngredientQuantity"
         style="@style/StyleIngredient"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="end"
+        android:layout_weight="0.3"
         tools:text="2 штуки" />
 
 </LinearLayout>
