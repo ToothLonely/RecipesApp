@@ -17,9 +17,9 @@
 | Network       | ![Retrofit](https://img.shields.io/badge/Retrofit-green)              |
 | Database      | ![Room](https://img.shields.io/badge/Room-red)                        |
 | DI            | ![Hilt](https://img.shields.io/badge/Hilt-orange)                     |
+| Navigation    | ![Navigation](https://img.shields.io/badge/Navigation-Jetpack-purple) |
 | Image Loading | ![Glide](https://img.shields.io/badge/Glide-yellow)                   |
 | Concurrency   | ![Coroutines](https://img.shields.io/badge/Coroutines-yellowgreen)    |
-| Navigation    | ![Navigation](https://img.shields.io/badge/Navigation-Jetpack-purple) |
 
 # Структура проекта:
 
