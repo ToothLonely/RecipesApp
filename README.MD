@@ -9,13 +9,15 @@
 
 # Стек:
 
-1. **Architecture:** MVVM
-2. **UI:** Views + XML
-3. **Network:** Retrofit
-4. **Database:** Room
-5. **Image Loading:** Glide
-6. **Concurrency:** Kotlin Coroutines
-7. **DI:** Hilt
+| Категория     | Технология        |
+|---------------|-------------------|
+| Architecture  | MVVM              |
+| UI            | Views + XML       |
+| Network       | Retrofit          |
+| Database      | Room              |
+| DI            | Hilt              |
+| Image Loading | Glide             |
+| Concurrency   | Kotlin Coroutines |
 
 # Структура проекта:
 
