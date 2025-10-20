@@ -27,3 +27,12 @@
 | data/   | Database, API service, DAOs, DI Module, repository          | 
 | model/  | Модели данных (data classes) для использования в приложении | 
 | ui/     | Fragments, ViewModels, Adapters, MainActivity               |
+
+### Используемые технологии
+
+![Kotlin](https://img.shields.io/badge/Kotlin-1.9-blue)
+![Hilt](https://img.shields.io/badge/DI-Hilt-orange)
+![Retrofit](https://img.shields.io/badge/Network-Retrofit-green)
+![Room](https://img.shields.io/badge/DB-Room-red)
+![Glide](https://img.shields.io/badge/Images-Glide-yellow)
+![MVVM](https://img.shields.io/badge/Architecture-MVVM-purple)
