@@ -9,16 +9,16 @@
 
 # Стек:
 
-| Категория     | Технология                                               |
-|---------------|----------------------------------------------------------|
-| Architecture  | ![MVVM](https://img.shields.io/badge/MVVM-purple)        |
-| Language      | ![Kotlin](https://img.shields.io/badge/Kotlin-blue)      |
-| UI            | Views + XML                                              |
-| Network       | ![Retrofit](https://img.shields.io/badge/Retrofit-green) |
-| Database      | ![Room](https://img.shields.io/badge/Room-red)           |
-| DI            | ![Hilt](https://img.shields.io/badge/Hilt-orange)        |
-| Image Loading | ![Glide](https://img.shields.io/badge/Glide-yellow)      |
-| Concurrency   | Kotlin Coroutines                                        |
+| Категория     | Технология                                                              |
+|---------------|-------------------------------------------------------------------------|
+| Architecture  | ![MVVM](https://img.shields.io/badge/MVVM-purple)                       |
+| Language      | ![Kotlin](https://img.shields.io/badge/Kotlin-blue)                     |
+| UI            | ![Views](https://img.shields.io/badge/Views-+-XML-yellowgreen)          |
+| Network       | ![Retrofit](https://img.shields.io/badge/Retrofit-green)                |
+| Database      | ![Room](https://img.shields.io/badge/Room-red)                          |
+| DI            | ![Hilt](https://img.shields.io/badge/Hilt-orange)                       |
+| Image Loading | ![Glide](https://img.shields.io/badge/Glide-yellow)                     |
+| Concurrency   | ![Coroutines](https://img.shields.io/badge/Kotlin-Coroutines-lightgrey) |
 
 # Структура проекта:
 
