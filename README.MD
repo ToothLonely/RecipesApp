@@ -1,4 +1,4 @@
-#Приложение рецептов
+# Приложение рецептов
 
 Это приложение рецептов разных блюд, в котором рецепты разделены по категориям. 
 Приложение написано в соответствии с рекомендациями Google, по принципам Clean Architecture
@@ -7,7 +7,7 @@
 
 **ToothLonely**
 
-#Стек:
+# Стек:
 
 1. **Architecture:** MVVM
 2. **UI:** Views + XML
@@ -17,7 +17,7 @@
 6. **Concurrency:** Kotlin Coroutines
 7. **DI:** Hilt
 
-#Структура проекта:
+# Структура проекта:
 
 app/ - Application
 data/ - Database, API service, DAOs, DI Module, repository
