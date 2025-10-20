@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipesapp.R
 import com.example.recipesapp.databinding.ItemMethodBinding
-import com.example.recipesapp.model.Recipe
 
 class MethodAdapter(var dataSet: List<String>) :
     RecyclerView.Adapter<MethodAdapter.ViewHolder>() {

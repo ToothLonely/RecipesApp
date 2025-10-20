@@ -1,7 +1,6 @@
 package com.example.recipesapp.ui.recipes.recipe
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.recipesapp.R
 import com.example.recipesapp.databinding.ItemIngredientBinding
 import com.example.recipesapp.model.Ingredient
-import com.example.recipesapp.model.Recipe
 import java.math.BigDecimal
 import java.math.RoundingMode
 

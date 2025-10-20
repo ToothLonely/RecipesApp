@@ -2,7 +2,6 @@ package com.example.recipesapp.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.recipesapp.data.database.RecipesDao
 import com.example.recipesapp.model.Category
 
 @Database(
