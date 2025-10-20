@@ -9,16 +9,16 @@
 
 # Стек:
 
-| Категория     | Технология                                                 |
-|---------------|------------------------------------------------------------|
-| Architecture  | MVVM                                                       |
-| Language      | ![Kotlin](https://img.shields.io/badge/Kotlin-2.2.10-blue) |
-| UI            | Views + XML                                                |
-| Network       | Retrofit                                                   |
-| Database      | Room                                                       |
-| DI            | ![Hilt](https://img.shields.io/badge/Hilt-orange)          |
-| Image Loading | Glide                                                      |
-| Concurrency   | Kotlin Coroutines                                          |
+| Категория     | Технология                                               |
+|---------------|----------------------------------------------------------|
+| Architecture  | ![MVVM](https://img.shields.io/badge/MVVM-purple)        |
+| Language      | ![Kotlin](https://img.shields.io/badge/Kotlin-blue)      |
+| UI            | Views + XML                                              |
+| Network       | ![Retrofit](https://img.shields.io/badge/Retrofit-green) |
+| Database      | ![Room](https://img.shields.io/badge/Room-red)           |
+| DI            | ![Hilt](https://img.shields.io/badge/Hilt-orange)        |
+| Image Loading | ![Glide](https://img.shields.io/badge/Glide-yellow)      |
+| Concurrency   | Kotlin Coroutines                                        |
 
 # Структура проекта:
 
@@ -30,8 +30,3 @@
 | ui/     | Fragments, ViewModels, Adapters, MainActivity               |
 
 ### Используемые технологии
-
-![Retrofit](https://img.shields.io/badge/Network-Retrofit-green)
-![Room](https://img.shields.io/badge/DB-Room-red)
-![Glide](https://img.shields.io/badge/Images-Glide-yellow)
-![MVVM](https://img.shields.io/badge/Architecture-MVVM-purple)
