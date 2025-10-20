@@ -9,16 +9,16 @@
 
 # Стек:
 
-| Категория     | Технология                                                     |
-|---------------|----------------------------------------------------------------|
-| Architecture  | MVVM                                                           |
-| Language      | Kotlin ![Kotlin](https://img.shields.io/badge/Kotlin-1.9-blue) |
-| UI            | Views + XML                                                    |
-| Network       | Retrofit                                                       |
-| Database      | Room                                                           |
-| DI            | Hilt                                                           |
-| Image Loading | Glide                                                          |
-| Concurrency   | Kotlin Coroutines                                              |
+| Категория     | Технология                                                 |
+|---------------|------------------------------------------------------------|
+| Architecture  | MVVM                                                       |
+| Language      | ![Kotlin](https://img.shields.io/badge/Kotlin-2.2.10-blue) |
+| UI            | Views + XML                                                |
+| Network       | Retrofit                                                   |
+| Database      | Room                                                       |
+| DI            | ![Hilt](https://img.shields.io/badge/Hilt-orange)          |
+| Image Loading | Glide                                                      |
+| Concurrency   | Kotlin Coroutines                                          |
 
 # Структура проекта:
 
@@ -31,7 +31,6 @@
 
 ### Используемые технологии
 
-![Hilt](https://img.shields.io/badge/DI-Hilt-orange)
 ![Retrofit](https://img.shields.io/badge/Network-Retrofit-green)
 ![Room](https://img.shields.io/badge/DB-Room-red)
 ![Glide](https://img.shields.io/badge/Images-Glide-yellow)
