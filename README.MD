@@ -13,7 +13,7 @@
 |---------------|-------------------------------------------------------------------------|
 | Architecture  | ![MVVM](https://img.shields.io/badge/MVVM-purple)                       |
 | Language      | ![Kotlin](https://img.shields.io/badge/Kotlin-blue)                     |
-| UI            | ![Views](https://img.shields.io/badge/Views-+-XML-yellowgreen)          |
+| UI            | ![Views](https://img.shields.io/badge/Views-XML-yellowgreen)            |
 | Network       | ![Retrofit](https://img.shields.io/badge/Retrofit-green)                |
 | Database      | ![Room](https://img.shields.io/badge/Room-red)                          |
 | DI            | ![Hilt](https://img.shields.io/badge/Hilt-orange)                       |
