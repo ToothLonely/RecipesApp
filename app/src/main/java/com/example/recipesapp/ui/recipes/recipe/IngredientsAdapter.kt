@@ -56,7 +56,7 @@ class IngredientsAdapter(var dataSet: List<Ingredient>) :
                 .stripTrailingZeros()
                 .toPlainString()
         } catch (e: NumberFormatException) {
-            "0"
+            "по вкусу"
         }
     }
 
